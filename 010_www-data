@@ -1,0 +1,1 @@
+www-data ALL = NOPASSWD: /home/pi/adsbexchange/webconfig/install-wpasupp.sh, /home/pi/adsbexchange/webconfig/install-adsbconfig.sh
