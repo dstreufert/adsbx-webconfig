@@ -48,11 +48,11 @@ echo "Approximate Configured Location:<center><pre>$location</pre></center>";
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/tar1090"/>1090 (default)<a/>
+<a href="/tar1090"/>1090 map (default)<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/978"/>978 (if enabled)<a/>
+<a href="/978"/>978 map (if enabled, US only)<a/>
 <br /><br />
 </td></tr>
 <tr><td>
@@ -68,9 +68,9 @@ echo "Approximate Configured Location:<center><pre>$location</pre></center>";
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="https://www.adsbexchange.com/myip/"/>ADSBexchange Status<a/>
+<a href="https://www.adsbexchange.com/myip/"/>ADSBexchange Status (/myip)<a/>
 
-<?php echo '<p>Hello World</p>'; ?> 
+
 </td></tr>
 </table>
 

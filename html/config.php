@@ -79,7 +79,12 @@ function checkcoords() {
 	}
  
 	file_put_contents("/tmp/webconfig/adsb-config.txt", $content);
-	echo '<p>Rebooting... visit <a href="http://adsbexchange.local">http://adsbexchange.local</a> to verify changes in about 60 secs..</body></html>';
+	echo '<p>Rebooting... visit <a href="http://adsbexchange.local">http://adsbexchange.local</a> to verify changes in about 60 secs..</form></body></html>';
+	
+	// Attempt to push final echo to browser before reboot.
+	sleep(2);
+	ob_flush();
+	flush();
 	system('sudo /home/pi/adsbexchange/webconfig/install-adsbconfig.sh');
 	exit;
 }

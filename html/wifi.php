@@ -68,13 +68,19 @@ Custom Image - WiFi Setup</h2>
     file_put_contents("/tmp/webconfig/wpa_supplicant.conf", $content);
 	
 	echo '<p>Rebooting... <br>Join new network, and visit <a href="http://adsbexchange.local">http://adsbexchange.local</a> to verify..</body></html>';
-	//system('sudo /home/pi/adsbexchange/webconfig/install-wpasupp.sh');
+	
+	// Attempt to push final echo to browser before reboot.
+	sleep(2);
+	ob_flush();
+	flush();
+	
+	system('sudo /home/pi/adsbexchange/webconfig/install-wpasupp.sh');
 	exit;
 	
 	
 }
  
-$lines = file('/tmp/wifi_scan');
+$lines = file('/tmp/webconfig/wifi_scan');
 
 echo '<table>';
 foreach($lines as $line) {
