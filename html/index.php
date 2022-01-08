@@ -44,6 +44,10 @@ echo "Approximate Configured Location:<center><pre>$location</pre></center>";
 <br /><br />
 </td></tr>
 <tr><td>
+<a href="/sysinfo.php"/>System Info<a/>
+<br /><br />
+</td></tr>
+<tr><td>
 <a href="/tar1090"/>1090 (default)<a/>
 <br /><br />
 </td></tr>

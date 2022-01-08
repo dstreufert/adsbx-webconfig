@@ -41,7 +41,6 @@ function checkcoords() {
         }
 		
 		var locdata = JSON.parse(resp);
-		//thealert = lat + " / " + lon + " is located in:\n" + locdata.locality + ", " + locdata.principalSubdivisionCode + ",\n" + locdata.countryName;
         thealert = "Location is:\n" + locdata.locality + ", " + locdata.principalSubdivisionCode + ",\n" + locdata.countryName;
 		//alert(thealert);
 		return thealert;
@@ -61,9 +60,6 @@ function checkcoords() {
 
 
 <form method='POST' name="configform" action="./config.php" onsubmit="return confirm(checkcoords() + '\nSave configuration and reboot?');">
-<!--
-<form method='POST' action="./config.php" onsubmit="return confirm('Save settings and reboot the unit?');">
--->
 
 
  <?php 
@@ -88,11 +84,10 @@ function checkcoords() {
 	exit;
 }
 
-echo $content;
+//echo $content;
 	
 	
 $lines = file('/boot/adsb-config.txt');
-//$arr[key] = value;
 echo '<table>';
 foreach($lines as $line) {
 	$pos = strpos($line, "=");
@@ -178,10 +173,6 @@ foreach($lines as $line) {
  
  <?php
  
-//echo '<br>';
-//var_dump($arr);
-
-//file_put_contents('/tmp/adsb-config.txt', $result);
  
  
  
