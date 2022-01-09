@@ -9,8 +9,8 @@ cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
 cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
 cat /tmp/webconfig/geocode | jq -r .'countryName' >> /tmp/webconfig/location
 echo $USER > /tmp/webconfig/name
-chmod 777 /tmp/webconfig/*
-chmod 777 /tmp/webconfig
+sudo chmod 777 /tmp/webconfig/*
+sudo chmod 777 /tmp/webconfig
 
 ping 1.1.1.1 -w 10 > /dev/null
 if [ $? -eq 0 ];
@@ -41,11 +41,12 @@ until [ $totalwait -gt 900 ]
 do
 	ssid=$(wpa_cli status | grep ssid | grep -v bssid | cut -d "=" -f 2)
         if [ "$ssid" = "ADSBx-config" ]; then
-		ipset=$(ifconfig wlan0 | grep "172.23.45.1")
-		if [[ ! -z "$ipset" ]]; then
-			sudo ip address replace 172.23.45.1/24 dev wlan0; echo "setting wlan0 ip to 172.23.45.1/24"
-		fi
-		clientip=$(cat /var/lib/misc/dnsmasq.leases | head -n 1 |  cut -d " " -f3)
+		ipset=$(ip address show dev wlan0 | grep "172.23.45.1")
+		
+			if [ -z "$ipset" ]; then
+				sudo ip address replace 172.23.45.1/24 dev wlan0; echo "setting wlan0 ip to 172.23.45.1/24"
+			fi
+			clientip=$(cat /tmp/webconfig/dnsmasq.leases | head -n 1 |  cut -d " " -f3)
 		
                 if [[ ! -z "$clientip" ]]; then
 					echo "Client lease detected at $clientip"
