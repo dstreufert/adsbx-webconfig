@@ -31,28 +31,24 @@ Custom Image - System Info</h2>
 
 
 
- <br>
- Feeder Username:
+<table><tr><td><center>Feeder Name</center></td><td><center>Public IP</center></td><tr>
 
-<table><tr><td>
+<tr><td>
 <?php
 $output = shell_exec('cat /tmp/webconfig/name');
 echo "<pre>$output</pre>";
 ?>
-</td></tr>
-</table>
-
-
- <br>
- Public IP:
-
-<table><tr><td>
+</td>
+<td>
 <?php
 $output = shell_exec('timeout 2 curl http://ipecho.net/plain');
 echo "<pre>$output</pre>";
 ?>
-</td></tr>
+</td>
+
+</tr>
 </table>
+
 
 
  <br>
@@ -77,18 +73,39 @@ echo "<pre>$output</pre>";
 </td></tr>
 </table>
 
-
- <br>
+<br>
  Uptime:
 
 <table><tr><td>
 <?php
-$output = shell_exec('uptime');
-$temp = shell_exec('sudo vcgencmd measure_temp');
-echo "<pre>$output <br><center>CPU $temp</center></pre>";
+$currenttime = shell_exec('date');
+$uptime = shell_exec('uptime -p');
+$upsince = shell_exec('uptime -s');
+echo "<center><pre>Current Time: $currenttime";
+echo "Uptime: $uptime";
+echo "Since $upsince</pre></center>";
 ?>
 </td></tr>
 </table>
+
+ <br>
+ Voltage Drops:
+
+<table><tr><td>
+<?php
+$output = shell_exec('/home/pi/adsbexchange/throttle.sh');
+echo "<pre>$output</pre>";
+echo "</td></tr><tr><td>";
+$temp = shell_exec('sudo vcgencmd measure_temp');
+echo "<center><pre>CPU $temp";
+echo "Redline=80'C</pre></center>";
+?>
+</td></tr>
+</table>
+
+
+
+ 
 
  <br>
  Messages since boot:
@@ -98,7 +115,7 @@ echo "<pre>$output <br><center>CPU $temp</center></pre>";
 $messages1090 = number_format(shell_exec('cat /run/adsbexchange-feed/aircraft.json | jq .messages'));
 $messages978 = number_format(shell_exec('cat /run/adsbexchange-978/aircraft.json | jq .messages'));
 $totaltracks = number_format(shell_exec('cat /run/adsbexchange-feed/stats.json | jq .total.tracks.all'));
-echo "<pre>1090: $messages1090<br>978: $messages978<br>Tracks: $totaltracks</pre>";
+echo "<pre>1090mhz: $messages1090<br>978mhz: $messages978<br>Tracks: $totaltracks</pre>";
 ?>
 </td></tr>
 </table>

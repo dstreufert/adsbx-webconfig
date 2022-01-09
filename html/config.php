@@ -66,7 +66,7 @@ function checkcoords() {
  
 
  if (!empty($_POST["DUMP1090"])) {
-	$content=file_get_contents("/home/pi/adsbexchange/webconfig/adsb-config.txt");
+	$content=file_get_contents("/home/pi/adsbexchange/webconfig/adsb-config.txt.webtemplate");
 
 	foreach ( $_POST as $key => $value ) {
 		//echo $key . ': ' . $value;
