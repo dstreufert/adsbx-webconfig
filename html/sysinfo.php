@@ -48,7 +48,7 @@ echo "<pre>$output</pre>";
 
 <table><tr><td>
 <?php
-$output = shell_exec('curl http://ipecho.net/plain');
+$output = shell_exec('timeout 2 curl http://ipecho.net/plain');
 echo "<pre>$output</pre>";
 ?>
 </td></tr>
