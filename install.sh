@@ -26,6 +26,7 @@ cp ./adsb-config.txt.initial /boot/adsb-config.txt
 
 
 
+
 systemctl daemon-reload
 systemctl enable webconfig
 

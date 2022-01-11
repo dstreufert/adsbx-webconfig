@@ -10,9 +10,9 @@ network={
 }
 
 network={
-        ssid="ADSBx-config"
-        disabled=1
-	mode=1
-	frequency=2432
-        key_mgmt=NONE
+    ssid="ADSBx-config"
+    disabled=1
+    mode=1
+    frequency=2432
+    key_mgmt=NONE
 }

@@ -71,6 +71,7 @@ fi
 sudo kill $(cat /var/run/dnsmasq.pid)
 sleep 1
 killall dnsmasq #Make sure dnsmasq is off
+sudo ip address del 172.23.45.1/32 dev wlan0
 wpa_cli disable $netnum
 
 exit 0;
