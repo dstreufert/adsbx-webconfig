@@ -23,37 +23,37 @@
 ##Southern Hemisphere, negative. <br>
 ##<a href="https://www.freemaptools.com/elevation-finder.htm" target="_blank">
 ##This site can be used to determine lat/lon and ground altitude.</a>
-LATITUDE="%%LATITUDE%%"
+LATITUDE="3.366016"
 
 # Longitude<br> East of Greenwich, UK - positive.<br>  
 ##West of Greenwich (including USA) - negative.
-LONGITUDE="%%LONGITUDE%%"
+LONGITUDE="-11.694583"
 
 # Altitude of your antenna above MSL (mean sea level)<br>
 ##Meters Example: "1050m" no space between number and "m"<br>
 ##Feet Example: "305ft" no space between number and "ft"
-ALTITUDE="%%ALTITUDE%%"
+ALTITUDE="60440ft"
 
 # Feeder Name for MLAT Map <br>
 ##No spaces or special characters.<br>
 ##Numbers, letters, underscore ( _ ) and period ( . ) only.
-USER="%%USER%%"
+USER="ADSBX"
 
 # Run dump1090?
-DUMP1090="%%DUMP1090%%"
+DUMP1090="yes"
 
 # Gain setting for Dump1090
-GAIN="%%GAIN%%"
+GAIN="42.1"
 
 # Adjust gain every 24 hours automatically?<br>
 ##<a href="https://github.com/wiedehopf/adsb-scripts/wiki/Automatic-gain-optimization-for-readsb-and-dump1090-fa">More info</a>
-AUTOGAIN="%%AUTOGAIN%%"
+AUTOGAIN="yes"
 
 # Run dump978? (requires second SDR)
-DUMP978="%%DUMP978%%"
+DUMP978="no"
 
 # Allow ADSBexchange staff to access this unit <br> remotely for troubleshooting via zerotier?
-ZEROTIER="%%ZEROTIER%%"
+ZEROTIER="no"
 
 # Run Graphana?
-PROMG="%%PROMG%%"
+PROMG="yes"

@@ -1,5 +1,7 @@
 #!/bin/bash
 mkdir /tmp/webconfig
+# Runs a script that may be manually placed on /boot for batch setup.  By default, nothing there.
+sudo /boot/firstboot.sh 
 sleep 15 # Give stuff a chance to come up
 netnum=$(wpa_cli list_networks | grep ADSBx-config | cut -f 1)
 sleep 5
