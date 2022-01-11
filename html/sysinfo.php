@@ -27,9 +27,7 @@ tr:nth-child(even) {
 <center>
 
 <h2>ADSBexchange.com<br>
-Custom Image - System Info</h2>
-
-
+Custom Image - System Info</h2><a href="../index.php">(..back to main menu)</a><br><br>
 
 <table><tr><td><center>Feeder Name</center></td><td><center>Public IP</center></td><tr>
 
@@ -160,6 +158,7 @@ echo "<pre>$postotal</pre>";
 </td>
 
 </tr>
+
 </table>
 
 
@@ -189,9 +188,6 @@ echo "<pre>$output</pre>";
 </td></tr>
 </table>
 
-
-
-
  <br>
  IP Route:
 
@@ -203,6 +199,95 @@ echo "<pre>$output</pre>";
 </td></tr>
 </table>
 
+
+ <br>
+ readsb.service logs:
+
+<table><tr><td>
+<?php
+$output = shell_exec('sudo journalctl -u readsb.service');
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
+ <br>
+ dump978-fa.service logs:
+
+<table><tr><td>
+<?php
+$output = shell_exec('sudo journalctl -u dump978-fa.service');
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
+
+ <br>
+ autogain1090.service logs:
+
+<table><tr><td>
+<?php
+$output = shell_exec('sudo journalctl -u autogain1090.service');
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
+ <br>
+ tar1090.service logs:
+
+<table><tr><td>
+<?php
+$output = shell_exec('sudo journalctl -u tar1090.service');
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
+ <br>
+ tar1090-978.service logs:
+
+<table><tr><td>
+<?php
+$output = shell_exec('sudo journalctl -u tar1090-978.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
+ <br>
+ adsbexchange-feed.service logs:
+
+<table><tr><td>
+<?php
+$output = shell_exec('sudo journalctl -u adsbexchange-feed.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
+ <br>
+ adsbexchange-mlat.service logs:
+
+<table><tr><td>
+<?php
+$output = shell_exec('sudo journalctl -u adsbexchange-mlat.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
+ <br>
+ adsbexchange-stats.service logs:
+
+<table><tr><td>
+<?php
+$output = shell_exec('sudo journalctl -u adsbexchange-stats.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
 
 
 

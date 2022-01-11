@@ -55,8 +55,7 @@ function checkcoords() {
 <center>
 
 
-<h2>ADSBexchange.com<br>Custom Image - Receiver Config</h2>
-<br /><br />
+<h2>ADSBexchange.com<br>Custom Image - Receiver Config</h2><a href="../index.php">(..back to main menu)</a><br>
 
 
 <form method='POST' name="configform" action="./config.php" onsubmit="return confirm(checkcoords() + '\nSave configuration and reboot?');">
@@ -79,13 +78,31 @@ function checkcoords() {
 	}
  
 	file_put_contents("/tmp/webconfig/adsb-config.txt", $content);
-	echo '<p>Rebooting... visit <a href="http://adsbexchange.local">http://adsbexchange.local</a> to verify changes in about 60 secs..</form></body></html>';
+	
+	
+	?>
+	<script type="text/javascript">
+	var timeleft = 70;
+	var downloadTimer = setInterval(function(){
+	if(timeleft <= 0){
+		clearInterval(downloadTimer);
+		window.location.replace("./index.php");
+	}
+	document.getElementById("progressBar").value = 70 - timeleft;
+	timeleft -= 1;
+	}, 1000);
+	</script>
+	<progress value="0" max="60" id="progressBar"></progress>
+	
+	<?php
+	echo '<p>Rebooting... visit <a href="./index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
+	
 	
 	// Attempt to push final echo to browser before reboot.
-	sleep(2);
-	ob_flush();
-	flush();
-	system('sudo /home/pi/adsbexchange/webconfig/install-adsbconfig.sh');
+	//ob_flush();
+	//flush();
+	//sleep(3);
+	system('sudo /home/pi/adsbexchange/webconfig/install-adsbconfig.sh > /dev/null 2>&1 &');
 	exit;
 }
 

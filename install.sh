@@ -23,10 +23,11 @@ cp ./wpa_supplicant.conf.bak /boot/wpa_supplicant.conf
 cp ./wpa_supplicant.conf.bak /home/pi/adsbexchange/.adsbx/wpa_supplicant.conf
 cp ./adsb-config.txt.initial /home/pi/adsbexchange/.adsbx/adsb-config.txt
 cp ./adsb-config.txt.initial /boot/adsb-config.txt
+cp ./resetdefaults.sh /home/pi/adsbexchange/
 
 
-
-
+# We do not use hostapd. Setup network is open.
+systemctl disable hostapd 
 systemctl daemon-reload
 systemctl enable webconfig
 

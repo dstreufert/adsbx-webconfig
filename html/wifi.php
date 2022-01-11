@@ -38,16 +38,14 @@ function otherssidCheck() {
 <center>
 
 <h2>ADSBexchange.com<br>
-Custom Image - WiFi Setup</h2>
-<br /><br />
+Custom Image - WiFi Setup</h2><a href="../index.php">(..back to main menu)</a><br />
 <form method='POST' action="./wifi.php" onsubmit="return confirm('Save WiFi settings and reboot the unit?');">
 
  
  <?php 
  
  
- echo "<h3>Choose WiFi Network:</h3>";
- echo "(Note that 2.4ghz networks have longer range than 5.8ghz)";
+
  //echo "<br> New SSID:";
  $newssid = $_POST["SSID"] . $_POST["customSSID"];
  $newpassword = $_POST["wifipassword"];
@@ -67,18 +65,45 @@ Custom Image - WiFi Setup</h2>
 	//Write File
     file_put_contents("/tmp/webconfig/wpa_supplicant.conf", $content);
 	
-	echo '<p>Rebooting... <br>Join new network, and visit <a href="http://adsbexchange.local">http://adsbexchange.local</a> to verify..</body></html>';
+	?>
+	<script type="text/javascript">
+	var timeleft = 70;
+	var downloadTimer = setInterval(function(){
+	if(timeleft <= 0){
+		clearInterval(downloadTimer);
+		window.location.replace("http://adsbexchange.local/config.php");
+	}
+	document.getElementById("progressBar").value = 70 - timeleft;
+	timeleft -= 1;
+	}, 1000);
+	</script>
+	<progress value="0" max="60" id="progressBar"></progress>
 	
+	
+	
+	<p>Rebooting... Next steps:
+	<table><tr><td>
+	<ol>
+		<li>"Forget" the ADSBx-config" wifi network on your phone/PC</li>
+		<li>Join the join the network you just configured and <a href="http://adsbexchange.local/config.php">setup location, etc.using this link.</a> or http://adsbexchange.local<br></li>
+	</ol>
+	</td></tr></table>
+		<p>(If you will have multiple units on your network, they will be reachable at:<br>http://adsbexchange-2.local<br>http://adsbexchange-3.local<br>etc....</body></html>
+	
+	<?php
 	// Attempt to push final echo to browser before reboot.
-	sleep(2);
-	ob_flush();
-	flush();
+	//sleep(2);
+	//ob_flush();
+	//flush();
 	
-	system('sudo /home/pi/adsbexchange/webconfig/install-wpasupp.sh');
+	system('sudo /home/pi/adsbexchange/webconfig/install-wpasupp.sh > /dev/null 2>&1 &');
 	exit;
 	
 	
 }
+ 
+ echo "<h3>Choose WiFi Network:</h3>";
+ echo "(Note that 2.4ghz networks have longer range than 5.8ghz)";
  
 $lines = file('/tmp/webconfig/wifi_scan');
 
