@@ -66,7 +66,7 @@ if (!empty($resetit)) {
 
 	
 	system('sudo /home/pi/adsbexchange/resetdefaults.sh');
-	system('sudo /home/pi/adsbexchange/reboot.sh > /dev/null 2>&1 &');
+	system('sudo /home/pi/adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
 	exit;
 	
 	
