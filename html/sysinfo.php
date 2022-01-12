@@ -118,6 +118,19 @@ echo "<pre>1090mhz: $messages1090<br>978mhz: $messages978<br>Tracks: $totaltrack
 </td></tr>
 </table>
 
+
+ <br>
+ Installed SDR serials<br>(vendor code 0bda:2832)
+
+<table><tr><td>
+<?php
+$sdrserials = shell_exec('cat /tmp/webconfig/sdr_serials');
+echo "<pre>$sdrserials</pre>";
+?>
+</td></tr>
+</table>
+
+
  <br>
  Position Count By Type: <a href="https://www.adsbexchange.com/version-2-api-wip/" target="_blank">(info)</a>
 
