@@ -77,7 +77,7 @@ Custom Image - WiFi Setup</h2><a href="../index.php">(..back to main menu)</a><b
 	timeleft -= 1;
 	}, 1000);
 	</script>
-	<progress value="0" max="60" id="progressBar"></progress>
+	<progress value="0" max="70" id="progressBar"></progress>
 	
 	
 	

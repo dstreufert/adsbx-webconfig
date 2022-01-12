@@ -92,7 +92,7 @@ function checkcoords() {
 	timeleft -= 1;
 	}, 1000);
 	</script>
-	<progress value="0" max="60" id="progressBar"></progress>
+	<progress value="0" max="70" id="progressBar"></progress>
 	
 	<?php
 	echo '<p>Rebooting... visit <a href="./index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
