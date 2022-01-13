@@ -302,6 +302,28 @@ echo "<pre>$output</pre>";
 </td></tr>
 </table>
 
+ <br>
+ /boot/adsbx-env
+
+<table><tr><td>
+<?php
+$output = shell_exec('cat /boot/adsbx-env');
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
+ <br>
+ /boot/adsbx-978env
+
+<table><tr><td>
+<?php
+$output = shell_exec('cat /boot/adsbx-978env');
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
 
 
 </center>

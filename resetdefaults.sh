@@ -34,6 +34,11 @@ sed -i 's/\r$//' /home/pi/adsbexchange/.adsbx/adsbx-env
 rm /boot/adsbx-env
 cp /home/pi/adsbexchange/.adsbx/adsbx-env /boot/adsbx-env
 
+echo -e "\n RESET /boot/adsbx-978env"
+sed -i 's/\r$//' /home/pi/adsbexchange/.adsbx/adsbx-978env
+rm /boot/adsbx-978env
+cp /home/pi/adsbexchange/.adsbx/adsbx-env /boot/adsbx-978env
+
 echo -e "\n REMOVE BASH HISTORY"
 rm /home/pi/.bash_history
 

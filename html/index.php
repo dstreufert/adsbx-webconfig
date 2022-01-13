@@ -44,6 +44,10 @@ echo "Approximate Configured Location:<center><pre>$location</pre></center>";
 <br /><br />
 </td></tr>
 <tr><td>
+<a href="/sdr-assign.php"/>Assign SDRs to services</a><br>(for multiple SDR Installs)
+<br /><br />
+</td></tr>
+<tr><td>
 <a href="/sysinfo.php"/>System Info<a/>
 <br /><br />
 </td></tr>
