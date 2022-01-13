@@ -23,7 +23,7 @@ cp ./wpa_supplicant.conf.bak /boot/wpa_supplicant.conf
 cp ./wpa_supplicant.conf.bak /home/pi/adsbexchange/.adsbx/wpa_supplicant.conf
 cp ./adsb-config.txt.initial /home/pi/adsbexchange/.adsbx/adsb-config.txt
 cp ./adsb-config.txt.initial /boot/adsb-config.txt
-cp ./adsbx-978env /home/pi/adsbexchange/.adsbx/
+cp ./adsbx-978env /home/pi/adsbexchange/.adsbx/adsbx-978env
 cp ./resetdefaults.sh /home/pi/adsbexchange/
 
 
