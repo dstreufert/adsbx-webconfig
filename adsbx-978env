@@ -6,6 +6,6 @@ AVR_978_IN_PORT=37981
 JSON_978_OPTIONS="--json-location-accuracy 2"
 
 ENABLED=yes
-RECEIVER_OPTIONS="--sdr-gain 36.0 --sdr driver=rtlsdr,serial=978 --format CS8"
+RECEIVER_OPTIONS="--sdr-gain 36.4 --sdr driver=rtlsdr,serial=978 --format CS8"
 DECODER_OPTIONS=""
 NET_OPTIONS="--raw-port 30978 --json-port 30979"
