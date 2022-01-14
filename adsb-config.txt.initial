@@ -39,17 +39,17 @@ ALTITUDE="60440ft"
 ##Numbers, letters, underscore ( _ ) and period ( . ) only.
 USER="ADSBX"
 
-# Run dump1090?
+# Enable 1090 using readsb?
 DUMP1090="yes"
 
-# Gain setting for Dump1090
+# Gain setting for 1090 readsb
 GAIN="42.1"
 
 # Adjust gain every 24 hours automatically?<br>
 ##<a href="https://github.com/wiedehopf/adsb-scripts/wiki/Automatic-gain-optimization-for-readsb-and-dump1090-fa">More info</a>
 AUTOGAIN="yes"
 
-# Run dump978? (requires second SDR)
+# Enable 978 UAT? (requires second SDR)
 DUMP978="no"
 
 # Allow ADSBexchange staff to access this unit <br> remotely for troubleshooting via zerotier?
