@@ -36,19 +36,19 @@ echo "Approximate Configured Location:<center><pre>$location</pre></center>";
 ?>
 </td></tr>
 <tr><td>
-<a href="/wifi.php"/>Configure WiFi<a/>
+<a href="/wifi"/>Configure WiFi<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/config.php"/>Configure Receiver/Location<a/>
+<a href="/config"/>Configure Receiver/Location<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/sdr-assign.php"/>Assign SDRs to services</a><br>(for multiple SDR Installs)
+<a href="/sdr-assign"/>Assign SDRs to services</a><br>(for multiple SDR Installs)
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/sysinfo.php"/>System Info<a/>
+<a href="/info"/>System Info<a/>
 <br /><br />
 </td></tr>
 <tr><td>

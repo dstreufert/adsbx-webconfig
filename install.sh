@@ -16,7 +16,7 @@ cp -t /home/pi/adsbexchange/webconfig adsb-config.txt.webtemplate install-adsbco
 cp ./webconfig.service /etc/systemd/system/
 cp ./010_www-data /etc/sudoers.d/
 rm /var/www/html/index.htm
-cp ./html/* /var/www/html
+cp -r ./html/* /var/www/html
 cp ./dnsmasq.conf /etc/
 cp ./wpa_supplicant.conf.bak /boot/wpa_supplicant.conf.bak
 cp ./wpa_supplicant.conf.bak /boot/wpa_supplicant.conf
