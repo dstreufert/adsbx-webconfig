@@ -39,52 +39,21 @@ echo "Approximate Configured Location:<center><pre>$location</pre></center>";
 ?>
 </td></tr>
 <tr><td>
+  <div class="d-grid gap-2 d-md-block">
 <a class="btn btn-outline-primary" href="/wifi"/>Configure WiFi<a/>
-<br /><br />
-</td></tr>
-<tr><td>
 <a class="btn btn-outline-primary" href="/config"/>Configure Receiver/Location<a/>
-<br /><br />
-</td></tr>
-<tr><td>
-<a class="btn btn-outline-primary" href="/sdr-assign"/>Assign SDRs to services</a><br>(for multiple SDR Installs)
-<br /><br />
-</td></tr>
-<tr><td>
+<a class="btn btn-outline-primary" href="/sdr-assign"/>
+Assign SDRs to services</a><br>(for multiple SDR Installs)
 <a class="btn btn-outline-primary" href="/auth"/>Authentication and System Tools<a/>
-<br /><br />
-</td></tr>
-<tr><td>
 <a class="btn btn-outline-primary" href="/info"/>System Info<a/>
-<br /><br />
-</td></tr>
-<tr><td>
 <a class="btn btn-outline-primary" href="/tar1090"/>1090 map (default)<a/>
-<br /><br />
-</td></tr>
-<tr><td>
 <a class="btn btn-outline-primary" href="/978"/>978 map (if enabled, US only)<a/>
-<br /><br />
-</td></tr>
-<tr><td>
 <a class="btn btn-outline-primary" href="/tar1090/?pTracks"/>8 hours of tracks<a/>
-<br /><br />
-</td></tr>
-<tr><td>
 <a class="btn btn-outline-primary" href="/graphs1090"/>graphs1090<a/>
-<br /><br />
-</td></tr>
-<tr><td>
 <a class="btn btn-outline-primary" href="/" onclick="javascript:event.target.port=3000"/>Grafana Dashboard<a/>
-<br /><br />
-</td></tr>
-<tr><td>
 <a class="btn btn-outline-primary" href="https://www.adsbexchange.com/myip/"/>ADSBexchange Status (/myip)<a/>
-
-
 </td></tr>
 </table>
-
 </center>
 </div>
 </body>
