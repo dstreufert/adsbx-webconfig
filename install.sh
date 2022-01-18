@@ -17,7 +17,7 @@ echo -e "; Put session info here, to prevent SD card writes\nsession.save_path =
 
 
 mkdir /home/pi/adsbexchange/webconfig
-cp -t /home/pi/adsbexchange/webconfig adsb-config.txt.webtemplate install-adsbconfig.sh install-wpasupp.sh webconfig.sh reboot.sh
+cp -t /home/pi/adsbexchange/webconfig adsb-config.txt.webtemplate install-adsbconfig.sh install-wpasupp.sh webconfig.sh reboot.sh run-update.sh run-defaults.sh bg-update.sh
 cp ./webconfig.service /etc/systemd/system/
 cp ./010_www-data /etc/sudoers.d/
 rm /var/www/html/index.htm
