@@ -24,6 +24,7 @@ tr:nth-child(even) {
  
 </head>
 <body>
+<div class="container-sm">
 <center>
 <h2>ADSBexchange.com<br>Custom Receiver Software<br>Main Menu</h2>
 <br />
@@ -85,5 +86,6 @@ echo "Approximate Configured Location:<center><pre>$location</pre></center>";
 </table>
 
 </center>
+</div>
 </body>
 </html>
