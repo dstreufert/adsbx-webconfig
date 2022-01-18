@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir /tmp/webconfig
 # Runs a script that may be manually placed on /boot for batch setup.  By default, nothing there.
-sudo /boot/firstboot.sh 
+sudo /boot/firstboot.sh
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
 sleep 15 # Give stuff a chance to come up
 netnum=$(wpa_cli list_networks | grep ADSBx-config | cut -f 1)
@@ -39,6 +39,7 @@ echo "ip connectivity failed, enabling ADSBx-config network"
 wpa_cli enable_network $netnum
 sudo dnsmasq
 totalwait=0
+touch /tmp/webconfig/unlock
 
 until [ $totalwait -gt 900 ]
 do
@@ -74,6 +75,7 @@ sleep 1
 killall dnsmasq #Make sure dnsmasq is off
 sudo ip address del 172.23.45.1/32 dev wlan0
 wpa_cli disable $netnum
+sudo rm -r /tmp/webconfig/unlock
 
 exit 0;
 

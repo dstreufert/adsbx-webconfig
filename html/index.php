@@ -48,6 +48,10 @@ echo "Approximate Configured Location:<center><pre>$location</pre></center>";
 <br /><br />
 </td></tr>
 <tr><td>
+<a href="/auth"/>Authentication and System Tools<a/>
+<br /><br />
+</td></tr>
+<tr><td>
 <a href="/info"/>System Info<a/>
 <br /><br />
 </td></tr>

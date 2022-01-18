@@ -48,14 +48,20 @@ function checkcoords() {
 
 </script>
 
-
+<?php 
+session_start();
+if ($_SESSION['authenticated'] != 1) {
+	$_SESSION['auth_URI'] = $_SERVER['REQUEST_URI'];
+	header("Location: ../auth"); 
+}
+?>
 
 </head>
 <body>
 <center>
 
 
-<h2>ADSBexchange.com<br>Custom Image - Receiver Config</h2><a href="../index.php">(..back to main menu)</a><br>
+<h2>ADSBexchange.com<br>Custom Image - Receiver Config</h2><a href="../">(..back to main menu)</a><br>
 
 
 <form method='POST' name="configform" action="./index.php" onsubmit="return confirm(checkcoords() + '\nSave configuration and reboot?');">

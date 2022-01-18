@@ -48,6 +48,19 @@ echo "<pre>$output</pre>";
 </table>
 
 
+ <br>
+ Local IP:
+
+<table><tr><td>
+<?php
+$output = $_SERVER['SERVER_ADDR'];
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
+
+
 
  <br>
  Configured Location:
