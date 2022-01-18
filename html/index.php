@@ -39,47 +39,47 @@ echo "Approximate Configured Location:<center><pre>$location</pre></center>";
 ?>
 </td></tr>
 <tr><td>
-<a class="btn btn-primary">href="/wifi"/>Configure WiFi<a/>
+<a class="btn btn-primary" href="/wifi"/>Configure WiFi<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/config"/>Configure Receiver/Location<a/>
+<a class="btn btn-primary" href="/config"/>Configure Receiver/Location<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/sdr-assign"/>Assign SDRs to services</a><br>(for multiple SDR Installs)
+<a class="btn btn-primary" href="/sdr-assign"/>Assign SDRs to services</a><br>(for multiple SDR Installs)
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/auth"/>Authentication and System Tools<a/>
+<a class="btn btn-primary" href="/auth"/>Authentication and System Tools<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/info"/>System Info<a/>
+<a class="btn btn-primary" href="/info"/>System Info<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/tar1090"/>1090 map (default)<a/>
+<a class="btn btn-primary" href="/tar1090"/>1090 map (default)<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/978"/>978 map (if enabled, US only)<a/>
+<a class="btn btn-primary" href="/978"/>978 map (if enabled, US only)<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/tar1090/?pTracks"/>8 hours of tracks<a/>
+<a class="btn btn-primary" href="/tar1090/?pTracks"/>8 hours of tracks<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/graphs1090"/>graphs1090<a/>
+<a class="btn btn-primary" href="/graphs1090"/>graphs1090<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="/" onclick="javascript:event.target.port=3000"/>Grafana Dashboard<a/>
+<a class="btn btn-primary" href="/" onclick="javascript:event.target.port=3000"/>Grafana Dashboard<a/>
 <br /><br />
 </td></tr>
 <tr><td>
-<a href="https://www.adsbexchange.com/myip/"/>ADSBexchange Status (/myip)<a/>
+<a class="btn btn-primary" href="https://www.adsbexchange.com/myip/"/>ADSBexchange Status (/myip)<a/>
 
 
 </td></tr>
