@@ -18,7 +18,7 @@ tr:nth-child(even) {
 }  
 </style> 
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 
             function checkPassword() {
@@ -58,7 +58,7 @@ session_start();
 	 session_unset();
  }
 
-//Process a password submission, or unlock file presence
+//Process a password submission, or "unlock file" presence
 
  if (!empty($_POST["password"]) or file_exists('/boot/unlock') or file_exists('/tmp/webconfig/unlock')) {
 
@@ -88,8 +88,6 @@ if(authenticate('pi',$_POST["password"]) or file_exists('/boot/unlock') or file_
 	
 	}
   } 
-
-
 }
 
 
@@ -107,7 +105,7 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 <p>
 
 <?php
-
+//handle PW change
  if (!empty($_POST["newpassword1"])) {
 	 if ($_SESSION['authenticated'] == 1) {
 		$output = system('echo "pi:' .$_POST["newpassword1"] . '" | sudo chpasswd');
@@ -120,6 +118,101 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 	 }
 	 //echo('<br>' . $_POST["newpassword1"] . '<br>');
  }
+
+//Handle reboot request
+ if (!empty($_POST["reboot"])) {
+	 if ($_SESSION['authenticated'] == 1) {
+		
+		?>
+		<script type="text/javascript">
+		var timeleft = 70;
+		var downloadTimer = setInterval(function(){
+		if(timeleft <= 0){
+			clearInterval(downloadTimer);
+			window.location.replace("../");
+		}
+		document.getElementById("progressBar").value = 70 - timeleft;
+		timeleft -= 1;
+		}, 1000);
+		</script>
+		<progress value="0" max="70" id="progressBar"></progress>
+		
+		
+		
+		<p>Rebooting... </center></body></html>
+		<?php
+		system('sudo /home/pi/adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
+		exit;
+	 }
+ }
+
+
+//Handle update request
+ if (!empty($_POST["update"])) {
+	 if ($_SESSION['authenticated'] == 1) {
+		
+		?>
+		<!-- Output Window -->
+		<table><tr><td>
+		<pre>
+		<div id="output_container"></div>
+		</pre>
+		</td></tr></table>
+		<script type="text/javascript">
+		function poll(){
+			$("showfile.php", function(data){
+				$("#output_container").load('./showfile.php');
+			}); 
+		}
+		setInterval(function(){ poll(); }, 2000);
+		</script>
+		<?php
+		ob_end_flush();
+		flush();
+		exec('sudo /home/pi/adsbexchange/webconfig/run-update.sh > /dev/null 2>&1 &');
+		?>
+		
+		
+		<p>System will reboot when complete... </center></body></html>
+		<?php
+		exit;
+	 }
+ }
+
+//Handle setdefaults request
+ if (!empty($_POST["setdefaults"])) {
+	 if ($_SESSION['authenticated'] == 1) {
+		
+		?>
+		<!-- Output Window -->
+		<table><tr><td>
+		<pre>
+		<div id="output_container"></div>
+		</pre>
+		</td></tr></table>
+		<script type="text/javascript">
+		function poll(){
+			$("showfile.php", function(data){
+				$("#output_container").load('./showfile.php');
+			}); 
+		}
+		setInterval(function(){ poll(); }, 2000);
+		</script>
+		<?php
+		ob_end_flush();
+		flush();
+		exec('sudo /home/pi/adsbexchange/webconfig/run-defaults.sh > /dev/null 2>&1 &');
+		?>
+		
+		
+		<p>System will reboot when complete... </center></body></html>
+		<?php
+		exit;
+	 }
+ }
+
+
+
 
 //echo('<br>Referrer: ' . $_SESSION['auth_URI'] . '<br>');
 
@@ -150,43 +243,64 @@ to set new password.
 <?php
 
 }
+
+
+
+//Below - things to display if user is authenticated
 if ($_SESSION['authenticated'] == 1) {
-	
-?>
-<p>
-<h3>System is unlocked</h3>
-<?php
-if(!file_exists('/boot/unlock') and !file_exists('/tmp/webconfig/unlock')) {
+		
+	?>
+	<p>
+	<h3>System is unlocked</h3>
+	<?php
+	if(!file_exists('/boot/unlock') and !file_exists('/tmp/webconfig/unlock')) {
 
-echo('<form method="POST" name="logout" action=".">');
-echo('<input type="hidden" id="logout" name="logout" value="logout">');
-echo('<input type="submit" value="Logout"></form>');
+	echo('<form method="POST" name="logout" action=".">');
+	echo('<input type="hidden" id="logout" name="logout" value="logout">');
+	echo('<input type="submit" value="Logout"></form>');
+	}
+	?>
+
+	<br>If you wish to change the password, enter new password below:
+	<p>
+	<form method='POST' name="changepwform" action="." onSubmit = "return checkPassword()">
+
+	<table>
+	<tr><td>New Password:</td><td><input type="password" id="password1" name="newpassword1" required></td></tr>
+	<tr><td>Re-enter Password:</td><td><input type="password" id="password2" name="newpassword2" required></td></tr>
+	</table>
+	<p>
+	<input type="submit" value="Change PW">
+	</form>
+	<p>
+	<hr width="25%">
+	<form method='POST' name="reboot" action="." onSubmit = "return confirm('Reboot the feeder?')">
+	<input type="hidden" id="reboot" name="reboot" value="reboot">
+	<input type="submit" value="Reboot Feeder">
+	</form>
+	<p>
+	<hr width="25%">
+	<form method='POST' name="setdefaults" action="." onSubmit = "return confirm('Reset EVERYTHING to defaults? (network, password, etc.)')">
+	<input type="hidden" id="setdefaults" name="setdefaults" value="setdefaults">
+	<input type="submit" value="Reset EVERYTHING to defaults">
+	</form>
+	(Configuration, network settings, password, etc.)
+	<p>
+	<hr width="25%">
+	<form method='POST' name="update" action="." onSubmit = "return confirm('Update the feeder?')">
+	<input type="hidden" id="update" name="update" value="update">
+	<input type="submit" value="Update Feeder">
+	</form>
+	<a href="https://raw.githubusercontent.com/ADSBexchange/adsbx-update/main/update-adsbx.sh">(executes this script)</a>
+	<p>
+
+
+
+	<?php	
 }
-?>
-
-<br>If you wish to change the password, enter new password below:
-<p>
-<form method='POST' name="changepwform" action="." onSubmit = "return checkPassword()">
-
-<table>
-<tr><td>New Password:</td><td><input type="password" id="password1" name="newpassword1" required></td></tr>
-<tr><td>Re-enter Password:</td><td><input type="password" id="password2" name="newpassword2" required></td></tr>
-</table>
-<p>
-<input type="submit" value="Submit">
-</form>
-
-
-
-<?php	
-}
-
-
 
 ?>
 
-
- 
  </center>
 
 </body>

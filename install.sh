@@ -30,10 +30,11 @@ cp ./adsb-config.txt.initial /home/pi/adsbexchange/.adsbx/adsb-config.txt
 cp ./adsb-config.txt.initial /boot/adsb-config.txt
 cp ./adsbx-978env /home/pi/adsbexchange/.adsbx/adsbx-978env
 cp ./resetdefaults.sh /home/pi/adsbexchange/
+sudo /home/pi/adsbexchange/resetdefaults.sh
 
 
 # We do not use hostapd. Setup network is open.
-systemctl disable hostapd 
+systemctl disable hostapd
 systemctl daemon-reload
 systemctl enable webconfig
 

@@ -103,11 +103,6 @@ if ($_SESSION['authenticated'] != 1) {
 	<?php
 	echo '<p>Rebooting... visit <a href="../index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
 	
-	
-	// Attempt to push final echo to browser before reboot.
-	//ob_flush();
-	//flush();
-	//sleep(3);
 	system('sudo /home/pi/adsbexchange/webconfig/install-adsbconfig.sh > /dev/null 2>&1 &');
 	exit;
 }

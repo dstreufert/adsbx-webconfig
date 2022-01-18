@@ -27,7 +27,7 @@ tr:nth-child(even) {
 <center>
 
 <h2>ADSBexchange.com<br>
-Custom Image - System Info</h2><a href="../index.php">(..back to main menu)</a><br><br>
+Custom Image - System Info</h2><a href="../">(..back to main menu)</a><br><br>
 
 <table><tr><td><center>Feeder Name</center></td><td><center>Public IP</center></td><tr>
 

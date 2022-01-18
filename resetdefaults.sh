@@ -42,4 +42,12 @@ cp /home/pi/adsbexchange/.adsbx/adsbx-978env /boot/adsbx-978env
 echo -e "\n REMOVE BASH HISTORY"
 rm /home/pi/.bash_history
 
+
+echo -e "\n RESET PI PASSWORD TO DEFAULT"
+echo "pi:adsb123" | sudo chpasswd
+
+echo -e "\n UNLOCKING UNIT UNTIL FIRST CONFIG"
+touch /boot/unlock
+
+
 exit 0
