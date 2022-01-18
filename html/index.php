@@ -39,7 +39,7 @@ echo "Approximate Configured Location:<center><pre>$location</pre></center>";
 ?>
 </td></tr>
 <tr><td>
-<a href="/wifi"/>Configure WiFi<a/>
+<a class="btn btn-primary">href="/wifi"/>Configure WiFi<a/>
 <br /><br />
 </td></tr>
 <tr><td>
