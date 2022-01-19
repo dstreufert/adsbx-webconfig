@@ -4,37 +4,29 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <script src="js/bootstrap.bundle.min.js"></script>
 <style>  
-table {  
-  font-family: arial, sans-serif;  
-  border-collapse: collapse;  
-  <!-- width: 50%; -->
-}  
-  
-td, th {  
-  border: 2px solid #111111;  
-  text-align: center;  
-  padding: 5px;  
-}  
-tr:nth-child(even) {  
-  background-color: #D5D8DC;  
-}
 .btn-margin-bottom{
     margin-bottom: 5px !important;
 }
-
+body {
+  background-color: #000;
+  color: #FFF;
+}
+.adsbx-green {
+ color: #009438;
+}
 </style>
 
 </head>
 <body>
-<div class="container-fluid">
-<div class="d-grid gap-1 col-2 mx-auto">
-        <h5>ADSBexchange.com<br />Custom Receiver Software<br /><br />Main Menu</h5>
+<div class="container-sm">
+<div class="d-grid gap-1 col-0 mx-auto">
+        <h5 class="adsbx-green">ADSBexchange.com<br />Custom Receiver Software<br /><br />Main Menu</h5>
         <?php
         $receivername=file_get_contents("/tmp/webconfig/name");
         $location = file_get_contents("/tmp/webconfig/location");
         ?>
-        <div class="col">Receiver Name:<br /><div class="alert alert-primary" role="alert"><?php echo $receivername ?></div></div>
-        <div class="col">Approximate Configured Location:<br /><div class="alert alert-primary" role="alert"><?php echo $location ?></div></div>
+        Receiver Name:<br /><div class="alert alert-success" role="alert"><?php echo $receivername ?></div>
+        Approximate Configured Location:<br /><div class="alert alert-success" role="alert"><?php echo $location ?></div>
 
         <a class="btn btn-primary" href="/wifi"/>Configure WiFi<a/>
         <a class="btn btn-primary" href="/config"/>Configure Receiver/Location<a/>
@@ -47,8 +39,8 @@ tr:nth-child(even) {
         <a class="btn btn-primary" href="/graphs1090"/>graphs1090<a/>
         <a class="btn btn-primary" href="/" onclick="javascript:event.target.port=3000"/>Grafana Dashboard<a/>
         <a class="btn btn-primary" href="https://www.adsbexchange.com/myip/"/>ADSBexchange Status (/myip)<a/>
-
-        </div>
+</div>
 </div>
 </body>
 </html>
+
