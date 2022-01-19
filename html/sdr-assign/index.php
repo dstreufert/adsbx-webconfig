@@ -1,23 +1,54 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>  
-table {  
-  font-family: arial, sans-serif;  
-  border-collapse: collapse;  
-  <!-- width: 50%; -->  
-}  
-  
-td, th {  
-  border: 2px solid #111111;  
-  text-align: left;  
-  padding: 8px;  
-}  
-tr:nth-child(even) {  
-  background-color: #D5D8DC;  
-}  
-</style> 
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<script src="../js/bootstrap.min.js"></script>
+<style>
+	.btn-margin-bottom {
+		margin-bottom: 5px !important;
+	}
+	
+	body {
+		background-color: #343434;
+		color: #FFF;
+	}
+	
+	.adsbx-green {
+		color: #FFF;
+	}
+	
+	.container-margin {
+		padding: 5px 10px !important;
+	}
+	
+	.logo-margin {
+		padding: 10px 0px !important;
+	}
+	
+	.btn-primary {
+		/*width: 325px;*/
+		padding: 10px;
+		text-align: left;
+		color: #fff;
+		border-color: #545454;
+		background-color: #828282;
+	}
+	
+	.alert-success {
+		color: #686868;
+		font-weight: 900;
+		background-color: #29d682;
+		border-color: #828282;
+	}
+	
+	.min-adsb-width {
+		/*width: 325px;*/
+	}
 
+	.container-padding {
+		padding: 5px;
+	}
+</style>
 
 <script type="text/javascript">
 
