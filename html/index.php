@@ -8,19 +8,40 @@
     margin-bottom: 5px !important;
 }
 body {
-  background-color: #000;
+  background-color: #343434;
   color: #FFF;
 }
 .adsbx-green {
- color: #009438;
+ color: #FFF;
+}
+.container-margin {
+        padding: 10px 20px !important;
+}
+
+.logo-margin {
+        padding: 10px 0px !important;
+}
+
+.btn-primary {
+    color: #fff;
+    border-color: #545454;
+    background-color: #828282;
+}
+
+.alert-success {
+    color: #686868;
+    font-weight: 900;
+    background-color: #29d682;
+    border-color: #828282;
 }
 </style>
 
 </head>
-<body>
+<body class="container-margin">
 <div class="container-sm">
 <div class="d-grid gap-1 col-0 mx-auto">
-        <h5 class="adsbx-green">ADSBexchange.com<br />Custom Receiver Software<br /><br />Main Menu</h5>
+        <h4 class="adsbx-green logo-margin"><img src="img/adsbx-svg.svg" width="35px"/>  ADSBexchange.com</h4>
+        <h6>Custom Receiver Software<br /><br />Main Menu</h6>
         <?php
         $receivername=file_get_contents("/tmp/webconfig/name");
         $location = file_get_contents("/tmp/webconfig/location");
@@ -38,9 +59,36 @@ body {
         <a class="btn btn-primary" href="/tar1090/?pTracks"/>8 hours of tracks<a/>
         <a class="btn btn-primary" href="/graphs1090"/>graphs1090<a/>
         <a class="btn btn-primary" href="/" onclick="javascript:event.target.port=3000"/>Grafana Dashboard<a/>
-        <a class="btn btn-primary" href="https://www.adsbexchange.com/myip/"/>ADSBexchange Status (/myip)<a/>
+        <a class="btn btn-primary" href="https://www.adsbexchange.com/myip/"/>ADSBexchange Status<a/>
 </div>
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
