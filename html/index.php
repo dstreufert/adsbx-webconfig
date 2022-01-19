@@ -25,6 +25,7 @@ tr:nth-child(even) {
 </head>
 <body>
 <div class="container">
+  <center>
    <div class="row row-cols-1">
      <div class="col"><h2>ADSBexchange.com<br>Custom Receiver Software<br />Main Menu</h2>
     <br />
@@ -49,6 +50,7 @@ tr:nth-child(even) {
        <div class="col"><a class="btn btn-outline-primary" href="https://www.adsbexchange.com/myip/"/>ADSBexchange Status (/myip)<a/></div>
     </div>
   </div>
+  </center>
 </div>
 </body>
 </html>
