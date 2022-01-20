@@ -91,6 +91,11 @@ function selectDefaults() {
 
 <?php
 
+echo 'wifiChoose '.$_POST['wifiChoose'].'<br />';
+echo 'customSSID '.$_POST['customSSID'].'<br />';
+echo 'wifipassword '.$_POST['wifipassword'];
+
+
 	if(isset($_POST['wifiChoose'])) {
  		$newssid = $_POST["wifiChoose"];
 	} else if (isset($_POST["customSSID"])) {
@@ -98,8 +103,8 @@ function selectDefaults() {
 	}
  	$newpassword = $_POST["wifipassword"];
 	$newssid = str_replace(array("\n", "\t", "\r"), '', $newssid);
-		
-	if (!empty($newssid)) {
+
+ if (!empty($newssid)) {
 
 	// Read File
     	$content=file_get_contents("/boot/wpa_supplicant.conf.bak");
@@ -112,18 +117,27 @@ function selectDefaults() {
 	//Write File
     	file_put_contents("/tmp/webconfig/wpa_supplicant.conf", $content);
 ?>
-	<script type="text/javascript">
-	var timeleft = 70;
-	var downloadTimer = setInterval(function(){
-	if(timeleft <= 0){
-		clearInterval(downloadTimer);
-		window.location.replace("http://adsbexchange.local/config");
-	}
-	document.getElementById("progressBar").value = 70 - timeleft;
-	timeleft -= 1;
-	}, 1000);
-	</script>
-	<progress value="0" max="70" id="progressBar"></progress>
+        <script type="text/javascript">
+                var timeleft = 70;
+
+                var downloadTimer = setInterval(function(){
+
+                        if(timeleft <= 0){
+                                clearInterval(downloadTimer);
+                                window.location.replace("../index.php");
+                        }
+
+                document.getElementById("progressBar").style.width = (70 - timeleft) + "%";
+
+                timeleft -= 1;
+
+                }, 1000);
+        </script>
+
+
+        <div class="progress">
+                <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="70" style="w$
+        </div>
 
 	<p>Rebooting... Next steps:
 	<table><tr><td>
