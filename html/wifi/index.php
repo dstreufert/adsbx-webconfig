@@ -71,7 +71,7 @@ if ($_SESSION['authenticated'] != 1) {
 function otherssidCheck() {
     if (document.getElementById('otherCheck').checked) {
         document.getElementById('ifOther').style.visibility = 'visible';
-	document.getElementById('wifiSelect').selectedIndex = 0;
+	document.getElementById('wifiSelect').selectedIndex = -1;
     }
     else document.getElementById('ifOther').style.visibility = 'hidden';
 }
@@ -91,8 +91,13 @@ function selectDefaults() {
 
 <?php
 
-	if(isset($_POST["wifiSelect")) {
- 		$newssid = $_POST["wifiSelect"];
+echo 'wifiChoose'.$_POST['wifiChoose'];
+echo 'wifiChoose'.$_POST['customSSID'];
+echo 'wifiChoose'.$_POST['wifipassword'];
+
+
+	if(isset($_POST['wifiChoose'])) {
+ 		$newssid = $_POST["wifiChoose"];
 	} else if (isset($_POST["customSSID"])) {
  		$newssid = $_POST["customSSID"];
 	}
@@ -193,6 +198,11 @@ $lines = file('/tmp/webconfig/wifi_scan');
 </div>
 <input class="btn btn-primary" type="submit" value="Submit">
 </form>
+
+
+
+
+
 
  <br>
  Current WiFi Status:
