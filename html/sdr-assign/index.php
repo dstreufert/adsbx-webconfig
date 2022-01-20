@@ -67,14 +67,14 @@ if ($_SESSION['authenticated'] != 1) {
 <body>
 <center>
 
+			<h4 class="adsbx-green logo-margin"><img src="../img/adsbx-svg.svg" width="35"/>  ADSBexchange.com</h4>
+			<h6>ADSBX ADS-B Anywhere <br />version 8.0</h6>
+			<a class="btn btn-primary" href="../">(..back to main menu)</a><br /><br />
 
-<h2>ADSBexchange.com<br>Custom Image - SDR Assignment</h2><a href="../index.php">(..back to main menu)</a><br>
-<br>
-Note: SDR sticks are often identified by their "serial numbers".<br>
-These serial numbers can be changed<br>using the "rtl_eeprom" command.<br>
-This is mainly helpful when dealing
-with<br>a setup containing more than one SDR.<p>
-This script edits the<br>/boot/adsbx-env and /boot/adsbx-978env files.<p>
+Note: SDR sticks are often identified by their "serial numbers".<br />
+These serial numbers can be changed using the "rtl_eeprom" command.<br />
+This is mainly helpful when dealing with a setup containing more than one SDR.<br /><br />
+This script edits the<br>/boot/adsbx-env and /boot/adsbx-978env files.<br /><br />
 
 
  <?php 
@@ -205,26 +205,23 @@ echo '</select>';
 
 </tr></td><tr><td>
 Choose gain for<br>dump978 service (978Mhz)<br>Default is 36.4: <p>
+<select id="dump978_gain" name="dump978_gain">
 <?php
-echo '<select id="dump978_gain" name="dump978_gain">';
-
 $gainoptions = array(-10, 0.0, 0.9, 1.4, 2.7, 3.7, 7.7, 8.7, 12.5, 14.4, 15.7, 16.6, 19.7, 20.7, 22.9, 25.4, 28.0, 29.7, 32.8, 33.8, 36.4, 37.2, 38.6, 40.2, 42.1, 43.4, 43.9, 44.5, 48.0, 49.6);
 
 foreach ($gainoptions as $gainval) {
 	?><option value="<?php echo $gainval; ?>" <?php if ($gainval == $dump978_gain) { echo 'selected'; } ?>><?php echo $gainval ; ?></option>
 	<?php
 	}
-echo '</select>';
 ?>
+</select>
+
 
 </table>
 <p>
-<input type="submit" value="Submit">
+<input class="btn btn-danger" type="submit" value="Save & Reboot">
 </form>
  
-
- 
  </center>
-
 </body>
 </html>
