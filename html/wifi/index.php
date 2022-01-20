@@ -97,7 +97,7 @@ function selectDefaults() {
  		$newssid = $_POST["customSSID"];
 	}
  	$newpassword = $_POST["wifipassword"];
-	$newssid = str_replace(array('.', "\n", "\t", "\r"), '', $newssid);
+	$newssid = str_replace(array("\n", "\t", "\r"), '', $newssid);
 		
 	if (!empty($newssid)) {
 
