@@ -48,7 +48,12 @@
 	.container-padding {
 		padding: 5px;
 	}
+	.adsbx-width {
+		max-width: 450px;
+	}
 </style>
+
+
 
 <script type="text/javascript">
 
@@ -141,7 +146,7 @@ if ($_SESSION['authenticated'] != 1) {
 
 $lines = file('/boot/adsb-config.txt');
 ?>
-<div class="container col-10">
+<div class="container-sm adsbx-width">
 <table class="table table-striped table-dark">
 <?php
 foreach($lines as $line) {
@@ -223,7 +228,7 @@ foreach($lines as $line) {
 </div>
 <br />
 
-<input class="btn btn-primary" type="submit" value="Save Configuration">
+<input class="btn btn-danger" type="submit" value="Save & Reboot">
  </form>
 
  <?php
