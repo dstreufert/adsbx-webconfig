@@ -144,7 +144,7 @@ $lines = file('/tmp/webconfig/wifi_scan');
 		<tr><td>
 		    <select name="wifiChoose" class="custom-select custom-select-lg btn btn-secondary" id="wifiSelect">
 			<div class="form-group">
-                        <option name="SSID" value="SSID" selected>Choose...</option>
+                        <option name="SSID" value="SSID" selected>Choose Network...</option>
 		<?php
 		foreach($lines as $line) {
 			//echo '<tr><td>';
