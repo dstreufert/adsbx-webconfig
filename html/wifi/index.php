@@ -49,7 +49,6 @@
 		padding: 5px;
 	}
 	#wifiSelect {
-	-webkit-appearance: none
 	 width: 100%;
 	}
 
@@ -77,33 +76,39 @@ function otherssidCheck() {
     else document.getElementById('ifOther').style.visibility = 'hidden';
 }
 
-</script> 
-
+</script>
 
 <center>
 
 <h2>ADSBexchange.com<br>
 Custom Image - WiFi Setup</h2><a href="../index.php">(..back to main menu)</a><br />
-<form method='POST' action="./index.php" onsubmit="return confirm('Save WiFi settings and reboot the unit?');">
+<form method='POST' action="./index.php" onsubmit="return confirm('Save WiFi and reboot the unit?');">
 
+<?php
 
- <?php
- $newssid = $_POST["SSID"] . $_POST["customSSID"];
- $newpassword = $_POST["wifipassword"];
+	if(isset($_POST['SSID'])) {
+ 		$newssid = $_POST["SSID"];
+	} else if (isset($_POST["customSSID"])) {
+ 		$newssid = $_POST["customSSID"];
+	} else {
+		echo 'dis shit';
+	}
+
+ 	$newpassword = $_POST["wifipassword"];
 
  if (!empty($newssid)) {
 
 	// Read File
-    $content=file_get_contents("/boot/wpa_supplicant.conf.bak");
-    // replace SSID
+    	$content=file_get_contents("/boot/wpa_supplicant.conf.bak");
+    	// replace SSID
 	$content_chunks=explode("YourSSID", $content);
-    $content=implode($newssid, $content_chunks);
+    	$content=implode($newssid, $content_chunks);
 	// replace password
 	$content_chunks=explode("WifiPassword", $content);
-    $content=implode($newpassword, $content_chunks);
+    	$content=implode($newpassword, $content_chunks);
 	//Write File
-    file_put_contents("/tmp/webconfig/wpa_supplicant.conf", $content);
-	?>
+    	file_put_contents("/tmp/webconfig/wpa_supplicant.conf", $content);
+?>
 	<script type="text/javascript">
 	var timeleft = 70;
 	var downloadTimer = setInterval(function(){
@@ -128,7 +133,6 @@ Custom Image - WiFi Setup</h2><a href="../index.php">(..back to main menu)</a><b
 
 	<?php
 
-
 	system('sudo /home/pi/adsbexchange/webconfig/install-wpasupp.sh > /dev/null 2>&1 &');
 	exit;
 
@@ -145,12 +149,12 @@ $lines = file('/tmp/webconfig/wifi_scan');
 		<tr><td>
 		    <select name="wifiChoose" class="custom-select custom-select-lg btn btn-secondary" id="wifiSelect">
 			<div class="form-group">
-                        <option name="SSID" value="SSID" selected>Choose Network...</option>
+                        <option name="SSID" value="" selected>Choose...</option>
 		<?php
 		foreach($lines as $line) {
 			//echo '<tr><td>';
 			//echo '<br>';
-			echo '<option name="SSID" onclick="javascript:otherssidCheck();" value="'.$line.'">'.$line.'</option>';
+			echo '<option onclick="javascript:otherssidCheck();" value="'.$line.'">'.$line.'</option>';
 			/*echo '<input class="form-control" type="label" name="SSID" onclick="javascript:otherssidCheck();" value="'.$line.'" readonly>';*/
 			/*echo $line;*/
 			//echo '<br>';
@@ -165,11 +169,11 @@ $lines = file('/tmp/webconfig/wifi_scan');
 <br /><br />
 Not Listed:
 <br /><br />
-<input type="radio" name="SSID" value="" id="otherCheck" onclick="javascript:otherssidCheck();" />
+<input type="radio" name="customSSID" id="otherCheck" onclick="javascript:otherssidCheck();" />
 
 <div id="ifOther" style="visibility:hidden">
 	Network Name:
-	<input class="form-control form-control-lg" type="text" autocorrect="off" autocapitalize="none" name="customSSID" />
+	<input class="form-control form-control-lg" type="text" id="customSSID" name="customSSID" />
 </div>
 
 <br>
@@ -184,7 +188,7 @@ Not Listed:
 	<tr>
 		<td>
 			WiFi Password:<br /><br />
-			<input class="form-control form-control-lg" type="text" name="wifipassword"  id="wifiSelect" />
+			<input class="form-control form-control-lg" type="text" name="wifipassword"  id="wifiSelect" pattern="^[\u0020-\u007e]{8,63}$" />
 		</td>
 	</tr>
 </table>
@@ -192,11 +196,6 @@ Not Listed:
 <br>
 <input class="btn btn-primary" type="submit" value="Submit">
 </form>
-
-
-
-
-
 
  <br>
  Current WiFi Status:
