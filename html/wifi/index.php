@@ -86,6 +86,7 @@ function selectDefaults() {
 
 	<h4 class="adsbx-green logo-margin"><img src="../img/adsbx-svg.svg" width="35"/>  ADSBexchange.com</h4>
 	<h6>ADSBX ADS-B Anywhere <br />version 8.0</h6>
+        <a class="btn btn-primary" href="../">(..back to main menu)</a><br /><br />
 	<form method='POST' action="./index.php" onsubmit="return confirm('Save WiFi and reboot the unit?');">
 
 <?php
@@ -169,7 +170,7 @@ $lines = file('/tmp/webconfig/wifi_scan');
 		</div>
 <br /><br />
 <input class="form-check-input" type="checkbox" name="customSSID" id="otherCheck" onclick="javascript:otherssidCheck();" />
-  <label class="form-check-label">Input Network SSID</label>
+  <label class="form-check-label">Specify Network SSID</label>
 <br /><br />
 <div id="ifOther" style="visibility:hidden">
 	<input class="form-control form-control-lg" type="text" id="customSSID" name="customSSID" />
