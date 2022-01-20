@@ -91,8 +91,8 @@ function selectDefaults() {
 
 <?php
 
-	if(isset($_POST['SSID'])) {
- 		$newssid = $_POST["SSID"];
+	if(isset($_POST["wifiSelect")) {
+ 		$newssid = $_POST["wifiSelect"];
 	} else if (isset($_POST["customSSID"])) {
  		$newssid = $_POST["customSSID"];
 	}
