@@ -91,19 +91,15 @@ function selectDefaults() {
 
 <?php
 
-echo 'wifiChoose'.$_POST['wifiChoose'];
-echo 'wifiChoose'.$_POST['customSSID'];
-echo 'wifiChoose'.$_POST['wifipassword'];
-
-
 	if(isset($_POST['wifiChoose'])) {
  		$newssid = $_POST["wifiChoose"];
 	} else if (isset($_POST["customSSID"])) {
  		$newssid = $_POST["customSSID"];
 	}
  	$newpassword = $_POST["wifipassword"];
-
- if (!empty($newssid)) {
+	$newssid = str_replace(array("\n", "\t", "\r"), '', $newssid);
+		
+	if (!empty($newssid)) {
 
 	// Read File
     	$content=file_get_contents("/boot/wpa_supplicant.conf.bak");
