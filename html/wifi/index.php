@@ -1,22 +1,59 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>  
-table {  
-  font-family: arial, sans-serif;  
-  border-collapse: collapse;  
-  <!-- width: 50%; -->
-}  
-  
-td, th {  
-  border: 2px solid #111111;  
-  text-align: left;  
-  padding: 8px;  
-}  
-tr:nth-child(even) {  
-  background-color: #D5D8DC;  
-}  
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<script src="../js/bootstrap.min.js"></script>
+<style>
+	.btn-margin-bottom {
+		margin-bottom: 5px !important;
+	}
+
+	body {
+		background-color: #343434;
+		color: #FFF;
+	}
+
+	.adsbx-green {
+		color: #FFF;
+	}
+
+	.container-margin {
+		padding: 5px 10px !important;
+	}
+
+	.logo-margin {
+		padding: 10px 0px !important;
+	}
+
+	.btn-primary {
+		/*width: 325px;*/
+		padding: 10px;
+		text-align: left;
+		color: #fff;
+		border-color: #545454;
+		background-color: #828282;
+	}
+
+	.alert-success {
+		color: #686868;
+		font-weight: 900;
+		background-color: #29d682;
+		border-color: #828282;
+	}
+
+	.min-adsb-width {
+		/*width: 325px;*/
+	}
+
+	.container-padding {
+		padding: 5px;
+	}
+	#wifiSelect {
+	 width: 100%;
+	}
+
 </style>
+
 
 <?php 
 session_start();
@@ -34,6 +71,7 @@ if ($_SESSION['authenticated'] != 1) {
 function otherssidCheck() {
     if (document.getElementById('otherCheck').checked) {
         document.getElementById('ifOther').style.visibility = 'visible';
+	document.getElementById('wifiSelect').selectedIndex = -1;
     }
     else document.getElementById('ifOther').style.visibility = 'hidden';
 }
@@ -47,9 +85,8 @@ function otherssidCheck() {
 Custom Image - WiFi Setup</h2><a href="../index.php">(..back to main menu)</a><br />
 <form method='POST' action="./index.php" onsubmit="return confirm('Save WiFi settings and reboot the unit?');">
 
- 
- <?php 
- 
+
+ <?php
  $newssid = $_POST["SSID"] . $_POST["customSSID"];
  $newpassword = $_POST["wifipassword"];
 
@@ -65,7 +102,6 @@ Custom Image - WiFi Setup</h2><a href="../index.php">(..back to main menu)</a><b
     $content=implode($newpassword, $content_chunks);
 	//Write File
     file_put_contents("/tmp/webconfig/wpa_supplicant.conf", $content);
-	
 	?>
 	<script type="text/javascript">
 	var timeleft = 70;
@@ -79,9 +115,7 @@ Custom Image - WiFi Setup</h2><a href="../index.php">(..back to main menu)</a><b
 	}, 1000);
 	</script>
 	<progress value="0" max="70" id="progressBar"></progress>
-	
-	
-	
+
 	<p>Rebooting... Next steps:
 	<table><tr><td>
 	<ol>
@@ -90,60 +124,72 @@ Custom Image - WiFi Setup</h2><a href="../index.php">(..back to main menu)</a><b
 	</ol>
 	</td></tr></table>
 		<p>(If you will have multiple units on your network, they will be reachable at:<br>http://adsbexchange-2.local<br>http://adsbexchange-3.local<br>etc....</body></html>
-	
+
 	<?php
 
-	
+
 	system('sudo /home/pi/adsbexchange/webconfig/install-wpasupp.sh > /dev/null 2>&1 &');
 	exit;
-	
-	
+
 }
- 
+
  echo "<h3>Choose WiFi Network:</h3>";
- echo "(Note that 2.4ghz networks have longer range than 5.8ghz)";
- 
+ echo "(Note that 2.4ghz networks have longer range than 5.8ghz)<br /><br />";
+
 $lines = file('/tmp/webconfig/wifi_scan');
 
-echo '<table>';
-foreach($lines as $line) {
-
-			echo '<tr><td>';
-			echo '<br>';
 		?>
-		<input type="radio" name="SSID" onclick="javascript:otherssidCheck();" value= <?php echo $line; ?>/>
-
+		<div class="container col-8">
+		<table  class="table table-striped table-hover table-dark">
+		<tr><td>
+		    <select name="wifiChoose" class="custom-select custom-select-lg btn btn-secondary" id="wifiSelect">
+			<div class="form-group">
+                        <option name="SSID" value="SSID" selected>Choose...</option>
 		<?php
-			echo $line;
-			echo '<br>';
-			echo '</tr></td>';
-		
-	}		
+		foreach($lines as $line) {
+			//echo '<tr><td>';
+			//echo '<br>';
+			echo '<option name="SSID" onclick="javascript:otherssidCheck();" value="'.$line.'">'.$line.'</option>';
+			/*echo '<input class="form-control" type="label" name="SSID" onclick="javascript:otherssidCheck();" value="'.$line.'" readonly>';*/
+			/*echo $line;*/
+			//echo '<br>';
+			//echo '</tr></td>';
+		}
 
-?> 
-<tr><td>
-Other Network Not Listed:
-<br>
+		?>
+		</div>
+		</select>
+		</div>
+
+<br /><br />
+Not Listed:
+<br /><br />
 <input type="radio" name="SSID" value="" id="otherCheck" onclick="javascript:otherssidCheck();" />
 
 <div id="ifOther" style="visibility:hidden">
-Network Name:
-<input type="text" name="customSSID" />
+	Network Name:
+	<input class="form-control form-control-lg" type="text" name="customSSID" />
 </div>
 
 <br>
 </td></tr>
 
 </table>
-<br>
-<table><tr><td>
-WiFi Password:
-<input type="text" name="wifipassword" />
-</td></td></table>
-
+</div>
 
 <br>
-<input type="submit" value="Submit">
+<div class="container col-8">
+<table class="table table-striped table-hover table-dark">
+	<tr>
+		<td>
+			WiFi Password:<br /><br />
+			<input class="form-control form-control-lg" type="text" name="wifipassword"  id="wifiSelect" />
+		</td>
+	</tr>
+</table>
+</div>
+<br>
+<input class="btn btn-primary" type="submit" value="Submit">
 </form>
 
 
@@ -171,8 +217,6 @@ echo "<pre>$output</pre>";
 ?>
 </td></tr>
 </table>
-
-
 
 </center>
 </body>

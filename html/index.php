@@ -54,13 +54,15 @@
 			<h4 class="adsbx-green logo-margin"><img src="img/adsbx-svg.svg" width="35"/>  ADSBexchange.com</h4>
 			<h6>ADSBX ADS-B Anywhere <br />version 8.0</h6>
 			<?php
-        		$receivername = file_get_contents("/tmp/webconfig/name");
-        		$location = file_get_contents("/tmp/webconfig/location");
-        	?> Receiver Name:
+        			$receivername = file_get_contents("/tmp/webconfig/name");
+        			$location = file_get_contents("/tmp/webconfig/location");
+        		?>
+				 Receiver Name:
 				<br />
 				<div class="alert alert-success min-adsb-width" role="alert">
 					<?php echo $receivername ?>
-				</div> Approximate Configured Location:
+				</div>
+				Approximate Configured Location:
 				<br />
 				<div class="alert alert-success min-adsb-width" role="alert">
 					<?php echo $location ?>

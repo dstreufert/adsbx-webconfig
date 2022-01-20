@@ -1,37 +1,79 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>  
-table {  
-  font-family: arial, sans-serif;  
-  border-collapse: collapse;  
-  <!-- width: 50%; -->
-}  
-  
-td, th {  
-  border: 2px solid #111111;  
-  text-align: left;  
-  padding: 8px;  
-}  
-tr:nth-child(even) {  
-  background-color: #D5D8DC;  
-}  
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<script src="../js/bootstrap.min.js"></script>
+<style>
+	.btn-margin-bottom {
+		margin-bottom: 5px !important;
+	}
+	
+	body {
+		background-color: #343434;
+		color: #FFF;
+	}
+	
+	.adsbx-green {
+		color: #FFF;
+	}
+	
+	.container-margin {
+		padding: 5px 10px !important;
+	}
+	
+	.logo-margin {
+		padding: 10px 0px !important;
+	}
+	
+	.btn-primary {
+		/*width: 325px;*/
+		padding: 10px;
+		text-align: left;
+		color: #fff;
+		border-color: #545454;
+		background-color: #828282;
+	}
+	
+	.alert-success {
+		color: #686868;
+		font-weight: 900;
+		background-color: #29d682;
+		border-color: #828282;
+	}
+	
+	.min-adsb-width {
+		/*width: 325px;*/
+	}
+
+	.container-padding {
+		padding: 5px;
+	}
 </style>
 
+<script type="text/javascript">
+</script>
+
 </head>
+
 <body>
 
-<script type="text/javascript">
-</script> 
+<div class="container-sm container-padding">
 
 <center>
 
-<h2>ADSBexchange.com<br>
-Custom Image - System Info</h2><a href="../">(..back to main menu)</a><br><br>
+<h2>ADSBexchange.com<br />
+Custom Image - System Info</h2><a href="../">(..back to main menu)</a><br /><br />
 
-<table><tr><td><center>Feeder Name</center></td><td><center>Public IP</center></td><tr>
+<table class="table table-dark">
 
-<tr><td>
+<tr>
+	<td><center>Feeder Name</center></td>
+	<td><center>Public IP</center></td>
+</tr>
+
+<tr>
+
+<td>
 <?php
 $output = shell_exec('cat /tmp/webconfig/name');
 echo "<pre>$output</pre>";
@@ -51,7 +93,7 @@ echo "<pre>$output</pre>";
  <br>
  Local IP:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = $_SERVER['SERVER_ADDR'];
 echo "<pre>$output</pre>";
@@ -65,7 +107,7 @@ echo "<pre>$output</pre>";
  <br>
  Configured Location:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('cat /tmp/webconfig/location');
 echo "<pre>$output</pre>";
@@ -87,7 +129,7 @@ echo "<pre>$output</pre>";
 <br>
  Uptime:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $currenttime = shell_exec('date');
 $uptime = shell_exec('uptime -p');
@@ -102,7 +144,7 @@ echo "Since $upsince</pre></center>";
  <br>
  Voltage Drops:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('/home/pi/adsbexchange/throttle.sh');
 echo "<pre>$output</pre>";
@@ -121,7 +163,7 @@ echo "Redline=80'C</pre></center>";
  <br>
  Messages since boot:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $messages1090 = number_format(shell_exec('cat /run/adsbexchange-feed/aircraft.json | jq .messages'));
 $messages978 = number_format(shell_exec('cat /run/adsbexchange-978/aircraft.json | jq .messages'));
@@ -135,7 +177,7 @@ echo "<pre>1090mhz: $messages1090<br>978mhz: $messages978<br>Tracks: $totaltrack
  <br>
  Installed SDR serials<br>(vendor code 0bda:*)
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $sdrserials = shell_exec('cat /tmp/webconfig/sdr_serials');
 echo "<pre>$sdrserials</pre>";
@@ -147,8 +189,14 @@ echo "<pre>$sdrserials</pre>";
  <br>
  Position Count By Type: <a href="https://www.adsbexchange.com/version-2-api-wip/" target="_blank">(info)</a>
 
-<table><tr><td><center>Last 1 Minute</center></td><td><center>Last 5 Minutes</center></td><td><center>Last 15 Minutes</center></td>
-<td><center>Since Boot</center></td></tr>
+<table class="table table-dark">
+
+<tr>
+<td><center>Last 1 Minute</center></td>
+<td><center>Last 5 Minutes</center></td>
+<td><center>Last 15 Minutes</center></td>
+<td><center>Since Boot</center></td>
+</tr>
 
 <?php
 $pos1min = shell_exec('cat /run/adsbexchange-feed/stats.json | jq .last1min.position_count_by_type');
@@ -196,7 +244,7 @@ echo "<pre>$postotal</pre>";
  <br>
  Current WiFi Status:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('iwconfig wlan0');
 echo "<pre>$output</pre>";
@@ -206,7 +254,7 @@ echo "<pre>$output</pre>";
  <br>
  Current IP Status:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('ifconfig');
 echo "<pre>$output</pre>";
@@ -217,7 +265,7 @@ echo "<pre>$output</pre>";
  <br>
  IP Route:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('ip route');
 echo "<pre>$output</pre>";
@@ -225,56 +273,60 @@ echo "<pre>$output</pre>";
 </td></tr>
 </table>
 
-
  <br>
  readsb.service logs:
-
-<table><tr><td>
+<div class="table-responsive-lg">
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('sudo journalctl -u readsb.service');
 echo "<pre>$output</pre>";
 ?>
 </td></tr>
 </table>
+</div>
 
  <br>
- dump978-fa.service logs:
 
-<table><tr><td>
+ dump978-fa.service logs:
+<div class="table-responsive-lg">
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('sudo journalctl -u dump978-fa.service');
 echo "<pre>$output</pre>";
 ?>
 </td></tr>
 </table>
-
+</div>
 
  <br>
- autogain1090.service logs:
 
-<table><tr><td>
+ autogain1090.service logs:
+<div class="table-responsive-lg">
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('sudo journalctl -u autogain1090.service');
 echo "<pre>$output</pre>";
 ?>
 </td></tr>
 </table>
+</div>
 
  <br>
- tar1090.service logs:
 
-<table><tr><td>
+ tar1090.service logs:
+<div class="table-responsive-lg">
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('sudo journalctl -u tar1090.service');
 echo "<pre>$output</pre>";
 ?>
 </td></tr>
 </table>
-
+</div>
  <br>
  tar1090-978.service logs:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('sudo journalctl -u tar1090-978.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
 echo "<pre>$output</pre>";
@@ -285,7 +337,7 @@ echo "<pre>$output</pre>";
  <br>
  adsbexchange-feed.service logs:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('sudo journalctl -u adsbexchange-feed.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
 echo "<pre>$output</pre>";
@@ -296,7 +348,7 @@ echo "<pre>$output</pre>";
  <br>
  adsbexchange-mlat.service logs:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('sudo journalctl -u adsbexchange-mlat.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
 echo "<pre>$output</pre>";
@@ -307,7 +359,7 @@ echo "<pre>$output</pre>";
  <br>
  adsbexchange-stats.service logs:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('sudo journalctl -u adsbexchange-stats.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
 echo "<pre>$output</pre>";
@@ -318,7 +370,7 @@ echo "<pre>$output</pre>";
  <br>
  /boot/adsbx-env
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('cat /boot/adsbx-env');
 echo "<pre>$output</pre>";
@@ -329,7 +381,7 @@ echo "<pre>$output</pre>";
  <br>
  /boot/adsbx-978env
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('cat /boot/adsbx-978env');
 echo "<pre>$output</pre>";
@@ -338,7 +390,8 @@ echo "<pre>$output</pre>";
 </table>
 
 
-
 </center>
+</div>
 </body>
+
 </html>
