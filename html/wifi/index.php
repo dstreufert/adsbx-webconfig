@@ -55,34 +55,38 @@
 </style>
 
 
-<?php 
+<?php
 session_start();
 if ($_SESSION['authenticated'] != 1) {
 	$_SESSION['auth_URI'] = $_SERVER['REQUEST_URI'];
-	header("Location: ../auth"); 
+	header("Location: ../auth");
 }
 ?>
- 
+
 </head>
-<body>
+<body onload="selectDefaults()">
 
 <script type="text/javascript">
 
 function otherssidCheck() {
     if (document.getElementById('otherCheck').checked) {
         document.getElementById('ifOther').style.visibility = 'visible';
-	document.getElementById('wifiSelect').selectedIndex = -1;
+	document.getElementById('wifiSelect').selectedIndex = 0;
     }
     else document.getElementById('ifOther').style.visibility = 'hidden';
 }
 
+function selectDefaults() {
+	document.getElementById('wifiSelect').selectedIndex = 0;
+}
+
 </script>
 
-<center>
+	<center>
 
-<h2>ADSBexchange.com<br>
-Custom Image - WiFi Setup</h2><a href="../index.php">(..back to main menu)</a><br />
-<form method='POST' action="./index.php" onsubmit="return confirm('Save WiFi and reboot the unit?');">
+	<h4 class="adsbx-green logo-margin"><img src="../img/adsbx-svg.svg" width="35"/>  ADSBexchange.com</h4>
+	<h6>ADSBX ADS-B Anywhere <br />version 8.0</h6>
+	<form method='POST' action="./index.php" onsubmit="return confirm('Save WiFi and reboot the unit?');">
 
 <?php
 
@@ -90,10 +94,7 @@ Custom Image - WiFi Setup</h2><a href="../index.php">(..back to main menu)</a><b
  		$newssid = $_POST["SSID"];
 	} else if (isset($_POST["customSSID"])) {
  		$newssid = $_POST["customSSID"];
-	} else {
-		echo 'dis shit';
 	}
-
  	$newpassword = $_POST["wifipassword"];
 
  if (!empty($newssid)) {
@@ -147,9 +148,10 @@ $lines = file('/tmp/webconfig/wifi_scan');
 		<div class="container col-8">
 		<table  class="table table-striped table-hover table-dark">
 		<tr><td>
+        	Choose Wifi Network:<br /><br />
 		    <select name="wifiChoose" class="custom-select custom-select-lg btn btn-secondary" id="wifiSelect">
 			<div class="form-group">
-                        <option name="SSID" value="" selected>Choose...</option>
+                        <option name="SSID" value="" selected>Choose Network ...</option>
 		<?php
 		foreach($lines as $line) {
 			//echo '<tr><td>';
@@ -162,27 +164,22 @@ $lines = file('/tmp/webconfig/wifi_scan');
 		}
 
 		?>
-		</div>
+			</div>
 		</select>
 		</div>
-
 <br /><br />
-Not Listed:
+<input class="form-check-input" type="checkbox" name="customSSID" id="otherCheck" onclick="javascript:otherssidCheck();" />
+  <label class="form-check-label">Input Network SSID</label>
 <br /><br />
-<input type="radio" name="customSSID" id="otherCheck" onclick="javascript:otherssidCheck();" />
-
 <div id="ifOther" style="visibility:hidden">
-	Network Name:
 	<input class="form-control form-control-lg" type="text" id="customSSID" name="customSSID" />
 </div>
 
-<br>
 </td></tr>
 
 </table>
 </div>
 
-<br>
 <div class="container col-8">
 <table class="table table-striped table-hover table-dark">
 	<tr>
@@ -193,7 +190,6 @@ Not Listed:
 	</tr>
 </table>
 </div>
-<br>
 <input class="btn btn-primary" type="submit" value="Submit">
 </form>
 
