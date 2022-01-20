@@ -123,19 +123,27 @@ if ($_SESSION['authenticated'] != 1) {
 	file_put_contents("/tmp/webconfig/adsb-config.txt", $content);
 
 	?>
-	<script type="text/javascript">
-	var timeleft = 70;
-	var downloadTimer = setInterval(function(){
-	if(timeleft <= 0){
-		clearInterval(downloadTimer);
-		window.location.replace("../index.php");
-	}
-	document.getElementById("progressBar").value = 70 - timeleft;
-	timeleft -= 1;
-	}, 1000);
-	</script>
-	<progress value="0" max="70" id="progressBar"></progress>
 
+	<script type="text/javascript">
+		var timeleft = 70;
+
+		var downloadTimer = setInterval(function(){
+
+			if(timeleft <= 0){
+				clearInterval(downloadTimer);
+				window.location.replace("../index.php");
+			}
+
+		document.getElementById("progressBar").style.width = (70 - timeleft) + "%";
+
+		timeleft -= 1;
+
+		}, 1000);
+	</script>
+
+	<div class="progress">
+  		<div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="70" style="width: 1%"></div>
+	</div>
 	<?php
 	echo '<p>Rebooting... visit <a href="../index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
 	system('sudo /home/pi/adsbexchange/webconfig/install-adsbconfig.sh > /dev/null 2>&1 &');
