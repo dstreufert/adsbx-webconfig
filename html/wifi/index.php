@@ -168,7 +168,7 @@ Not Listed:
 
 <div id="ifOther" style="visibility:hidden">
 	Network Name:
-	<input class="form-control form-control-lg" type="text" name="customSSID" />
+	<input class="form-control form-control-lg" type="text" autocorrect="off" autocapitalize="none" name="customSSID" />
 </div>
 
 <br>
