@@ -49,6 +49,7 @@
 		padding: 5px;
 	}
 	#wifiSelect {
+	-webkit-appearance: none
 	 width: 100%;
 	}
 
