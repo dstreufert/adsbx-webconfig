@@ -7,24 +7,24 @@
 	.btn-margin-bottom {
 		margin-bottom: 5px !important;
 	}
-	
+
 	body {
 		background-color: #343434;
 		color: #FFF;
 	}
-	
+
 	.adsbx-green {
 		color: #FFF;
 	}
-	
+
 	.container-margin {
 		padding: 5px 10px !important;
 	}
-	
+
 	.logo-margin {
 		padding: 10px 0px !important;
 	}
-	
+
 	.btn-primary {
 		/*width: 325px;*/
 		padding: 10px;
@@ -33,14 +33,14 @@
 		border-color: #545454;
 		background-color: #828282;
 	}
-	
+
 	.alert-success {
 		color: #686868;
 		font-weight: 900;
 		background-color: #29d682;
 		border-color: #828282;
 	}
-	
+
 	.min-adsb-width {
 		/*width: 325px;*/
 	}
@@ -50,8 +50,6 @@
 	}
 </style>
 
-
-
 <script type="text/javascript">
 
 function checkcoords() {
@@ -60,7 +58,7 @@ function checkcoords() {
 
 		var lat = document.forms['configform'].elements['LATITUDE'].value;
 		var lon = document.forms['configform'].elements['LONGITUDE'].value;
-		
+
 		url =  'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' + lat + '&longitude=' + lon + '&localityLanguage=en';
 
         resp  = '' ;
@@ -72,7 +70,7 @@ function checkcoords() {
             xmlHttp.send( null );
 			resp = xmlHttp.responseText
         }
-		
+
 		var locdata = JSON.parse(resp);
         thealert = "Location is:\n" + locdata.locality + ", " + locdata.principalSubdivisionCode + ",\n" + locdata.countryName;
 		//alert(thealert);
@@ -94,14 +92,15 @@ if ($_SESSION['authenticated'] != 1) {
 <center>
 
 
-<h2>ADSBexchange.com<br>Custom Image - Receiver Config</h2><a href="../">(..back to main menu)</a><br>
+			<h4 class="adsbx-green logo-margin"><img src="../img/adsbx-svg.svg" width="35"/>  ADSBexchange.com</h4>
+			<h6>ADSBX ADS-B Anywhere <br />version 8.0</h6>
+			<a class="btn btn-primary" href="../">(..back to main menu)</a><br /><br />
 
 
 <form method='POST' name="configform" action="./index.php" onsubmit="return confirm(checkcoords() + '\nSave configuration and reboot?');">
 
 
  <?php 
- 
 
  if (!empty($_POST["DUMP1090"])) {
 	$content=file_get_contents("/home/pi/adsbexchange/webconfig/adsb-config.txt.webtemplate");
@@ -113,12 +112,11 @@ if ($_SESSION['authenticated'] != 1) {
 		//echo '<br>';
 		$content_chunks=explode("%%" . $key . "%%", $content);
 		$content=implode($value, $content_chunks);
-		
+
 	}
- 
+
 	file_put_contents("/tmp/webconfig/adsb-config.txt", $content);
-	
-	
+
 	?>
 	<script type="text/javascript">
 	var timeleft = 70;
@@ -132,19 +130,20 @@ if ($_SESSION['authenticated'] != 1) {
 	}, 1000);
 	</script>
 	<progress value="0" max="70" id="progressBar"></progress>
-	
+
 	<?php
 	echo '<p>Rebooting... visit <a href="../index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
-	
 	system('sudo /home/pi/adsbexchange/webconfig/install-adsbconfig.sh > /dev/null 2>&1 &');
 	exit;
 }
 
 //echo $content;
-	
-	
+
 $lines = file('/boot/adsb-config.txt');
-echo '<table>';
+?>
+<div class="container col-10">
+<table class="table table-striped table-dark">
+<?php
 foreach($lines as $line) {
 	$pos = strpos($line, "=");
 	if (substr($line, 0, 1) == '#') { $pos = false; } # If line is a comment, don't consider it a parameter even if an equal sign comes later.
@@ -164,19 +163,19 @@ foreach($lines as $line) {
 			echo $prevline;
 			echo '<br>';
 			if (strtolower($value) == 'yes') {
-				?><select name="<?php echo $key; ?>">
+				?><select class="form-control" name="<?php echo $key; ?>">
 					<option value="yes" selected>yes</option>
 					<option value="no">no</option>
 				</select><?php
-			
+
 			} elseif (strtolower($value) == 'no') {
-				?><select name="<?php echo $key; ?>">
+				?><select class="form-control" name="<?php echo $key; ?>">
 					<option value="yes">yes</option>
 					<option value="no" selected>no</option>
 				</select><?php
-			
+
 			} elseif ($key == "GAIN") {
-				?><select name="<?php echo $key; ?>"><?php
+				?><select class="form-control" name="<?php echo $key; ?>"><?php
 				$gainoptions = array(-10, 0.0, 0.9, 1.4, 2.7, 3.7, 7.7, 8.7, 12.5, 14.4, 15.7, 16.6, 19.7, 20.7, 22.9, 25.4, 28.0, 29.7, 32.8, 33.8, 36.4, 37.2, 38.6, 40.2, 42.1, 43.4, 43.9, 44.5, 48.0, 49.6);
 
 				foreach ($gainoptions as $gainval) {
@@ -184,56 +183,53 @@ foreach($lines as $line) {
 					<?php
 					}
 					echo '</select>';
-			
+
 			} elseif ($key == "LATITUDE") {
 				?>
-				<input type="text" name="<?php echo $key; ?>" value="<?php echo $value; ?>" pattern="[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)"/>
-				<a href="javascript:alert(checkcoords())">Verify</a>
+				<input class="form-control" type="text" name="<?php echo $key; ?>" value="<?php echo $value; ?>" pattern="[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)"/>
 				<?php
 					echo '</tr></td>';
-			
+
 			} elseif ($key == "LONGITUDE") {
 				?>
-				<input type="text" name="<?php echo $key; ?>" value="<?php echo $value; ?>" pattern="[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)"/>
-				<a href="javascript:alert(checkcoords())">Verify</a>
+				<input class="form-control" type="text" name="<?php echo $key; ?>" value="<?php echo $value; ?>" pattern="[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)"/>
+				<br />
+				<a class="btn btn-primary" href="javascript:alert(checkcoords())">Verify Coordinates</a>
 				<?php
 					echo '</tr></td>';
 			} elseif ($key == "ALTITUDE") {
 				?>
-				<input type="text" name="<?php echo $key; ?>" value="<?php echo $value; ?>" pattern="-*[0-9]{1,}(m|ft)"/>
+				<input class="form-control" type="text" name="<?php echo $key; ?>" value="<?php echo $value; ?>" pattern="-*[0-9]{1,}(m|ft)"/>
 				<?php
 					echo '</tr></td>';
 			} elseif ($key == "USER") {
 				?>
-				<input type="text" name="<?php echo $key; ?>" value="<?php echo $value; ?>" pattern="[A-Za-z0-9._]+"/>
+				<input class="form-control" type="text" name="<?php echo $key; ?>" value="<?php echo $value; ?>" pattern="[A-Za-z0-9._]+"/>
 				<?php
 					echo '</tr></td>';
 			} else {
 				?>
-				<input type="text" name="<?php echo $key; ?>" value="<?php echo $value; ?>" />
+				<input class="form-control" type="text" name="<?php echo $key; ?>" value="<?php echo $value; ?>" />
 				<?php
 					echo '</tr></td>';
 			}
-		
+
 	}
 
-}		
-	echo '</table>';
+}
+?>
 
+</table>
+</div>
+<br />
 
-?> 
-<br>
-
-<input type="submit" value="Submit">
+<input class="btn btn-primary" type="submit" value="Save Configuration">
  </form>
- 
+
  <?php
- 
- 
- 
- 
- ?> 
- 
+
+ ?>
+
  </center>
 
 </body>
