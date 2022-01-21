@@ -7,6 +7,12 @@ sleep 15 # Give stuff a chance to come up
 netnum=$(wpa_cli list_networks | grep ADSBx-config | cut -f 1)
 sleep 5
 sudo iw wlan0 scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
+if [ $? -ne 0 ]
+then
+  sleep 3
+  sudo iw wlan0 scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
+fi
+
 timeout 3 wget https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=$LATITUDE\&longitude=$LONGITUDE\&localityLanguage=en -q -T 3 -O /tmp/webconfig/geocode
 cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
 cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
