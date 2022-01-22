@@ -131,7 +131,7 @@ function selectDefaults() {
 
 
         <div class="progress">
-                <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="70" style="w$
+                <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="70" style="width: 1%"></div>
         </div>
 
 	<p>Rebooting... Next steps:
