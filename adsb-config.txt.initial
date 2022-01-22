@@ -37,7 +37,7 @@ ALTITUDE="60440ft"
 # Feeder Name for MLAT Map <br>
 ##No spaces or special characters.<br>
 ##Numbers, letters, underscore ( _ ) and period ( . ) only.
-USER="ADSBX"
+USER="ADSBX_initial"
 
 # Enable 1090 using readsb?
 DUMP1090="yes"
@@ -47,7 +47,7 @@ GAIN="42.1"
 
 # Adjust gain every 24 hours automatically?<br>
 ##<a href="https://github.com/wiedehopf/adsb-scripts/wiki/Automatic-gain-optimization-for-readsb-and-dump1090-fa">More info</a>
-AUTOGAIN="no"
+AUTOGAIN="yes"
 
 # Enable 978 UAT? (requires second SDR)
 DUMP978="no"
@@ -56,4 +56,4 @@ DUMP978="no"
 ZEROTIER="no"
 
 # Run Graphana?
-PROMG="yes"
+PROMG="no"
