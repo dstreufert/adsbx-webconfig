@@ -204,7 +204,6 @@ if ($_SESSION['authenticated'] != 1) {
 
 			if ($key[0] == "DUMP1090") {
                                 echo  str_replace('#','<br />',$enable_1090."<br /><br />");
-				echo  'current - '.$key[1];
                                 ?>
 					<select class="form-control" name="<?php echo $key[0]; ?>">
 					<?php
