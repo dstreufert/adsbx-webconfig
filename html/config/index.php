@@ -180,7 +180,9 @@ if ($_SESSION['authenticated'] != 1) {
 			if ($key[0] == "LONGITUDE") {
 				echo str_replace('#','<br />',$longitude."<br /><br />");
 				?>
-				<input class="form-control" type="text" name="<?php echo $key[0]; ?>" value="<?php echo $key[1]; ?>" pattern="[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)"/>
+				<input class="form-control" type="text" name="<?php echo $key[0]; ?>" value="<?php echo $key[1]; ?>" pattern="[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)"/>
+                                <br />
+                                <a class="btn btn-primary" href="javascript:alert(checkcoords())">Verify Coordinates</a>
 				<?php
 				echo '</tr></td><tr><td>';
 			}
