@@ -155,7 +155,8 @@ if ($_SESSION['authenticated'] != 1) {
 	$lines = file('/boot/adsb-config.txt',FILE_SKIP_EMPTY_LINES);
 	//print_r($lines);
 	foreach($lines as $line) {
-    		if(!(preg_match("^#\s",$line))) {
+    		if(!(preg_match("/^#/",$line))) {
+                        $line = str_replace("\"","",$line);
 			$key = explode("=",$line);
 			if ($key[0] == "GAIN") {
 				echo str_replace('#','<br />',$gain."<br /><br />");
