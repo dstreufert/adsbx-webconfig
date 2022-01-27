@@ -56,7 +56,7 @@ do
 			if [ -z "$ipset" ]; then
 				sudo ip address replace 172.23.45.1/24 dev wlan0; echo "setting wlan0 ip to 172.23.45.1/24"
 			fi
-			clientip=$(cat /tmp/dnsmasq.leases | head -n 1 |  cut -d " " -f3)
+			clientip=$(cat /tmp/webconfig/dnsmasq.leases | head -n 1 |  cut -d " " -f3)
 		
                 if [[ ! -z "$clientip" ]]; then
 					echo "Client lease detected at $clientip"
