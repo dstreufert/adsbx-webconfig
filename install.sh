@@ -30,8 +30,10 @@ git clone --depth 1 https://github.com/ADSBexchange/adsbx-update.git /adsbexchan
 
 pushd /adsbexchange/update/
 
-cp -T boot-configs/wpa_supplicant.conf /boot/wpa_supplicant.conf.bak
-cp -t /boot/ boot-configs/*
+cp -v -T boot-configs/wpa_supplicant.conf /boot/wpa_supplicant.conf.bak
+cp -v -T boot-configs/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
+chmod 600 /etc/wpa_supplicant/wpa_supplicant.conf
+cp -v boot-configs/* /boot
 
 popd
 
