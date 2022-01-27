@@ -48,7 +48,7 @@ if (!empty($updateit)) {
 	<?php
 
 
-$cmd = 'sudo /home/pi/adsbexchange/update-adsbx.sh';
+$cmd = 'sudo /adsbexchange/update/update-adsbx.sh';
 while (@ ob_end_flush()); // end all output buffers if any
 
 $proc = popen($cmd, 'r');
@@ -80,7 +80,7 @@ echo '</pre>';
 
 	echo '</body></html>';
 
-	system('sudo /home/pi/adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
+	system('sudo /adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
 	exit;
 
 }

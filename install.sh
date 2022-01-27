@@ -6,32 +6,37 @@ if [ $(id -u) -ne 0 ]; then
 fi
 
 #These two lines allow www-data to auth using shadow file
-sudo adduser www-data shadow
-sudo apt-get install whois
+adduser www-data shadow
 
-sudo apt install php7.3 php7.3-fpm php7.3-cgi
-sudo lighttpd-enable-mod fastcgi-php
-sudo service lighttpd force-reload
+apt install -y whois php7.3 php7.3-fpm php7.3-cgi
+lighttpd-enable-mod fastcgi-php
+systemctl restart lighttpd
 
-echo -e "; Put session info here, to prevent SD card writes\nsession.save_path = \"/tmp\"" | sudo tee /etc/php/7.3/cgi/conf.d/30-session_path.ini
+echo -e "; Put session info here, to prevent SD card writes\nsession.save_path = \"/tmp\"" | tee /etc/php/7.3/cgi/conf.d/30-session_path.ini
 
+ipath=/adsbexchange/webconfig
 
-mkdir /home/pi/adsbexchange/webconfig
-cp -t /home/pi/adsbexchange/webconfig adsb-config.txt.webtemplate install-adsbconfig.sh install-wpasupp.sh webconfig.sh reboot.sh run-update.sh run-defaults.sh bg-update.sh sanitize-uuid.sh
+mkdir -p $ipath
+cp -t $ipath adsb-config.txt.webtemplate install-adsbconfig.sh install-wpasupp.sh webconfig.sh reboot.sh run-update.sh run-defaults.sh bg-update.sh sanitize-uuid.sh
 cp ./webconfig.service /etc/systemd/system/
 cp ./010_www-data /etc/sudoers.d/
-rm /var/www/html/index.htm
+rm -f /var/www/html/index.htm*
 cp -r ./html/* /var/www/html
 cp ./dnsmasq.conf /etc/
-cp ./wpa_supplicant.conf.bak /boot/wpa_supplicant.conf.bak
-cp ./wpa_supplicant.conf.bak /boot/wpa_supplicant.conf
-cp ./wpa_supplicant.conf.bak /home/pi/adsbexchange/.adsbx/wpa_supplicant.conf
-cp ./adsb-config.txt.initial /home/pi/adsbexchange/.adsbx/adsb-config.txt
-cp ./adsb-config.txt.initial /boot/adsb-config.txt
-cp ./adsbx-978env /home/pi/adsbexchange/.adsbx/adsbx-978env
-cp ./resetdefaults.sh /home/pi/adsbexchange/
-sudo /home/pi/adsbexchange/resetdefaults.sh
 
+rm -rf /adsbexchange/update
+mkdir -p /adsbexchange
+git clone --depth 1 https://github.com/ADSBexchange/adsbx-update.git /adsbexchange/update
+
+pushd /adsbexchange/update/
+
+cp -T boot-configs/wpa_supplicant.conf /boot/wpa_supplicant.conf.bak
+cp -t /boot/ boot-configs/*
+
+popd
+
+#echo -e "\n UNLOCKING UNIT UNTIL FIRST CONFIG"
+touch /boot/unlock
 
 # We do not use hostapd. Setup network is open.
 systemctl disable hostapd

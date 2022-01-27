@@ -165,7 +165,7 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 		<progress value="0" max="70" id="progressBar"></progress>
 		<br /><br />Rebooting... </center></body></html>
 		<?php
-		system('sudo /home/pi/adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
+		system('sudo /adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
 		exit;
 	 }
  }
@@ -193,7 +193,7 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 		<?php
 		ob_end_flush();
 		flush();
-		exec('sudo /home/pi/adsbexchange/webconfig/run-update.sh > /dev/null 2>&1 &');
+		exec('sudo /adsbexchange/webconfig/run-update.sh > /dev/null 2>&1 &');
 		?>
 
 		<br />System will reboot when complete... </center></body></html>
@@ -224,7 +224,7 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 		<?php
 		ob_end_flush();
 		flush();
-		exec('sudo /home/pi/adsbexchange/webconfig/run-defaults.sh > /dev/null 2>&1 &');
+		exec('sudo /adsbexchange/webconfig/run-defaults.sh > /dev/null 2>&1 &');
 		?>
 		<br /><br />System will reboot when complete... </center></body></html>
 		<?php

@@ -143,7 +143,7 @@ if ($_SESSION['authenticated'] != 1) {
 	</div>
 	<?php
 	echo '<p>Rebooting... visit <a href="../index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
-	system('sudo /home/pi/adsbexchange/webconfig/install-adsbconfig.sh > /dev/null 2>&1 &');
+	system('sudo /adsbexchange/webconfig/install-adsbconfig.sh > /dev/null 2>&1 &');
 	exit;
 } // end if $_post
 
