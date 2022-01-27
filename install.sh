@@ -11,6 +11,8 @@ adduser www-data shadow
 apt install -y whois php php-fpm php-cgi dnsmasq
 lighttpd-enable-mod fastcgi-php
 systemctl restart lighttpd
+systemctl disable dnsmasq
+systemctl stop dnsmasq || true
 
 echo -e "; Put session info here, to prevent SD card writes\nsession.save_path = \"/tmp\"" | tee /etc/php/7.3/cgi/conf.d/30-session_path.ini
 
