@@ -8,7 +8,7 @@ fi
 #These two lines allow www-data to auth using shadow file
 adduser www-data shadow
 
-apt install -y whois php7.3 php7.3-fpm php7.3-cgi
+apt install -y whois php php-fpm php-cgi dnsmasq
 lighttpd-enable-mod fastcgi-php
 systemctl restart lighttpd
 
