@@ -1,2 +1,15 @@
-www-data ALL = NOPASSWD: /home/pi/adsbexchange/webconfig/install-wpasupp.sh, /home/pi/adsbexchange/webconfig/install-adsbconfig.sh, /usr/sbin/zerotier-cli, /usr/bin/vcgencmd, /bin/journalctl, /home/pi/adsbexchange/webconfig/run-defaults.sh, /home/pi/adsbexchange/webconfig/reboot.sh, /home/pi/adsbexchange/update-adsbx.sh, /home/pi/adsbexchange/resetdefaults.sh, /bin/sed, /usr/sbin/chpasswd, /bin/rm, /home/pi/adsbexchange/webconfig/reboot.sh, /home/pi/adsbexchange/webconfig/run-update.sh
+www-data ALL = NOPASSWD: \
+               /usr/sbin/zerotier-cli, \
+               /usr/bin/vcgencmd, \
+               /bin/journalctl, \
+               /adsbexchange/webconfig/install-wpasupp.sh, \
+               /adsbexchange/webconfig/install-adsbconfig.sh, \
+               /adsbexchange/webconfig/run-defaults.sh, \
+               /adsbexchange/webconfig/reboot.sh, \
+               /adsbexchange/webconfig/run-update.sh, \
+               /adsbexchange/update/update-adsbx.sh, \
+               /adsbexchange/update/resetdefaults.sh, \
+               /bin/sed, \
+               /usr/sbin/chpasswd, \
+               /bin/rm
 

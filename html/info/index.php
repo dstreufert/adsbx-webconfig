@@ -146,7 +146,7 @@ echo "Since $upsince</pre></center>";
 
 <table class="table table-dark"><tr><td>
 <?php
-$output = shell_exec('/home/pi/adsbexchange/throttle.sh');
+$output = shell_exec('/adsbexchange/update/throttle.sh');
 echo "<pre>$output</pre>";
 echo "</td></tr><tr><td>";
 $temp = shell_exec('sudo vcgencmd measure_temp');
@@ -328,7 +328,7 @@ echo "<pre>$output</pre>";
 
 <table class="table table-dark"><tr><td>
 <?php
-$output = shell_exec('sudo journalctl -u tar1090-978.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
+$output = shell_exec('sudo journalctl -u tar1090-978.service | /adsbexchange/webconfig/sanitize-uuid.sh');
 echo "<pre>$output</pre>";
 ?>
 </td></tr>
@@ -339,7 +339,7 @@ echo "<pre>$output</pre>";
 
 <table class="table table-dark"><tr><td>
 <?php
-$output = shell_exec('sudo journalctl -u adsbexchange-feed.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
+$output = shell_exec('sudo journalctl -u adsbexchange-feed.service | /adsbexchange/webconfig/sanitize-uuid.sh');
 echo "<pre>$output</pre>";
 ?>
 </td></tr>
@@ -350,7 +350,7 @@ echo "<pre>$output</pre>";
 
 <table class="table table-dark"><tr><td>
 <?php
-$output = shell_exec('sudo journalctl -u adsbexchange-mlat.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
+$output = shell_exec('sudo journalctl -u adsbexchange-mlat.service | /adsbexchange/webconfig/sanitize-uuid.sh');
 echo "<pre>$output</pre>";
 ?>
 </td></tr>
@@ -361,7 +361,7 @@ echo "<pre>$output</pre>";
 
 <table class="table table-dark"><tr><td>
 <?php
-$output = shell_exec('sudo journalctl -u adsbexchange-stats.service | /home/pi/adsbexchange/webconfig/sanitize-uuid.sh');
+$output = shell_exec('sudo journalctl -u adsbexchange-stats.service | /adsbexchange/webconfig/sanitize-uuid.sh');
 echo "<pre>$output</pre>";
 ?>
 </td></tr>

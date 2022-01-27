@@ -121,7 +121,7 @@ This script edits the<br>/boot/adsbx-env and /boot/adsbx-978env files.<br /><br 
 	<?php
 	echo '<p>Rebooting... visit <a href="../index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
 
-	system('sudo /home/pi/adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
+	system('sudo /adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
 	exit;
 }
 
