@@ -168,8 +168,9 @@ function selectDefaults() {
 		foreach($lines as $line) {
 			echo '<option onclick="javascript:otherssidCheck();" value="'.$line.'">'.$line.'</option>';
 		}
-		$country_codes = file('country_codes.json');
-		$country_codes = json_decode($country_codes);
+		$country_json = file_get_contents('country_codes.json');
+		$country_codes = json_decode($country_json, true);
+		print_r($country_codes);
 				
 		?>
 			</div>
@@ -182,10 +183,10 @@ function selectDefaults() {
         	Choose Wifi Country:<br /><br />
 		    <select name="wifiChooseCountry" class="custom-select custom-select-lg btn btn-secondary" id="wifiSelectCountry">
 			<div class="form-group">
-                        <option name="SSID" value="US" selected>US</option>
+                        <option name="SSID" value="UK" selected>UK</option>
 		<?php
-		foreach($country_codes as $code) {
-			echo '<option value="'.$code[0].'">'.$code[0].' - '.$code[1].'</option>';
+		foreach($country_codes as $country) {
+			echo '<option value="'.$country[0].'">'.$country[0].' - '.$country[1].'</option>';
 		}
 
 		?>
