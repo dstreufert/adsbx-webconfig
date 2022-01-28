@@ -8,9 +8,11 @@ fi
 #These two lines allow www-data to auth using shadow file
 adduser www-data shadow
 
-apt install -y whois php7.3 php7.3-fpm php7.3-cgi
+apt install -y whois php php-fpm php-cgi dnsmasq
 lighttpd-enable-mod fastcgi-php
 systemctl restart lighttpd
+systemctl disable dnsmasq
+systemctl stop dnsmasq || true
 
 echo -e "; Put session info here, to prevent SD card writes\nsession.save_path = \"/tmp\"" | tee /etc/php/7.3/cgi/conf.d/30-session_path.ini
 
@@ -30,8 +32,10 @@ git clone --depth 1 https://github.com/ADSBexchange/adsbx-update.git /adsbexchan
 
 pushd /adsbexchange/update/
 
-cp -T boot-configs/wpa_supplicant.conf /boot/wpa_supplicant.conf.bak
-cp -t /boot/ boot-configs/*
+cp -v -T boot-configs/wpa_supplicant.conf /boot/wpa_supplicant.conf.bak
+cp -v -T boot-configs/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
+chmod 600 /etc/wpa_supplicant/wpa_supplicant.conf
+cp -v boot-configs/* /boot
 
 popd
 
