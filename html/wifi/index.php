@@ -153,8 +153,8 @@ function selectDefaults() {
  echo "<h3>Choose WiFi Network:</h3>";
  echo "(Note that 2.4ghz networks have longer range than 5.8ghz)<br /><br />";
 
-$lines = file('/tmp/webconfig/wifi_scan');
-
+		$lines = file('/tmp/webconfig/wifi_scan');
+		
 		?>
 		<div class="container col-8">
 		<table  class="table table-striped table-hover table-dark">
@@ -164,20 +164,34 @@ $lines = file('/tmp/webconfig/wifi_scan');
 			<div class="form-group">
                         <option name="SSID" value="" selected>Choose Network ...</option>
 		<?php
+				
 		foreach($lines as $line) {
-			//echo '<tr><td>';
-			//echo '<br>';
 			echo '<option onclick="javascript:otherssidCheck();" value="'.$line.'">'.$line.'</option>';
-			/*echo '<input class="form-control" type="label" name="SSID" onclick="javascript:otherssidCheck();" value="'.$line.'" readonly>';*/
-			/*echo $line;*/
-			//echo '<br>';
-			//echo '</tr></td>';
+		}
+		$country_codes = file('countrycodes.txt');
+				
+		?>
+			</div>
+		</select>
+		</div>
+		<br /><br />	
+		<div class="container col-8">
+		<table  class="table table-striped table-hover table-dark">
+		<tr><td>
+        	Choose Wifi Country:<br /><br />
+		    <select name="wifiChooseCountry" class="custom-select custom-select-lg btn btn-secondary" id="wifiSelectCountry">
+			<div class="form-group">
+                        <option name="SSID" value="US" selected>US</option>
+		<?php
+		foreach($country_codes as $code) {
+			echo '<option value="'.$code.'">'.$code.'</option>';
 		}
 
 		?>
 			</div>
 		</select>
 		</div>
+			
 <br /><br />
 <input class="form-check-input" type="checkbox" name="customSSID" id="otherCheck" onclick="javascript:otherssidCheck();" />
   <label class="form-check-label">Specify Network SSID</label>
@@ -204,12 +218,8 @@ $lines = file('/tmp/webconfig/wifi_scan');
 <input class="btn btn-primary" type="submit" value="Submit">
 </form>
 
-
-
-
-
-
- <br>
+	
+ <br />
  Current WiFi Status:
 
 <table><tr><td>
