@@ -99,6 +99,9 @@ function selectDefaults() {
  	$newpassword = $_POST["wifipassword"];
 	$newssid = str_replace(array("\n", "\t", "\r"), '', $newssid);
 
+ 	$newcountry = $_POST["wifiChooseCountry"];
+	$newcountry = str_replace(array("\n", "\t", "\r"), '', $newcountry);
+
  if (!empty($newssid)) {
 
 	// Read File
@@ -109,6 +112,10 @@ function selectDefaults() {
 	// replace password
 	$content_chunks=explode("WifiPassword", $content);
     	$content=implode($newpassword, $content_chunks);
+	// replace country
+	$content_chunks=explode("UK", $content);
+    	$content=implode($newcountry, $content_chunks);
+
 	//Write File
     	file_put_contents("/tmp/webconfig/wpa_supplicant.conf", $content);
 ?>
@@ -154,7 +161,7 @@ function selectDefaults() {
  echo "(Note that 2.4ghz networks have longer range than 5.8ghz)<br /><br />";
 
 		$lines = file('/tmp/webconfig/wifi_scan');
-		
+
 		?>
 		<div class="container col-8">
 		<table  class="table table-striped table-hover table-dark">
@@ -164,46 +171,45 @@ function selectDefaults() {
 			<div class="form-group">
                         <option name="SSID" value="" selected>Choose Network ...</option>
 		<?php
-				
+
 		foreach($lines as $line) {
 			echo '<option onclick="javascript:otherssidCheck();" value="'.$line.'">'.$line.'</option>';
 		}
-		$country_codes = file('countrycodes.txt');
-				
 		?>
 			</div>
 		</select>
 		</div>
-		<br /><br />	
-		<div class="container col-8">
-		<table  class="table table-striped table-hover table-dark">
-		<tr><td>
-        	Choose Wifi Country:<br /><br />
-		    <select name="wifiChooseCountry" class="custom-select custom-select-lg btn btn-secondary" id="wifiSelectCountry">
-			<div class="form-group">
-                        <option name="SSID" value="US" selected>US</option>
+		<br /><br />
 		<?php
-		foreach($country_codes as $code) {
-			echo '<option value="'.$code.'">'.$code.'</option>';
-		}
-
+		$country_json = file_get_contents('country_codes.json');
+		$country_codes = json_decode($country_json, true);
 		?>
-			</div>
-		</select>
 		</div>
-			
-<br /><br />
-<input class="form-check-input" type="checkbox" name="customSSID" id="otherCheck" onclick="javascript:otherssidCheck();" />
-  <label class="form-check-label">Specify Network SSID</label>
-<br /><br />
-<div id="ifOther" style="visibility:hidden">
-	<input class="form-control form-control-lg" type="text" id="customSSID" name="customSSID" />
-</div>
 
-</td></tr>
-
-</table>
-</div>
+	<input class="form-check-input" type="checkbox" name="customSSID" id="otherCheck" onclick="javascript:otherssidCheck();" />
+	<label class="form-check-label">Specify Network SSID</label> <br /><br />
+	<div id="ifOther" style="visibility:hidden">
+		<input class="form-control form-control-lg" type="text" id="customSSID" name="customSSID" />
+	</div>
+	</td></tr>
+	<tr><td>
+        Choose Wifi Country:<br /><br />
+	<select name="wifiChooseCountry" class="custom-select custom-select-lg btn btn-secondary" id="wifiSelectCountry">
+		<div class="form-group">
+		<?php
+		foreach($country_codes as [$code, $country]) {
+			if($code == 'UK'){
+				echo '<option value="'.$code.'" selected>'.$code.' - '.$country.'</option>';
+			} else {
+				echo '<option value="'.$code.'">'.$code.' - '.$country.'</option>';
+			}
+		}
+		?>
+		</div>
+	</select>
+	</td></tr>
+	</table>
+	</div>
 
 <div class="container col-8">
 <table class="table table-striped table-hover table-dark">
@@ -218,11 +224,12 @@ function selectDefaults() {
 <input class="btn btn-primary" type="submit" value="Submit">
 </form>
 
-	
- <br />
+<br /> <br />
  Current WiFi Status:
 
-<table><tr><td>
+<table>
+<tr>
+<td>
 <?php
 $output = shell_exec('iwconfig wlan0');
 echo "<pre>$output</pre>";

@@ -1,5 +1,6 @@
-{
+[
 ["US","United States"],
+["UK","United Kingdom"],
 ["CA","Canada"],
 ["JP3","Japan"],
 ["DE","Germany"],
@@ -96,4 +97,4 @@
 ["PK","Islamic Republic of Pakistan"],
 ["QA","Qatar"],
 ["DZ","Algeria,"]
-}
+]
