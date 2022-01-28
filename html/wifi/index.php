@@ -168,7 +168,8 @@ function selectDefaults() {
 		foreach($lines as $line) {
 			echo '<option onclick="javascript:otherssidCheck();" value="'.$line.'">'.$line.'</option>';
 		}
-		$country_codes = file('countrycodes.txt');
+		$country_codes = file('country_codes.json');
+		$country_codes = json_decode($country_codes);
 				
 		?>
 			</div>
@@ -184,7 +185,7 @@ function selectDefaults() {
                         <option name="SSID" value="US" selected>US</option>
 		<?php
 		foreach($country_codes as $code) {
-			echo '<option value="'.$code.'">'.$code.'</option>';
+			echo '<option value="'.$code[0].'">'.$code[0].' - '.$code[1].'</option>';
 		}
 
 		?>
