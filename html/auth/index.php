@@ -89,27 +89,34 @@ session_start();
 
 //Process a password submission, or "unlock file" presence
 
- if (!empty($_POST["password"]) or file_exists('/boot/unlock') or file_exists('/tmp/webconfig/unlock')) {
+if (!empty($_POST["password"]) or file_exists('/boot/unlock') or file_exists('/tmp/webconfig/unlock')) {
 
+    function authenticate($user, $pass){
+        /*
+        system('sudo /adsbexchange/webconfig/helpers/init_auth.sh', $retval);
+        if ($retval == 1) {
+            error_log("auth check already in progress!");
+            return false;
+        }
+         */
+        // this is a bit paranoid, don't rate check
+        $retval = 1;
+        system("echo $pass | /bin/su --command true - $user", $retval);
+        //system('sudo /adsbexchange/webconfig/helpers/finish_auth.sh');
+        if ($retval == 0) {
+            error_log("auth check: Success.");
+            return true;
+        } else {
+            error_log("auth check: Failure.");
+            return false;
+        }
+    }
 
-	function authenticate($user, $pass){
-	  // run shell command to output shadow file, and extract line for $user
-	  // then spit the shadow line by $ or : to get component parts
-	  // store in $shad as array
-	  $shad =  preg_split("/[$:]/",`cat /etc/shadow | grep "^$user\:"`);
-	  // use mkpasswd command to generate shadow line passing $pass and $shad[3] (salt)
-	  // split the result into component parts
-	  $mkps = preg_split("/[$:]/",trim(`mkpasswd -m sha-512 $pass $shad[3]`));
-	  // compare the shadow file hashed password with generated hashed password and return
-	   //echo $shad[4] . '<br>';
-	   //echo $mkps[3] . '<br>';
-	  return ($shad[4] == $mkps[3]);
-	}
 
 
 //If authentication passed, refer back to URL that called for auth (if present)
 
-if(authenticate('pi',$_POST["password"]) or file_exists('/boot/unlock') or file_exists('/tmp/webconfig/unlock')){ 
+if(authenticate('pi',$_POST["password"]) or file_exists('/boot/unlock') or file_exists('/tmp/webconfig/unlock')){
   $_SESSION['authenticated'] = 1;
    if (!empty($_SESSION['auth_URI'])) {
 	header("Location: .." . $_SESSION['auth_URI']); 
@@ -140,8 +147,7 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 		$output = system('echo "pi:' .$_POST["newpassword1"] . '" | sudo chpasswd');
 		echo('<br>Your password has been changed: <br>' . $output);
 		echo('<p><a href=".">Click here to login... </a></center></body></html>');
-		system('sudo rm -r /boot/unlock');
-		system('sudo rm -r /tmp/webconfig/unlock');
+		system('sudo /adsbexchange/webconfig/helpers/enable_auth.sh')
 		session_unset();
 		exit;
 	 }

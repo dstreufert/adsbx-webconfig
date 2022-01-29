@@ -5,9 +5,6 @@ if [ $(id -u) -ne 0 ]; then
   exit 1
 fi
 
-#These two lines allow www-data to auth using shadow file
-adduser www-data shadow
-
 apt install -y whois php php-fpm php-cgi dnsmasq
 lighttpd-enable-mod fastcgi-php
 systemctl restart lighttpd
@@ -20,6 +17,7 @@ ipath=/adsbexchange/webconfig
 
 mkdir -p $ipath
 cp -t $ipath adsb-config.txt.webtemplate install-adsbconfig.sh install-wpasupp.sh webconfig.sh reboot.sh run-update.sh run-defaults.sh bg-update.sh sanitize-uuid.sh
+cp -r -T ./helpers $ipath/helpers
 cp ./webconfig.service /etc/systemd/system/
 cp ./010_www-data /etc/sudoers.d/
 rm -f /var/www/html/index.htm*
@@ -44,6 +42,5 @@ touch /boot/unlock
 
 # We do not use hostapd. Setup network is open.
 systemctl disable hostapd
-systemctl daemon-reload
 systemctl enable webconfig
 

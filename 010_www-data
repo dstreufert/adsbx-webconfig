@@ -2,11 +2,7 @@ www-data ALL = NOPASSWD: \
                /usr/sbin/zerotier-cli, \
                /usr/bin/vcgencmd, \
                /bin/journalctl, \
-               /adsbexchange/webconfig/install-wpasupp.sh, \
-               /adsbexchange/webconfig/install-adsbconfig.sh, \
-               /adsbexchange/webconfig/run-defaults.sh, \
-               /adsbexchange/webconfig/reboot.sh, \
-               /adsbexchange/webconfig/run-update.sh, \
+               /adsbexchange/webconfig/helpers/*.sh, \
                /adsbexchange/update/update-adsbx.sh, \
                /adsbexchange/update/resetdefaults.sh, \
                /bin/sed, \
