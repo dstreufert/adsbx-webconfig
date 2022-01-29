@@ -1,7 +1,14 @@
 #!/bin/bash
-mkdir /tmp/webconfig
+mkdir -p /tmp/webconfig
+
+# this is a privileged folder ... only root can access
+mkdir -p /tmp/webconfig_priv
+chmod -R go-rwx /tmp/webconfig_priv
+
 # Runs a script that may be manually placed on /boot for batch setup.  By default, nothing there.
-/boot/firstboot.sh
+if [[ -f /boot/firstboot.sh ]]; then
+    bash /boot/firstboot.sh
+fi
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
 sleep 15 # Give stuff a chance to come up
 netnum=$(wpa_cli list_networks | grep ADSBx-config | cut -f 1)
@@ -18,8 +25,7 @@ cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
 cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
 cat /tmp/webconfig/geocode | jq -r .'countryName' >> /tmp/webconfig/location
 echo $USER > /tmp/webconfig/name
-chmod 777 /tmp/webconfig/*
-chmod 777 /tmp/webconfig
+chmod -R a+rwX /tmp/webconfig
 
 ping 1.1.1.1 -w 10 > /dev/null
 if [ $? -eq 0 ];
@@ -45,7 +51,7 @@ echo "ip connectivity failed, enabling ADSBx-config network"
 wpa_cli enable_network $netnum
 dnsmasq
 totalwait=0
-touch /tmp/webconfig/unlock
+touch /tmp/webconfig_priv/unlock
 
 until [ $totalwait -gt 900 ]
 do
@@ -81,7 +87,7 @@ sleep 1
 killall dnsmasq #Make sure dnsmasq is off
 ip address del 172.23.45.1/32 dev wlan0
 wpa_cli disable $netnum
-rm -rf /tmp/webconfig/unlock
+rm -rf /tmp/webconfig_priv/unlock
 
 exit 0;
 

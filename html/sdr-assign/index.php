@@ -79,6 +79,9 @@ This script edits the<br>/boot/adsbx-env and /boot/adsbx-978env files.<br /><br 
 
  <?php 
  
+function sanitize($string) {
+    return preg_replace('/[^A-Za-z0-9_.\-]/', '', $string);
+}
 
  if (!empty($_POST["readsb_sdr"])) {
 
@@ -90,18 +93,18 @@ This script edits the<br>/boot/adsbx-env and /boot/adsbx-978env files.<br /><br 
 	}
 	 
  
-	$readsb_sdr = $_POST["readsb_sdr"];
+	$readsb_sdr = sanitize($_POST["readsb_sdr"]);
  
 	if ($readsb_sdr == 'unspecified') {
-		system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh "--device-type rtlsdr --ppm 0" /boot/adsbx-env');
+		system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh /boot/adsbx-env \'--device-type rtlsdr --ppm 0\'');
 	} else {
-		system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh "--device ' . $readsb_sdr . ' --device-type rtlsdr --ppm 0" /boot/adsbx-env');
+		system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh /boot/adsbx-env \'--device ' . $readsb_sdr . ' --device-type rtlsdr --ppm 0\'');
 	}
 	
-	$dump978_sdr = $_POST["dump978_sdr"];
-	$dump978_gain = $_POST["dump978_gain"];
+	$dump978_sdr = sanitize($_POST["dump978_sdr"]);
+	$dump978_gain = sanitize($_POST["dump978_gain"]);
  
-	system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh "--sdr-gain ' . $dump978_gain . ' --sdr driver=rtlsdr,serial=' . $dump978_sdr . ' --format CS8" /boot/adsbx-978env');
+    system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh /boot/adsbx-978env \'--sdr-gain ' . $dump978_gain . ' --sdr driver=rtlsdr,serial=' . $dump978_sdr . ' --format CS8\'');
 	
 
 	?>
@@ -121,7 +124,7 @@ This script edits the<br>/boot/adsbx-env and /boot/adsbx-978env files.<br /><br 
 	<?php
 	echo '<p>Rebooting... visit <a href="../index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
 
-	system('sudo /adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
+	system('sudo /adsbexchange/webconfig/helpers/reboot.sh > /dev/null 2>&1 &');
 	exit;
 }
 

@@ -89,40 +89,40 @@ session_start();
 
 //Process a password submission, or "unlock file" presence
 
-if (!empty($_POST["password"]) or file_exists('/boot/unlock') or file_exists('/tmp/webconfig/unlock')) {
+if (!empty($_POST["password"]) or file_exists('/boot/unlock') or file_exists('/tmp/webconfig_priv/unlock')) {
 
-    function authenticate($user, $pass){
-        /*
-        system('sudo /adsbexchange/webconfig/helpers/init_auth.sh', $retval);
-        if ($retval == 1) {
-            error_log("auth check already in progress!");
-            return false;
-        }
-         */
-        // this is a bit paranoid, don't rate check
-        $retval = 1;
-        system("echo $pass | /bin/su --command true - $user", $retval);
-        //system('sudo /adsbexchange/webconfig/helpers/finish_auth.sh');
-        if ($retval == 0) {
-            error_log("auth check: Success.");
-            return true;
-        } else {
-            error_log("auth check: Failure.");
-            return false;
-        }
-    }
+	function authenticate($user, $pass){
+		/*
+		system('sudo /adsbexchange/webconfig/helpers/init_auth.sh', $retval);
+		if ($retval == 1) {
+			error_log("auth check already in progress!");
+			return false;
+		}
+		 */
+		// this is a bit paranoid, don't rate check
+		$retval = 1;
+		system('echo ' . escapeshellarg($pass) . ' | /bin/su --command true - ' . escapeshellarg($user), $retval);
+		//system('sudo /adsbexchange/webconfig/helpers/finish_auth.sh');
+		if ($retval == 0) {
+			error_log("auth check: Success.");
+			return true;
+		} else {
+			error_log("auth check: Failure.");
+			return false;
+		}
+	}
 
 
 
-//If authentication passed, refer back to URL that called for auth (if present)
+	//If authentication passed, refer back to URL that called for auth (if present)
 
-if(authenticate('pi',$_POST["password"]) or file_exists('/boot/unlock') or file_exists('/tmp/webconfig/unlock')){
-  $_SESSION['authenticated'] = 1;
-   if (!empty($_SESSION['auth_URI'])) {
-	header("Location: .." . $_SESSION['auth_URI']); 
-	unset($_SESSION['auth_URI']);
-   }
-  }
+	if(file_exists('/boot/unlock') or file_exists('/tmp/webconfig_priv/unlock') or authenticate('pi',$_POST["password"])){
+		$_SESSION['authenticated'] = 1;
+		if (!empty($_SESSION['auth_URI'])) {
+			header("Location: .." . $_SESSION['auth_URI']); 
+			unset($_SESSION['auth_URI']);
+		}
+	}
 }
 
 
@@ -142,16 +142,22 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 
 <?php
 //handle PW change
- if (!empty($_POST["newpassword1"])) {
-	 if ($_SESSION['authenticated'] == 1) {
-		$output = system('sudo /adsbexchange/webconfig/helpers/set_passwd.sh "' . $_POST["newpassword1"] . '"');
-		echo('<br>Your password has been changed: <br>' . $output);
+if (!empty($_POST["newpassword1"])) {
+	if ($_SESSION['authenticated'] == 1) {
+		//error_log('attempting password change: ' . 'sudo /adsbexchange/webconfig/helpers/change_passwd.sh pi "' . $_POST["oldpassword"] . '" "' . $_POST["newpassword1"] . '"');
+		echo('<br>Attempting password change ....<br>');
+		$output = system('sudo /adsbexchange/webconfig/helpers/change_passwd.sh pi ' . escapeshellarg($_POST["oldpassword"]) . ' ' . escapeshellarg($_POST["newpassword1"]) . ' 2>&1', $retval);
+		if ($retval != 0) {
+			echo('<br>Password change failed.<br>');
+			return;
+		}
+		echo('<br>Your password has been changed. <br>');
 		echo('<p><a href=".">Click here to login... </a></center></body></html>');
-		system('sudo /adsbexchange/webconfig/helpers/enable_auth.sh')
+		system('sudo /adsbexchange/webconfig/helpers/enable_auth.sh');
 		session_unset();
 		exit;
-	 }
- }
+	}
+}
 
 //Handle reboot request
  if (!empty($_POST["reboot"])) {
@@ -171,7 +177,7 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 		<progress value="0" max="70" id="progressBar"></progress>
 		<br /><br />Rebooting... </center></body></html>
 		<?php
-		system('sudo /adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
+		system('sudo /adsbexchange/webconfig/helpers/reboot.sh > /dev/null 2>&1 &');
 		exit;
 	 }
  }
@@ -199,7 +205,7 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 		<?php
 		ob_end_flush();
 		flush();
-		exec('sudo /adsbexchange/webconfig/run-update.sh > /dev/null 2>&1 &');
+		exec('sudo /adsbexchange/webconfig/helpers/run-update.sh > /dev/null 2>&1 &');
 		?>
 
 		<br />System will reboot when complete... </center></body></html>
@@ -230,7 +236,7 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 		<?php
 		ob_end_flush();
 		flush();
-		exec('sudo /adsbexchange/webconfig/run-defaults.sh > /dev/null 2>&1 &');
+		exec('sudo /adsbexchange/webconfig/helpers/run-defaults.sh > /dev/null 2>&1 &');
 		?>
 		<br /><br />System will reboot when complete... </center></body></html>
 		<?php
@@ -280,7 +286,7 @@ if ($_SESSION['authenticated'] == 1) {
 	<br />
 	<h3>System is unlocked</h3>
 	<?php
-	if(!file_exists('/boot/unlock') and !file_exists('/tmp/webconfig/unlock')) {
+	if(!file_exists('/boot/unlock') and !file_exists('/tmp/webconfig_priv/unlock')) {
 
 	echo('<form method="POST" name="logout" action=".">');
 	echo('<input type="hidden" id="logout" name="logout" value="logout">');
@@ -296,12 +302,14 @@ if ($_SESSION['authenticated'] == 1) {
 		<div id="password1-missing" class="alert alert-danger alert-dismissible fade show" role="alert" hidden>
   			Password missing.
 		</div>
-                <div id="password2-missing" class="alert alert-danger alert-dismissible fade show" role="alert" hidden>
-                        Confirm Password missing.
-                </div>
-                <div id="password-no-match" class="alert alert-danger alert-dismissible fade show" role="alert" hidden>
-                        Passwords do not match. Try again.
-                </div>
+		<div id="password2-missing" class="alert alert-danger alert-dismissible fade show" role="alert" hidden>
+				Confirm Password missing.
+		</div>
+		<div id="password-no-match" class="alert alert-danger alert-dismissible fade show" role="alert" hidden>
+				Passwords do not match. Try again.
+		</div>
+		<label for="oldpassword">Old Password</label>
+		<input class="form-control form-control-lg" type="password" id="oldpassword" name="oldpassword" required>
 		<label for="password1">New Password</label>
 		<input class="form-control form-control-lg" type="password" id="password1" name="newpassword1" required>
 		 <label for="password2">Re-enter Password</label>

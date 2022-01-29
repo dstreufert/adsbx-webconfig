@@ -108,10 +108,14 @@ if ($_SESSION['authenticated'] != 1) {
 <form method='POST' name="configform" action="./index.php" onsubmit="return confirm(checkcoords() + '\nSave configuration and reboot?');">
 
 
- 	<?php
-	if (!empty($_POST["DUMP1090"])) {
-	 $new_config = '';
-	 foreach ( $_POST as $key => $value ) {
+<?php
+function sanitize($string) {
+	return preg_replace('/[^A-Za-z0-9_.\-]/', '', $string);
+}
+if (!empty($_POST["DUMP1090"])) {
+	$new_config = '';
+	foreach ( $_POST as $key => $value ) {
+		$value = sanitize($value);
 		if($key == "USER"){
 			$new_config .= $key ."=\"".$value . "\"\n";
 		} else {
@@ -143,7 +147,7 @@ if ($_SESSION['authenticated'] != 1) {
 	</div>
 	<?php
 	echo '<p>Rebooting... visit <a href="../index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
-	system('sudo /adsbexchange/webconfig/install-adsbconfig.sh > /dev/null 2>&1 &');
+	system('sudo /adsbexchange/webconfig/helpers/install-adsbconfig.sh > /dev/null 2>&1 &');
 	exit;
 } // end if $_post
 

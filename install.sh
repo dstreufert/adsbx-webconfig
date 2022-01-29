@@ -23,6 +23,7 @@ cp -r ./html/* /var/www/html
 cp ./dnsmasq.conf /etc/
 
 cp -r -T ./helpers $ipath/helpers
+chmod a+x $ipath/helpers/*.sh
 cp ./010_www-data /etc/sudoers.d/
 for file in helpers/*.sh; do
     echo "www-data ALL = NOPASSWD: /adsbexchange/webconfig/$file" >> /etc/sudoers.d/010_www-data

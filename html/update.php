@@ -80,7 +80,7 @@ echo '</pre>';
 
 	echo '</body></html>';
 
-	system('sudo /adsbexchange/webconfig/reboot.sh > /dev/null 2>&1 &');
+	system('sudo /adsbexchange/webconfig/helpers/reboot.sh > /dev/null 2>&1 &');
 	exit;
 
 }
