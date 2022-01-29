@@ -144,7 +144,7 @@ whose default password is <a href="https://www.adsbexchange.com/sd-card-docs/">l
 //handle PW change
  if (!empty($_POST["newpassword1"])) {
 	 if ($_SESSION['authenticated'] == 1) {
-		$output = system('echo "pi:' .$_POST["newpassword1"] . '" | sudo chpasswd');
+		$output = system('sudo /adsbexchange/webconfig/helpers/set_passwd.sh "' . $_POST["newpassword1"] . '"');
 		echo('<br>Your password has been changed: <br>' . $output);
 		echo('<p><a href=".">Click here to login... </a></center></body></html>');
 		system('sudo /adsbexchange/webconfig/helpers/enable_auth.sh')

@@ -17,12 +17,16 @@ ipath=/adsbexchange/webconfig
 
 mkdir -p $ipath
 cp -t $ipath adsb-config.txt.webtemplate install-adsbconfig.sh install-wpasupp.sh webconfig.sh reboot.sh run-update.sh run-defaults.sh bg-update.sh sanitize-uuid.sh
-cp -r -T ./helpers $ipath/helpers
 cp ./webconfig.service /etc/systemd/system/
-cp ./010_www-data /etc/sudoers.d/
 rm -f /var/www/html/index.htm*
 cp -r ./html/* /var/www/html
 cp ./dnsmasq.conf /etc/
+
+cp -r -T ./helpers $ipath/helpers
+cp ./010_www-data /etc/sudoers.d/
+for file in helpers/*.sh; do
+    echo "www-data ALL = NOPASSWD: /adsbexchange/webconfig/$file" >> /etc/sudoers.d/010_www-data
+done
 
 rm -rf /adsbexchange/update
 mkdir -p /adsbexchange
@@ -43,4 +47,5 @@ touch /boot/unlock
 # We do not use hostapd. Setup network is open.
 systemctl disable hostapd
 systemctl enable webconfig
+systemctl restart webconfig
 

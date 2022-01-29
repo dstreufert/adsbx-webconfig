@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Resetting to defaults..."  > /tmp/web_display_log
-sudo chmod 777 /tmp/web_display_log
+chmod a+r /tmp/web_display_log
 
 /adsbexchange/update/resetdefaults.sh >> /tmp/web_display_log
 

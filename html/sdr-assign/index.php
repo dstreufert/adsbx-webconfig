@@ -93,15 +93,15 @@ This script edits the<br>/boot/adsbx-env and /boot/adsbx-978env files.<br /><br 
 	$readsb_sdr = $_POST["readsb_sdr"];
  
 	if ($readsb_sdr == 'unspecified') {
-		system('sudo sed -i "s/^RECEIVER_OPTIONS=.*$/RECEIVER_OPTIONS=\"--device-type rtlsdr --ppm 0\"/g" /boot/adsbx-env');
+		system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh "--device-type rtlsdr --ppm 0" /boot/adsbx-env');
 	} else {
-		system('sudo sed -i "s/^RECEIVER_OPTIONS=.*$/RECEIVER_OPTIONS=\"--device ' . $readsb_sdr . ' --device-type rtlsdr --ppm 0\"/g" /boot/adsbx-env');
+		system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh "--device ' . $readsb_sdr . ' --device-type rtlsdr --ppm 0" /boot/adsbx-env');
 	}
 	
 	$dump978_sdr = $_POST["dump978_sdr"];
 	$dump978_gain = $_POST["dump978_gain"];
  
-	system('sudo sed -i "s/^RECEIVER_OPTIONS=.*$/RECEIVER_OPTIONS=\"--sdr-gain ' . $dump978_gain . ' --sdr driver=rtlsdr,serial=' . $dump978_sdr . ' --format CS8\"/g" /boot/adsbx-978env');
+	system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh "--sdr-gain ' . $dump978_gain . ' --sdr driver=rtlsdr,serial=' . $dump978_sdr . ' --format CS8" /boot/adsbx-978env');
 	
 
 	?>

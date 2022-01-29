@@ -5,4 +5,4 @@ bash -c "$(wget -nv -O - https://raw.githubusercontent.com/ADSBexchange/adsbx-up
 
 echo "rebooting..." >> /tmp/web_display_log
 sleep 5
-sudo reboot now
+reboot now
