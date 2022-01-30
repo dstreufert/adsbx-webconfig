@@ -16,7 +16,7 @@ echo -e "; Put session info here, to prevent SD card writes\nsession.save_path =
 ipath=/adsbexchange/webconfig
 
 mkdir -p $ipath
-cp -t $ipath adsb-config.txt.webtemplate install-adsbconfig.sh install-wpasupp.sh webconfig.sh reboot.sh run-update.sh run-defaults.sh bg-update.sh sanitize-uuid.sh
+cp -t $ipath adsb-config.txt.webtemplate webconfig.sh sanitize-uuid.sh
 cp ./webconfig.service /etc/systemd/system/
 rm -f /var/www/html/index.htm*
 cp -r ./html/* /var/www/html
