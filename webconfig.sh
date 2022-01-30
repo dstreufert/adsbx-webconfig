@@ -5,6 +5,15 @@ mkdir -p /tmp/webconfig
 mkdir -p /tmp/webconfig_priv
 chmod -R go-rwx /tmp/webconfig_priv
 
+echo $USER > /tmp/webconfig/name
+
+if ! echo "$LATITUDE $LONGITUDE" | grep -E -qs -e '[1-9]*'; then
+    echo "Location not set." > /tmp/webconfig/location
+    location_not_set="1"
+fi
+
+chmod -R a+rwX /tmp/webconfig
+
 # reset password when unlock file is set
 if [[ -e /boot/unlock ]]; then
     echo "pi:adsb123" | chpasswd
@@ -25,12 +34,13 @@ then
   iw wlan0 scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
 fi
 
-timeout 3 wget https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=$LATITUDE\&longitude=$LONGITUDE\&localityLanguage=en -q -T 3 -O /tmp/webconfig/geocode
-cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
-cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
-cat /tmp/webconfig/geocode | jq -r .'countryName' >> /tmp/webconfig/location
-echo $USER > /tmp/webconfig/name
-chmod -R a+rwX /tmp/webconfig
+if [[ -z $location_not_set ]] ; then
+    timeout 3 wget https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=$LATITUDE\&longitude=$LONGITUDE\&localityLanguage=en -q -T 3 -O /tmp/webconfig/geocode
+    cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
+    cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
+    cat /tmp/webconfig/geocode | jq -r .'countryName' >> /tmp/webconfig/location
+    chmod -R a+rwX /tmp/webconfig
+fi
 
 ping 1.1.1.1 -w 10 > /dev/null
 if [ $? -eq 0 ];
