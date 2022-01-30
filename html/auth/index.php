@@ -270,9 +270,9 @@ if ($_SESSION['authenticated'] == 0) {
 </form>
 <br /><strong>Forget your password?</strong><br />
 Remove SD card, insert into computer,<br />
-create file or directory called "unlock"<br />
-on boot partition. Reboot, and return to this page<br />
-to set new password.
+create file or directory called "unlock" on boot partition.<br />
+Reboot and the password will set to the defaullt password.<br />
+Return to this page to set a new password.
 
 <?php
 

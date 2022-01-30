@@ -5,6 +5,11 @@ mkdir -p /tmp/webconfig
 mkdir -p /tmp/webconfig_priv
 chmod -R go-rwx /tmp/webconfig_priv
 
+# reset password when unlock file is set
+if [[ -e /boot/unlock ]]; then
+    echo "pi:adsb123" | chpasswd
+fi
+
 # Runs a script that may be manually placed on /boot for batch setup.  By default, nothing there.
 if [[ -f /boot/firstboot.sh ]]; then
     bash /boot/firstboot.sh
