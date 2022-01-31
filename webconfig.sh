@@ -14,8 +14,8 @@ fi
 
 chmod -R a+rwX /tmp/webconfig
 
-# reset password when unlock file is set
-if [[ -e /boot/unlock ]]; then
+# reset password when reset_password file is set
+if [[ -e /boot/reset_password ]] || [[ -e /boot/reset_password.txt ]]; then
     echo "pi:adsb123" | chpasswd
 fi
 
