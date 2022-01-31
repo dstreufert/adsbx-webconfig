@@ -1,8 +1,7 @@
 #!/bin/bash
 
 if [[ "$1" == "-u" ]]; then
-    service="$(tr -d --complement '[:alnum:].' <<< "$2")"
-    journalctl -u "$service"
+    journalctl -u "$2"
 else
     journalctl
 fi
