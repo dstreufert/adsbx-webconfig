@@ -5,8 +5,17 @@ if [ $(id -u) -ne 0 ]; then
   exit 1
 fi
 
-apt install -y whois php php-fpm php-cgi dnsmasq
+function aptInstall() {
+    if ! apt install -y --no-install-recommends --no-install-suggests "$@"; then
+        apt update
+        apt install -y --no-install-recommends --no-install-suggests "$@"
+    fi
+}
+
+aptInstall -y whois php php-common php-fpm php-cgi dnsmasq
+
 lighttpd-enable-mod fastcgi-php
+
 systemctl restart lighttpd
 systemctl disable dnsmasq
 systemctl stop dnsmasq || true
@@ -16,12 +25,13 @@ echo -e "; Put session info here, to prevent SD card writes\nsession.save_path =
 ipath=/adsbexchange/webconfig
 
 mkdir -p $ipath
-cp -t $ipath adsb-config.txt.webtemplate webconfig.sh sanitize-uuid.sh
+cp adsb-config.txt.webtemplate webconfig.sh sanitize-uuid.sh $ipath
 cp ./webconfig.service /etc/systemd/system/
 rm -f /var/www/html/index.htm*
 cp -r ./html/* /var/www/html
 cp ./dnsmasq.conf /etc/
 
+rm -rf $ipath/helpers
 cp -r -T ./helpers $ipath/helpers
 chmod a+x $ipath/helpers/*.sh
 cp ./010_www-data /etc/sudoers.d/
@@ -40,7 +50,6 @@ if [[ "$1" != "dont_reset_config" ]]; then
     cp -v boot-configs/* /boot
     popd
 fi
-
 
 #echo -e "\n UNLOCKING UNIT UNTIL FIRST CONFIG"
 touch /boot/unlock
