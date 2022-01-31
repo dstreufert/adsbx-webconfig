@@ -329,7 +329,7 @@ if ($_SESSION['authenticated'] == 1) {
 	<input type="hidden" id="setdefaults" name="setdefaults" value="setdefaults">
 	<input type="submit" class="btn btn-primary" value="Reset EVERYTHING to defaults">
 	</form>
-	(Configuration, network settings, password, etc.)
+	(Configuration, network settings, etc.; password is not reset)
 	<p>
 	<hr width="50%">
 	<form method='POST' name="update" action="." onSubmit = "return confirm('Update the feeder?')">
