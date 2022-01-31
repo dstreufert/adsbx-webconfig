@@ -325,7 +325,7 @@ if ($_SESSION['authenticated'] == 1) {
 	</form>
 	<p>
 	<hr width="50%">
-	<form method='POST' name="setdefaults" action="." onSubmit = "return confirm('Reset EVERYTHING to defaults? (network, password, etc.)')">
+	<form method='POST' name="setdefaults" action="." onSubmit = "return confirm('Reset EVERYTHING (except the password) to defaults? (wifi, location, etc.)')">
 	<input type="hidden" id="setdefaults" name="setdefaults" value="setdefaults">
 	<input type="submit" class="btn btn-primary" value="Reset EVERYTHING to defaults">
 	</form>

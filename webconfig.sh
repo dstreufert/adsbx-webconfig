@@ -7,7 +7,7 @@ chmod -R go-rwx /tmp/webconfig_priv
 
 echo $USER > /tmp/webconfig/name
 
-if ! echo "$LATITUDE $LONGITUDE" | grep -E -qs -e '[1-9]*'; then
+if ! echo "$LATITUDE $LONGITUDE" | grep -E -qs -e '[1-9]+'; then
     echo "Location not set." > /tmp/webconfig/location
     location_not_set="1"
 fi
