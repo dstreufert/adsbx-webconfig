@@ -1,10 +1,11 @@
 #!/bin/bash
-mkdir -p /tmp/webconfig
 
 # this is a privileged folder ... only root can access
 mkdir -p /tmp/webconfig_priv
 chmod -R go-rwx /tmp/webconfig_priv
 
+
+mkdir -p /tmp/webconfig
 echo $USER > /tmp/webconfig/name
 
 if ! echo "$LATITUDE $LONGITUDE" | grep -E -qs -e '[1-9]+'; then
@@ -23,6 +24,7 @@ fi
 if [[ -f /boot/firstboot.sh ]]; then
     bash /boot/firstboot.sh
 fi
+
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
 sleep 15 # Give stuff a chance to come up
 netnum=$(wpa_cli list_networks | grep ADSBx-config | cut -f 1)
@@ -68,6 +70,8 @@ dnsmasq
 totalwait=0
 touch /tmp/webconfig_priv/unlock
 
+fatal="no"
+
 until [ $totalwait -gt 900 ]
 do
     ssid=$(wpa_cli status | grep ssid | grep -v bssid | cut -d "=" -f 2)
@@ -84,11 +88,16 @@ do
         fi
     fi
 
+    if (( $totalwait > 15 )) && [[ "$ssid" != "ADSBx-config" ]]; then
+        fatal="yes"
+        break;
+    fi
+
     ((totalwait++))
     sleep 1
 done
 
-if [ "$ssid" = "ADSBx-config" ]; then
+if [[ "$ssid" == "ADSBx-config" ]] && [[ "$fatal" != "yes" ]]; then
     ping $clientip -I wlan0 -f -w 1; hostup=$?
     if [ $hostup -eq 0 ]; then
         echo "timeout tripped but client connected, disabling ADSBx-config in 900 sec"
@@ -100,9 +109,11 @@ fi
 kill $(cat /var/run/dnsmasq.pid)
 sleep 1
 killall dnsmasq #Make sure dnsmasq is off
+sleep 2
+pkill -9 dnsmasq # Make extra sure dnsmasq is off
 ip address del 172.23.45.1/32 dev wlan0
-wpa_cli disable $netnum
 rm -rf /tmp/webconfig_priv/unlock
+wpa_cli disable $netnum
 
 exit 0;
 
