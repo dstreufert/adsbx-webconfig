@@ -104,20 +104,24 @@ function selectDefaults() {
 
  if (!empty($newssid)) {
 
-	// Read File
-    	$content=file_get_contents("/boot/wpa_supplicant.conf.bak");
-    	// replace SSID
-	$content_chunks=explode("YourSSID", $content);
-    	$content=implode($newssid, $content_chunks);
-	// replace password
-	$content_chunks=explode("WifiPassword", $content);
-    	$content=implode($newpassword, $content_chunks);
-	// replace country
-	$content_chunks=explode("UK", $content);
-    	$content=implode($newcountry, $content_chunks);
+       // Read File
+        $content=file_get_contents("/boot/wpa_supplicant.conf.bak");
 
-	//Write File
-    	file_put_contents("/tmp/webconfig/wpa_supplicant.conf", $content);
+        // replace SSID
+        $content_chunks=explode("YourSSID", $content);
+        $content=implode($newssid, $content_chunks);
+
+        // replace password
+        $content_chunks=explode("WifiPassword", $content);
+        $content=implode($newpassword, $content_chunks);
+
+        // replace country
+        $country = "country=".$newcountry."\n";
+        $content = preg_replace('/^country=.*\\n/m', $country, $content);
+
+        //Write File
+        file_put_contents("/tmp/webconfig/wpa_supplicant.conf", $content);
+
 ?>
         <script type="text/javascript">
                 var timeleft = 70;
