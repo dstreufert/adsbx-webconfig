@@ -49,13 +49,13 @@ if [[ "$1" != "dont_reset_config" ]]; then
     chmod 600 /etc/wpa_supplicant/wpa_supplicant.conf
     cp -v boot-configs/* /boot
     popd
+
+    echo -e "\n UNLOCKING UNIT UNTIL FIRST CONFIG"
+    touch /boot/unlock
 fi
 
-#echo -e "\n UNLOCKING UNIT UNTIL FIRST CONFIG"
-touch /boot/unlock
-
 # We do not use hostapd. Setup network is open.
-systemctl disable hostapd
+systemctl disable hostapd &>/dev/null || true
 systemctl enable webconfig
-systemctl restart webconfig
+systemctl restart webconfig || true
 
