@@ -12,15 +12,15 @@ function aptInstall() {
     fi
 }
 
-aptInstall -y whois php php-common php-fpm php-cgi dnsmasq
+aptInstall whois php php-common php-fpm php-cgi dnsmasq
 
-lighttpd-enable-mod fastcgi-php
+lighttpd-enable-mod fastcgi-php 2>&1 | grep -F -v -e 'force-reload'
 
 systemctl restart lighttpd
-systemctl disable dnsmasq
+systemctl disable dnsmasq &>/dev/null
 systemctl stop dnsmasq || true
 
-echo -e "; Put session info here, to prevent SD card writes\nsession.save_path = \"/tmp\"" | tee /etc/php/7.3/cgi/conf.d/30-session_path.ini
+echo -e "; Put session info here, to prevent SD card writes\nsession.save_path = \"/tmp\"" > /etc/php/7.3/cgi/conf.d/30-session_path.ini
 
 ipath=/adsbexchange/webconfig
 
@@ -57,5 +57,5 @@ fi
 # We do not use hostapd. Setup network is open.
 systemctl disable hostapd &>/dev/null || true
 systemctl enable webconfig
-systemctl restart webconfig || true
+systemctl restart webconfig
 

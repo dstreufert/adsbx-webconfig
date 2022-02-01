@@ -25,3 +25,8 @@ bash install.sh dont_reset_config
 
 cd /tmp
 rm -rf $updir
+
+
+echo '--------------------------------------------'
+echo '        update-webconfig complete.          '
+echo '--------------------------------------------'
