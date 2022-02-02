@@ -39,10 +39,11 @@ for file in helpers/*.sh; do
     echo "www-data ALL = NOPASSWD: /adsbexchange/webconfig/$file" >> /etc/sudoers.d/010_www-data
 done
 
+rm -rf /adsbexchange/update
+mkdir -p /adsbexchange
+git clone --depth 1 https://github.com/ADSBexchange/adsbx-update.git /adsbexchange/update
+
 if [[ "$1" != "dont_reset_config" ]]; then
-    rm -rf /adsbexchange/update
-    mkdir -p /adsbexchange
-    git clone --depth 1 https://github.com/ADSBexchange/adsbx-update.git /adsbexchange/update
     pushd /adsbexchange/update/
     cp -v -T boot-configs/wpa_supplicant.conf /boot/wpa_supplicant.conf.bak
     cp -v -T boot-configs/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
