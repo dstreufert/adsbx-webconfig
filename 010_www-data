@@ -1,2 +1,3 @@
 www-data ALL = NOPASSWD: /adsbexchange/update/update-adsbx.sh
 www-data ALL = NOPASSWD: /adsbexchange/update/resetdefaults.sh
+www-data ALL = NOPASSWD: /adsbexchange/update/throttle.sh

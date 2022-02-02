@@ -146,7 +146,7 @@ echo "Since $upsince</pre></center>";
 
 <table class="table table-dark"><tr><td>
 <?php
-$output = shell_exec('/adsbexchange/update/throttle.sh');
+$output = shell_exec('sudo /adsbexchange/update/throttle.sh 2>&1');
 echo "<pre>$output</pre>";
 echo "</td></tr><tr><td>";
 $temp = shell_exec('sudo /adsbexchange/webconfig/helpers/show_temperature.sh');
