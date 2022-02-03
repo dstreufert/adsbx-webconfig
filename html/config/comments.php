@@ -52,4 +52,6 @@ $zerotier = "# Allow ADSBexchange staff to access this unit remotely for trouble
 
 $grafana = "# Run Graphana?";
 
+$mlat_marker = "# MLAT marker: Marker with random 5 mile offset on
+<a href=\"https://map.adsbexchange.com/mlat-map/\" target=\"_blank\">https://map.adsbexchange.com/mlat-map</a>";
 ?>

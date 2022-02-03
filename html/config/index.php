@@ -158,30 +158,30 @@ if (!empty($_POST["DUMP1090"])) {
 	echo '<tr><td>';
 	$lines = file('/boot/adsb-config.txt',FILE_SKIP_EMPTY_LINES);
 	//print_r($lines);
-	foreach($lines as $line) {
-    		if(!(preg_match("/^#/",$line))) {
-                        $line = str_replace("\"","",$line);
-			$key = explode("=",$line);
-			if ($key[0] == "GAIN") {
-				echo str_replace('#','<br />',$gain."<br /><br />");
-				?><select class="form-control" name="<?php echo $key[0]; ?>"><?php
-				$gainoptions = array(-10, 0.0, 0.9, 1.4, 2.7, 3.7, 7.7, 8.7, 12.5, 14.4, 15.7, 16.6, 19.7, 20.7, 22.9, 25.4, 28.0, 29.7, 32.8, 33.8, 36.4, 37.2, 38.6, 40.2, 42.1, 43.4, 43.9, 44.5, 48.0, 49.6, 59);
+    foreach($lines as $line) {
+        if(!(preg_match("/^#/",$line))) {
+            $line = str_replace("\"","",$line);
+            $key = explode("=",$line);
+            if ($key[0] == "GAIN") {
+                echo str_replace('#','<br />',$gain."<br /><br />");
+                ?><select class="form-control" name="<?php echo $key[0]; ?>"><?php
+                $gainoptions = array(-10, 0.0, 0.9, 1.4, 2.7, 3.7, 7.7, 8.7, 12.5, 14.4, 15.7, 16.6, 19.7, 20.7, 22.9, 25.4, 28.0, 29.7, 32.8, 33.8, 36.4, 37.2, 38.6, 40.2, 42.1, 43.4, 43.9, 44.5, 48.0, 49.6, 59);
 
-				foreach ($gainoptions as $gainval) {
+                foreach ($gainoptions as $gainval) {
 				?><option value="<?php echo $gainval; ?>" <?php if ($gainval == $key[1]) { echo 'selected'; } ?>><?php echo $gainval ; ?></option>
 				<?php
 				}
 				echo '</select> </td></tr><tr><td>';
 			}
 
-			if ($key[0] == "LATITUDE") {
+            if ($key[0] == "LATITUDE") {
 				echo str_replace('#','<br />',$latitude."<br /><br />");
 				?>
 				<input class="form-control" type="text" name="<?php echo $key[0]; ?>" value="<?php echo $key[1]; ?>" pattern="[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)"/>
 				<?php
 				echo '</tr></td><tr><td>';
 
-			}
+            }
 			if ($key[0] == "LONGITUDE") {
 				echo str_replace('#','<br />',$longitude."<br /><br />");
 				?>
@@ -251,29 +251,33 @@ if (!empty($_POST["DUMP1090"])) {
 					</select>
                                 <?php
                                 echo '</tr></td><tr><td>';
-                        }
+            }
 
-			if ($key[0] == "AUTOGAIN") {
-                                echo  str_replace('#','<br />',$autogain."<br /><br />");
-                                ?>
-					<select class="form-control" name="<?php echo $key[0]; ?>">
-					<?php
-					if(str_replace(array("\n", "\t", "\r"), '', strtoupper($key[1])) == "YES"){
-					?>
-						<option value="yes" selected>yes</option>
-						<option value="no">no</option>
-					<?php
-					} else {
-					?>
-						<option value="yes">yes</option>
-						<option value="no" selected>no</option>
-					<?php
-					}
-					?>
-					</select>
-                                <?php
-                                echo '</tr></td><tr><td>';
-                        }
+            if ($key[0] == "AUTOGAIN") {
+                echo  str_replace('#','<br />',$autogain."<br /><br />");
+
+                ?>
+                <select class="form-control" name="<?php echo $key[0]; ?>">
+                <?php
+
+                if(str_replace(array("\n", "\t", "\r"), '', strtoupper($key[1])) == "YES"){
+                    ?>
+                    <option value="yes" selected>yes</option>
+                    <option value="no">no</option>
+                    <?php
+                } else {
+                    ?>
+                    <option value="yes">yes</option>
+                    <option value="no" selected>no</option>
+                    <?php
+                }
+
+                ?>
+                </select>
+                <?php
+
+                echo '</tr></td><tr><td>';
+            }
 
 			if ($key[0] == "ZEROTIER") {
                                 echo  str_replace('#','<br />',$zerotier."<br /><br />");
@@ -295,7 +299,7 @@ if (!empty($_POST["DUMP1090"])) {
 					</select>
                                 <?php
                                 echo '</tr></td><tr><td>';
-                        }
+            }
 
 			if ($key[0] == "PROMG") {
                                 echo  str_replace('#','<br />',$grafana."<br /><br />");
@@ -318,10 +322,35 @@ if (!empty($_POST["DUMP1090"])) {
 					</select>
                                 <?php
                                 echo '</tr></td><tr><td>';
-                        }
+            }
 
-	}
-}
+            if ($key[0] == "MLAT_MARKER") {
+                echo  str_replace('#','<br />',$mlat_marker."<br /><br />");
+
+                ?>
+                <select class="form-control" name="<?php echo $key[0]; ?>">
+                <?php
+
+                if(str_replace(array("\n", "\t", "\r"), '', strtoupper($key[1])) == "YES"){
+                    ?>
+                    <option value="yes" selected>yes</option>
+                    <option value="no">no</option>
+                    <?php
+                } else {
+                    ?>
+                    <option value="yes">yes</option>
+                    <option value="no" selected>no</option>
+                    <?php
+                }
+
+                ?>
+                </select>
+                <?php
+
+                echo '</tr></td><tr><td>';
+            }
+        }
+    }
 ?>
 
 </table>
