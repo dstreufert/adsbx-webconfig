@@ -113,22 +113,22 @@ function sanitize($string) {
 
 	?>
 	<script type="text/javascript">
-	var timeleft = 70;
+	var timeleft = 15;
 	var downloadTimer = setInterval(function(){
 	if(timeleft <= 0){
 		clearInterval(downloadTimer);
 		window.location.replace("../index.php");
 	}
-	document.getElementById("progressBar").value = 70 - timeleft;
+	document.getElementById("progressBar").value = 15 - timeleft;
 	timeleft -= 1;
 	}, 1000);
 	</script>
-	<progress value="0" max="70" id="progressBar"></progress>
+	<progress value="0" max="15" id="progressBar"></progress>
 	
 	<?php
-	echo '<p>Rebooting... visit <a href="../index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
+	echo '<p>Restarting services... visit <a href="../index.php">this link</a> to verify changes in about 15 secs..</form></body></html>';
 
-	system('sudo /adsbexchange/webconfig/helpers/reboot.sh > /dev/null 2>&1 &');
+	system('sudo /adsbexchange/webconfig/helpers/restart-services.sh > /dev/null 2>&1 &');
 	exit;
 }
 
@@ -170,7 +170,7 @@ $dump978_gain = strtok($dump978_gain, '\"');
 
 
 ?> 
-<form method='POST' name="sdrform" action="./index.php" onsubmit="return confirm(Save configuration and reboot?');">
+<form method='POST' name="sdrform" action="./index.php" onsubmit="return confirm(Save configuration and restart services?');">
 
 <br>
 
@@ -227,7 +227,7 @@ foreach ($gainoptions as $gainval) {
 
 </table>
 <p>
-<input class="btn btn-danger" type="submit" value="Save & Reboot">
+<input class="btn btn-danger" type="submit" value="Save & restart services">
 </form>
  
  </center>

@@ -105,7 +105,7 @@ if ($_SESSION['authenticated'] != 1) {
 			<a class="btn btn-primary" href="../">(..back to main menu)</a><br /><br />
 
 
-<form method='POST' name="configform" action="./index.php" onsubmit="return confirm(checkcoords() + '\nSave configuration and reboot?');">
+<form method='POST' name="configform" action="./index.php" onsubmit="return confirm(checkcoords() + '\nSave configuration and restart services?');">
 
 
 <?php
@@ -126,7 +126,7 @@ if (!empty($_POST["DUMP1090"])) {
 	?>
 
 	<script type="text/javascript">
-		var timeleft = 70;
+		var timeleft = 15;
 
 		var downloadTimer = setInterval(function(){
 
@@ -135,7 +135,7 @@ if (!empty($_POST["DUMP1090"])) {
 				window.location.replace("../index.php");
 			}
 
-		document.getElementById("progressBar").style.width = (70 - timeleft) + "%";
+		document.getElementById("progressBar").style.width = (15 - timeleft) + "%";
 
 		timeleft -= 1;
 
@@ -143,11 +143,14 @@ if (!empty($_POST["DUMP1090"])) {
 	</script>
 
 	<div class="progress">
-  		<div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="70" style="width: 1%"></div>
+  		<div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="15" style="width: 1%"></div>
 	</div>
 	<?php
-	echo '<p>Rebooting... visit <a href="../index.php">this link</a> to verify changes in about 70 secs..</form></body></html>';
+
+	echo '<p>Restarting services... visit <a href="../index.php">this link</a> to verify changes in about 15 secs..</form></body></html>';
+
 	system('sudo /adsbexchange/webconfig/helpers/install-adsbconfig.sh > /dev/null 2>&1 &');
+	system('sudo /adsbexchange/webconfig/helpers/restart-services.sh > /dev/null 2>&1 &');
 	exit;
 } // end if $_post
 
@@ -357,7 +360,7 @@ if (!empty($_POST["DUMP1090"])) {
 </div>
 <br />
 
-<input class="btn btn-danger" type="submit" value="Save & Reboot">
+<input class="btn btn-danger" type="submit" value="Save & restart services">
  </form>
 
  <?php

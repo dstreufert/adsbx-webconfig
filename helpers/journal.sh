@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ "$1" == "-u" ]]; then
-    journalctl -u "$2"
+    journalctl -u "$2" -n 100
 else
-    journalctl
+    journalctl -n 200
 fi
