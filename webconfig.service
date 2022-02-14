@@ -1,5 +1,5 @@
 [Unit]
-Description=Scan Wifi for known SSIDs
+Description=Scan Wifi and create setup AP
 After=network.target
 
 [Service]
