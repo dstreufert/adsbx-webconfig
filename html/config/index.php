@@ -327,6 +327,35 @@ if (!empty($_POST["DUMP1090"])) {
                                 echo '</tr></td><tr><td>';
             }
 
+		if ($key[0] == "CUSTOMLEDS") {
+                echo  str_replace('#','<br />',$customleds."<br /><br />");
+
+                ?>
+                <select class="form-control" name="<?php echo $key[0]; ?>">
+                <?php
+
+                if(str_replace(array("\n", "\t", "\r"), '', strtoupper($key[1])) == "YES"){
+                    ?>
+                    <option value="yes" selected>yes</option>
+                    <option value="no">no</option>
+                    <?php
+                } else {
+                    ?>
+                    <option value="yes">yes</option>
+                    <option value="no" selected>no</option>
+                    <?php
+                }
+
+                ?>
+                </select>
+                <?php
+
+                echo '</tr></td><tr><td>';
+
+
+            }
+
+		
             if ($key[0] == "MLAT_MARKER") {
                 echo  str_replace('#','<br />',$mlat_marker."<br /><br />");
 
