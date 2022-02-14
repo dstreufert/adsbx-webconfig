@@ -13,6 +13,12 @@ if ! echo "$LATITUDE $LONGITUDE" | grep -E -qs -e '[1-9]+'; then
     location_not_set="1"
 fi
 
+if [[ $CUSTOMLEDS == "no" ]];
+then
+   systemctl stop leds.service
+fi
+
+
 chmod -R a+rwX /tmp/webconfig
 
 # reset password when reset_password file is set
