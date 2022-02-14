@@ -57,3 +57,6 @@ ZEROTIER="%%ZEROTIER%%"
 
 # Run Graphana?
 PROMG="%%PROMG%%"
+
+# Custom LED indications?
+CUSTOMLEDS="%%CUSTOMLEDS%%"
