@@ -68,7 +68,7 @@ else
   FAILURES[1]="PASS"
 fi
 
-# Failure 2 - dump978-fa service failed/failing
+# Failure 2 - dump978-fa service failed/failing _or_ location not set
 let DUMP978AGE=$(sudo awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000
 #echo dump978 age $DUMP978AGE
 if [[ $DUMP978AGE -le 60 ]];
@@ -77,6 +77,13 @@ then
 else
   FAILURES[2]="PASS"
 fi
+
+cat /tmp/webconfig/location | grep "Location not set." > /dev/null
+if [[ $? -eq 0 ]];
+then
+  FAILURES[2]="FAIL"
+fi
+
 
 # Failure 3 - readsb service failed/failing
 let READSBAGE=$(sudo awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000
