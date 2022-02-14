@@ -1,0 +1,15 @@
+[Unit]
+Description=Use Pi LEDs for custom status indications
+After=network.target
+
+[Service]
+EnvironmentFile=/boot/adsb-config.txt
+EnvironmentFile=/boot/adsbx-env
+Type=idle
+User=root
+ExecStart=/bin/bash /adsbexchange/webconfig/leds.sh
+Restart=yes
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
