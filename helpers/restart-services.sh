@@ -9,7 +9,7 @@ restartIfEnabled() {
 
 adsbx-first-run
 
-services="readsb dump978-fa adsbexchange-978 adsbexchange-feed adsbexchange-mlat leds"
+services="readsb dump978-fa adsbexchange-978 adsbexchange-feed adsbexchange-mlat webconfig leds"
 for service in $services; do
     restartIfEnabled $service
 done
