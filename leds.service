@@ -8,7 +8,7 @@ EnvironmentFile=/boot/adsbx-env
 Type=idle
 User=root
 ExecStart=/bin/bash /adsbexchange/webconfig/leds.sh
-ExecStopPost=/bin/bash -c "echo mmc0 > /sys/class/leds/led0/trigger > /dev/null && echo default-on > /sys/class/leds/led1/trigger"
+ExecStopPost=/bin/bash -c "echo mmc0 > /sys/class/leds/led0/trigger && echo default-on > /sys/class/leds/led1/trigger"
 Restart=always
 RestartSec=30
 
