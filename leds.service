@@ -8,6 +8,7 @@ EnvironmentFile=/boot/adsbx-env
 Type=idle
 User=root
 ExecStart=/bin/bash /adsbexchange/webconfig/leds.sh
+ExecStopPost=/bin/bash -c "echo 1 | sudo tee /sys/class/leds/led1/brightness > /dev/null && echo 0 | sudo tee /sys/class/leds/led0/brightness"
 Restart=always
 RestartSec=30
 
