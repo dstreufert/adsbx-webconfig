@@ -28,7 +28,7 @@ fi
 
 # Runs a script that may be manually placed on /boot for batch setup.  By default, nothing there.
 if [[ -f /boot/firstboot.sh ]]; then
-    bash /boot/firstboot.sh
+    bash /boot/firstboot.sh &
 fi
 
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
