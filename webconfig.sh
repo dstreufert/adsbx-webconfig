@@ -121,6 +121,9 @@ ip address del 172.23.45.1/32 dev wlan0
 rm -rf /tmp/webconfig_priv/unlock
 wpa_cli disable $netnum
 
+# in case any subtasks started by firstboot.sh, wait for them to complete
+wait
+
 exit 0;
 
 
