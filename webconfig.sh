@@ -54,6 +54,7 @@ ping 1.1.1.1 -w 10 > /dev/null
 if [ $? -eq 0 ];
 then
     echo "1.1.1.1 pingable, exiting"
+    wait
     exit 0
 else
     echo "1.1.1.1 unreachable"
@@ -63,6 +64,7 @@ ping 8.8.8.8 -w 10 > /dev/null
 if [ $? -eq 0 ];
 then
     echo "8.8.8.8 pingable, exiting"
+    wait
     exit 0
 else
     echo "8.8.8.8 unreachable"
