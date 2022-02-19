@@ -7,6 +7,8 @@ restartIfEnabled() {
     fi
 }
 
+systemctl restart webconfig
+
 adsbx-first-run
 
 services="readsb dump978-fa adsbexchange-978 adsbexchange-feed adsbexchange-mlat webconfig leds"
