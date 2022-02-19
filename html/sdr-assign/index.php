@@ -165,7 +165,7 @@ if (strpos($line, "--stratuxv3")) $dump978_selection = 'stratuxv3';
 else if ($pos === false) $dump978_selection = 'unspecified';
 
 if (! strpos($line, "--sdr-gain")) {
-	$dump978_gain = 43.9
+	$dump978_gain = "43.9";
 } else {
 	$dump978_gain = strtok(trim(explode("--sdr-gain ", $line)[1]), ' ');
 	$dump978_gain = strtok($dump978_gain, '\"');
