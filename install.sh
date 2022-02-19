@@ -5,6 +5,8 @@ if [ $(id -u) -ne 0 ]; then
   exit 1
 fi
 
+trap 'echo "[ERROR] Error in line $LINENO when executing: $BASH_COMMAND"' ERR
+
 function aptInstall() {
     if ! apt install -y --no-install-recommends --no-install-suggests "$@"; then
         apt update
