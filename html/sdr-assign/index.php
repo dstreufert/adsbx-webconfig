@@ -103,9 +103,11 @@ function sanitize($string) {
 	
 	$dump978_sdr = sanitize($_POST["dump978_sdr"]);
 	$dump978_gain = sanitize($_POST["dump978_gain"]);
- 
+
 	if ($dump978_sdr == 'unspecified') {
 		system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh /boot/adsbx-978env \'--sdr-gain ' . $dump978_gain . ' --sdr driver=rtlsdr --format CS8\'');
+	} else if ($dump978_sdr == 'stratuxv3') {
+		system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh /boot/adsbx-978env \'--stratuxv3 /dev/uatradio\'');
 	} else {
 		system('sudo /adsbexchange/webconfig/helpers/set_receiver_options.sh /boot/adsbx-978env \'--sdr-gain ' . $dump978_gain . ' --sdr driver=rtlsdr,serial=' . $dump978_sdr . ' --format CS8\'');
 	}
@@ -159,7 +161,8 @@ $dump978_selection = strtok($dump978_selection, '\"');
 
 
 $pos = strpos($line, ",serial=");
-if ($pos === false) $dump978_selection = 'unspecified';
+if (strpos($line, "--stratuxv3")) $dump978_selection = 'stratuxv3';
+else if ($pos === false) $dump978_selection = 'unspecified';
 
 $dump978_gain = strtok(trim(explode("--sdr-gain ", $line)[1]), ' ');
 $dump978_gain = strtok($dump978_gain, '\"');
@@ -199,6 +202,7 @@ Choose an SDR serial number for<br>dump978 service (978Mhz): <p>
 <?php
 $lines = file('/tmp/webconfig/sdr_serials');
 array_push($lines, 'unspecified');
+array_push($lines, 'stratuxv3');
 
 echo '<select id="dump978_sdr" name="dump978_sdr">';
 foreach($lines as $line) {
