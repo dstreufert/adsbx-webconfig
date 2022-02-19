@@ -63,4 +63,4 @@ systemctl disable hostapd &>/dev/null || true
 systemctl enable webconfig
 systemctl enable leds
 systemctl restart webconfig
-systemctl restart leds
+systemctl restart leds || true
