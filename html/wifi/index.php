@@ -85,7 +85,7 @@ function selectDefaults() {
 	<center>
 
 	<h4 class="adsbx-green logo-margin"><img src="../img/adsbx-svg.svg" width="35"/>  ADSBexchange.com</h4>
-	<h6>ADSBX ADS-B Anywhere <br />version 8.0</h6>
+	<h6>ADSBX ADS-B Anywhere <br />version <?php echo file_get_contents("/boot/adsbx-version"); ?></h6>
         <a class="btn btn-primary" href="../">(..back to main menu)</a><br /><br />
 	<form method='POST' action="./index.php" onsubmit="return confirm('Save WiFi and reboot the unit?');">
 
