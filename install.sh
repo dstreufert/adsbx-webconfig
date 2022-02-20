@@ -14,6 +14,10 @@ function aptInstall() {
     fi
 }
 
+if ! [[ -f /boot/adsbx-version ]]; then
+    echo 8.0123456789 > /boot/adsbx-version
+fi
+
 aptInstall whois php php-common php-fpm php-cgi dnsmasq
 
 lighttpd-enable-mod fastcgi-php 2>&1 | grep -F -v -e 'force-reload'

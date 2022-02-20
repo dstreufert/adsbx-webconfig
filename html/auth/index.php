@@ -87,37 +87,44 @@ session_start();
 	 session_unset();
  }
 
+
+function authenticate($user, $pass){
+
+	$retval = 1;
+	system('echo ' . escapeshellarg($pass) . ' | /bin/su --command true - ' . escapeshellarg($user), $retval);
+
+	if ($retval == 0) {
+		error_log("auth check: Success.");
+		return true;
+	} else {
+		error_log("auth check: Failure.");
+		return false;
+	}
+}
+
 //Process a password submission, or "unlock file" presence
 
-if (!empty($_POST["password"]) or file_exists('/boot/unlock') or file_exists('/tmp/webconfig_priv/unlock')) {
+$unlocked = (file_exists('/boot/unlock') or file_exists('/tmp/webconfig_priv/unlock'));
 
-	function authenticate($user, $pass){
-		/*
-		system('sudo /adsbexchange/webconfig/helpers/init_auth.sh', $retval);
-		if ($retval == 1) {
-			error_log("auth check already in progress!");
-			return false;
-		}
-		 */
-		// this is a bit paranoid, don't rate check
-		$retval = 1;
-		system('echo ' . escapeshellarg($pass) . ' | /bin/su --command true - ' . escapeshellarg($user), $retval);
-		//system('sudo /adsbexchange/webconfig/helpers/finish_auth.sh');
-		if ($retval == 0) {
-			error_log("auth check: Success.");
-			return true;
+if (!empty($_POST["password"]) or $unlocked) {
+
+	$authenticated = false;
+
+	if ($unlocked) {
+		if (authenticate('pi', 'adsb123')) {
+			$authenticated = true;
 		} else {
-			error_log("auth check: Failure.");
-			return false;
+			system('sudo /adsbexchange/webconfig/helpers/enable_auth.sh');
+		}
+	} else {
+		if (authenticate('pi', $_POST["password"])) {
+			$authenticated = true;
 		}
 	}
 
-
-
-	//If authentication passed, refer back to URL that called for auth (if present)
-
-	if(file_exists('/boot/unlock') or file_exists('/tmp/webconfig_priv/unlock') or authenticate('pi',$_POST["password"])){
+	if ($authenticated) {
 		$_SESSION['authenticated'] = 1;
+		//If authentication passed, refer back to URL that called for auth (if present)
 		if (!empty($_SESSION['auth_URI'])) {
 			header("Location: .." . $_SESSION['auth_URI']); 
 			unset($_SESSION['auth_URI']);
