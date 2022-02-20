@@ -24,6 +24,7 @@ chmod -R a+rwX /tmp/webconfig
 # reset password when reset_password file is set
 if [[ -e /boot/reset_password ]] || [[ -e /boot/reset_password.txt ]]; then
     echo "pi:adsb123" | chpasswd
+    rm -rf /boot/reset_password /boot/reset_password.txt
 fi
 
 # Runs a script that may be manually placed on /boot for batch setup.  By default, nothing there.
