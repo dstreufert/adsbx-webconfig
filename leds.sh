@@ -118,9 +118,9 @@ function failurestats {
     FAILURES[4]="FAIL"
   fi
 
-  # Failure 5 - Temp/Voltage fail
+  # Failure 5 - Temp/Voltage fail but ignore soft limit signified by an 80000
   let TEMPSTAT=$(vcgencmd get_throttled | cut -d "x" -f 2)
-  if [[ $TEMPSTAT -eq 0 ]];
+  if [[ $TEMPSTAT -eq 0 ]] || [[ $TEMPSTAT -eq 80000 ]];
   then
     FAILURES[5]="PASS"
   else
