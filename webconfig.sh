@@ -60,7 +60,7 @@ lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /
 
 # wait until we have internet connectivity OR a maximum of 15 seconds
 for i in {1..15}; do
-    if ping -c 1 -w 1 8.8.8.8; then
+    if ping -c 1 -w 1 8.8.8.8 &>/dev/null; then
         # we have internet!
         if [[ -z $location_not_set ]] ; then
             timeout 3 wget https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=$LATITUDE\&longitude=$LONGITUDE\&localityLanguage=en -q -T 3 -O /tmp/webconfig/geocode
