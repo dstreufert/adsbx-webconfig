@@ -3,10 +3,10 @@
 # Use LEDs for custom status indications
 
 if [ "$(id -u)" != "0" ]; then
-    echo -e "\033[33m"
-    echo "This script must be ran using sudo or as root."
-    echo -e "\033[37m"
-    exit 1
+  echo -e "\033[33m"
+  echo "This script must be ran using sudo or as root."
+  echo -e "\033[37m"
+  exit 1
 fi
 
 # load bash sleep builtin if available
@@ -29,57 +29,57 @@ function off() {
 }
 
 function alternate_leds {
-NOW=$(date +%s%N)
-while [ $NOW -le $NEXTCHECK ]
-do
-  on red; off green
-  sleep 0.5
-  off red; on green
-  sleep 0.5
   NOW=$(date +%s%N)
-done
+  while [ $NOW -le $NEXTCHECK ]
+  do
+    on red; off green
+    sleep 0.5
+    off red; on green
+    sleep 0.5
+    NOW=$(date +%s%N)
+  done
 }
 
 function greenflash {
-NOW=$(date +%s%N)
-while [ $NOW -le $NEXTCHECK ]
-do
-  on green
-  sleep $PERIOD
-  off green
-  sleep $PERIOD
   NOW=$(date +%s%N)
-done
+  while [ $NOW -le $NEXTCHECK ]
+  do
+    on green
+    sleep $PERIOD
+    off green
+    sleep $PERIOD
+    NOW=$(date +%s%N)
+  done
 }
 
 function redflash {
 
-off red
+  off red
 
-for (( ; ; ))
-do
-for i in 1 2 3 4 5
-do
-  #echo Flash num $i
-  if [ ${FAILURES[$i]} == "FAIL" ]; then
-   for flash in $( seq 1 $i )
-   do
-    on red
-    sleep 0.2
-    off red
-    sleep 0.2
-   done
-   sleep 1
-  fi
+  for (( ; ; ))
+  do
+    for i in 1 2 3 4 5
+    do
+      #echo Flash num $i
+      if [ ${FAILURES[$i]} == "FAIL" ]; then
+        for flash in $( seq 1 $i )
+        do
+          on red
+          sleep 0.2
+          off red
+          sleep 0.2
+        done
+        sleep 1
+      fi
 
-NOW=$(date +%s%N)
-let TIMELEFT=$NEXTCHECK-$NOW
-#Exit loop if < 2 seconds left
-if [ $TIMELEFT -lt 2000000000 ]; then break; fi
-done
+      NOW=$(date +%s%N)
+      let TIMELEFT=$NEXTCHECK-$NOW
+      #Exit loop if < 2 seconds left
+      if [ $TIMELEFT -lt 2000000000 ]; then break; fi
+    done
 
-if [ $TIMELEFT -lt 2000000000 ]; then break; fi
-done
+    if [ $TIMELEFT -lt 2000000000 ]; then break; fi
+  done
 
 }
 
@@ -146,24 +146,24 @@ failurestats
 for (( ; ; ))
 do
 
-NOW=$(date +%s%N)
-let NEXTCHECK=$NOW+11000000000
+  NOW=$(date +%s%N)
+  let NEXTCHECK=$NOW+11000000000
 
-if [[ -e /tmp/webconfig_priv/unlock ]];
-then
-  alternate_leds
-else
- AIRCRAFT=$(jq '.aircraft_with_pos' /run/adsbexchange-feed/status.json)
- if [[ ! $AIRCRAFT -gt 0 ]]; then
-  AIRCRAFT=0
- fi
- PERIOD=$(lua -e "print(11/(($AIRCRAFT+1)*2))")
- greenflash &
- redflash &
- wait
- failurestats
- #echo ${FAILURES[@]}
-fi
+  if [[ -e /tmp/webconfig_priv/unlock ]];
+  then
+    alternate_leds
+  else
+    AIRCRAFT=$(jq '.aircraft_with_pos' /run/adsbexchange-feed/status.json)
+    if [[ ! $AIRCRAFT -gt 0 ]]; then
+      AIRCRAFT=0
+    fi
+    PERIOD=$(lua -e "print(11/(($AIRCRAFT+1)*2))")
+    greenflash &
+    redflash &
+    wait
+    failurestats
+    echo ${FAILURES[@]}
+  fi
 
 done
 
