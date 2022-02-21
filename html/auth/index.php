@@ -171,20 +171,43 @@ if (!empty($_POST["newpassword1"])) {
 	 if ($_SESSION['authenticated'] == 1) {
 		?>
 		<script type="text/javascript">
-		var timeleft = 70;
+		var timeleft = 40;
 		var downloadTimer = setInterval(function(){
 		if(timeleft <= 0){
 			clearInterval(downloadTimer);
 			window.location.replace("../");
 		}
-		document.getElementById("progressBar").value = 70 - timeleft;
+		document.getElementById("progressBar").value = 40 - timeleft;
 		timeleft -= 1;
 		}, 1000);
 		</script>
-		<progress value="0" max="70" id="progressBar"></progress>
+		<progress value="0" max="40" id="progressBar"></progress>
 		<br /><br />Rebooting... </center></body></html>
 		<?php
 		system('sudo /adsbexchange/webconfig/helpers/reboot.sh > /dev/null 2>&1 &');
+		exit;
+	 }
+ }
+
+//Handle shutdown request
+ if (!empty($_POST["shutdown"])) {
+	 if ($_SESSION['authenticated'] == 1) {
+		?>
+		<script type="text/javascript">
+		var timeleft = 20;
+		var downloadTimer = setInterval(function(){
+		if(timeleft <= 0){
+			clearInterval(downloadTimer);
+			window.location.replace("../");
+		}
+		document.getElementById("progressBar").value = 20 - timeleft;
+		timeleft -= 1;
+		}, 1000);
+		</script>
+		<progress value="0" max="20" id="progressBar"></progress>
+		<br /><br />Shutting down... </center></body></html>
+		<?php
+		system('sudo /adsbexchange/webconfig/helpers/shutdown.sh > /dev/null 2>&1 &');
 		exit;
 	 }
  }
@@ -307,7 +330,7 @@ if ($_SESSION['authenticated'] == 1) {
 
 	 <div class="form-group mb-4 col-6">
 		<div id="password1-missing" class="alert alert-danger alert-dismissible fade show" role="alert" hidden>
-  			Password missing.
+			Password missing.
 		</div>
 		<div id="password2-missing" class="alert alert-danger alert-dismissible fade show" role="alert" hidden>
 				Confirm Password missing.
@@ -324,20 +347,16 @@ if ($_SESSION['authenticated'] == 1) {
 	</div>
 
 	<input type="submit" class="btn btn-primary" value="Change PW">
+
 	</form>
-	<hr width="50%">
-	<form method='POST' name="reboot" action="." onSubmit = "return confirm('Reboot the feeder?')">
-	<input type="hidden" id="reboot" name="reboot" value="reboot">
-	<input type="submit" class="btn btn-primary" value="Reboot Feeder">
-	</form>
+
+    <hr width="50%">
+    <form method='POST' name="reboot" action="." onSubmit = "return confirm('Reboot the feeder?')">
+    <input type="hidden" id="reboot" name="reboot" value="reboot">
+    <input type="submit" class="btn btn-primary" value="Reboot Feeder">
+    </form>
 	<p>
-	<hr width="50%">
-	<form method='POST' name="setdefaults" action="." onSubmit = "return confirm('Reset EVERYTHING (except the password) to defaults? (wifi, location, etc.)')">
-	<input type="hidden" id="setdefaults" name="setdefaults" value="setdefaults">
-	<input type="submit" class="btn btn-primary" value="Reset EVERYTHING to defaults">
-	</form>
-	(Configuration, network settings, etc.; password is not reset)
-	<p>
+
 	<hr width="50%">
 	<form method='POST' name="update" action="." onSubmit = "return confirm('Update the feeder?')">
 	<input type="hidden" id="update" name="update" value="update">
@@ -346,6 +365,21 @@ if ($_SESSION['authenticated'] == 1) {
 	<a href="https://raw.githubusercontent.com/ADSBexchange/adsbx-update/main/update-adsbx.sh">(executes this script)</a>
 	<p>
 
+    <hr width="50%">
+	<form method='POST' name="shutdown" action="." onSubmit = "return confirm('Shutdown the feeder? To turn it back on it will be necessary to physically power cycle it!')">
+	<input type="hidden" id="shutdown" name="shutdown" value="shutdown">
+	<input type="submit" class="btn btn-primary" value="Shutdown Feeder">
+	</form>
+
+	<p>
+
+	<hr width="50%">
+	<form method='POST' name="setdefaults" action="." onSubmit = "return confirm('Reset EVERYTHING (except the password) to defaults? (wifi, location, etc.)')">
+	<input type="hidden" id="setdefaults" name="setdefaults" value="setdefaults">
+	<input type="submit" class="btn btn-primary" value="Reset EVERYTHING to defaults">
+	</form>
+	(Configuration, network settings, etc.; password is not reset)
+	<p>
 
 
 	<?php
