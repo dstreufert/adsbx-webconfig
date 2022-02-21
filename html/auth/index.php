@@ -189,8 +189,8 @@ if (!empty($_POST["newpassword1"])) {
 	 }
  }
 
-//Handle shutdown request
- if (!empty($_POST["shutdown"])) {
+//Handle shutdown request (disabled)
+ if (false && !empty($_POST["shutdown"])) {
 	 if ($_SESSION['authenticated'] == 1) {
 		?>
 		<script type="text/javascript">
@@ -363,14 +363,6 @@ if ($_SESSION['authenticated'] == 1) {
 	<input type="submit" class="btn btn-primary" value="Update Feeder">
 	</form>
 	<a href="https://raw.githubusercontent.com/ADSBexchange/adsbx-update/main/update-adsbx.sh">(executes this script)</a>
-	<p>
-
-    <hr width="50%">
-	<form method='POST' name="shutdown" action="." onSubmit = "return confirm('Shutdown the feeder? To turn it back on it will be necessary to physically power cycle it!')">
-	<input type="hidden" id="shutdown" name="shutdown" value="shutdown">
-	<input type="submit" class="btn btn-primary" value="Shutdown Feeder">
-	</form>
-
 	<p>
 
 	<hr width="50%">
