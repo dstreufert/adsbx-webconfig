@@ -207,7 +207,7 @@ if (!empty($_POST["DUMP1090"])) {
 			if ($key[0] == "ALTITUDE") {
 				echo str_replace('#','<br />',$altitude."<br /><br />");
 				?>
-				<input class="form-control" type="text" name="<?php echo $key[0]; ?>" value="<?php echo $key[1]; ?>" pattern="-*[0-9]{1,}(m|ft)"/>
+				<input class="form-control" type="text" name="<?php echo $key[0]; ?>" value="<?php echo $key[1]; ?>" pattern="-*[0-9 ]{1,}(m|ft)"/>
 				<?php
 				echo '</tr></td><tr><td>';
 			}
@@ -216,7 +216,7 @@ if (!empty($_POST["DUMP1090"])) {
 				echo  str_replace('#','<br />',$mlat_name."<br /><br />");
 				$user = str_replace('"','',$key[1]);
 				?>
-				<input class="form-control" type="text" name="<?php echo $key[0]; ?>" value="<?php echo $user; ?>" pattern="[A-Za-z0-9._]+"/>
+				<input class="form-control" type="text" name="<?php echo $key[0]; ?>" value="<?php echo $user; ?>" pattern="[A-Za-z0-9._ ]+"/>
 				<?php
 				echo '</tr></td><tr><td>';
 			}

@@ -22,21 +22,24 @@ $head="# !!!!! HEADS-UP WINDOWS USERS !!!!!
 ";
 
 $latitude= "# Precise Latitude
+#
 # Northern Hemisphere, positive.
 # Southern Hemisphere, negative.
 # <a href=\"https://www.freemaptools.com/elevation-finder.htm\" target=\"_blank\">
 # This site</a> can be used to determine lat/lon and ground altitude.";
 
 $longitude = "# Precise Longitude
+#
 # East of Greenwich, UK - positive.
 # West of Greenwich (including USA) - negative.";
 
 $altitude = "# Altitude of your antenna above MSL (mean sea level)
-# Meters Example: \"1050m\" no space between number and \"m\"
-# Feet Example: \"305ft\" no space between number and \"ft\"";
+#
+# Meters Example: \"1050m\"
+# Feet Example: \"305ft\"";
 
 $mlat_name = "# Feeder Name for MLAT Map <br>
-# No spaces or special characters.<br>
+# Spaces or special characters will be removed.<br>
 # Numbers, letters, underscore ( _ ) and period ( . ) only.";
 
 $enable_1090 = "# Enable 1090 using readsb?";
