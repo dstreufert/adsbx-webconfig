@@ -2,6 +2,8 @@
 
 # Use LEDs for custom status indications
 
+trap "kill -SIGINT $$" SIGTERM
+
 if [ "$(id -u)" != "0" ]; then
   echo -e "\033[33m"
   echo "This script must be ran using sudo or as root."
