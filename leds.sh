@@ -29,26 +29,22 @@ function off() {
 }
 
 function alternate_leds {
-  NOW=$(date +%s%N)
-  while [ $NOW -le $NEXTCHECK ]
+  while [ "$((${EPOCHREALTIME/.}/1000))" -le $NEXTCHECK ]
   do
     on red; off green
     sleep 0.5
     off red; on green
     sleep 0.5
-    NOW=$(date +%s%N)
   done
 }
 
 function greenflash {
-  NOW=$(date +%s%N)
-  while [ $NOW -le $NEXTCHECK ]
+  while [ "$((${EPOCHREALTIME/.}/1000))" -le $NEXTCHECK ]
   do
     on green
     sleep $PERIOD
     off green
     sleep $PERIOD
-    NOW=$(date +%s%N)
   done
 }
 
@@ -72,13 +68,12 @@ function redflash {
         sleep 1
       fi
 
-      NOW=$(date +%s%N)
-      let TIMELEFT=$NEXTCHECK-$NOW
+      TIMELEFT=$(( $NEXTCHECK - ${EPOCHREALTIME/.}/1000 ))
       #Exit loop if < 2 seconds left
-      if [ $TIMELEFT -lt 2000000000 ]; then break; fi
+      if [ $TIMELEFT -lt 2000 ]; then break; fi
     done
 
-    if [ $TIMELEFT -lt 2000000000 ]; then break; fi
+    if [ $TIMELEFT -lt 2000 ]; then break; fi
   done
 
 }
@@ -146,8 +141,8 @@ failurestats
 for (( ; ; ))
 do
 
-  NOW=$(date +%s%N)
-  let NEXTCHECK=$NOW+11000000000
+  NOW="$((${EPOCHREALTIME/.}/1000))"
+  let NEXTCHECK=$NOW+11000
 
   if [[ -e /tmp/webconfig_priv/unlock ]];
   then
@@ -162,7 +157,7 @@ do
     redflash &
     wait
     failurestats
-    echo ${FAILURES[@]}
+    #echo ${FAILURES[@]}
   fi
 
 done
