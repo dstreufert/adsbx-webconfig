@@ -76,13 +76,14 @@ function failurestats {
   fi
 
   # Failure 2 - dump978-fa service failed/failing _or_ location not set
-  let DUMP978AGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000
-  #echo dump978 age $DUMP978AGE
-  if [[ $DUMP978AGE -le 60 ]];
-  then
-    FAILURES[2]="FAIL"
-  else
-    FAILURES[2]="PASS"
+  FAILURES[2]="PASS"
+  if systemctl is-enabled dump978-fa &>/dev/null; then
+    let DUMP978AGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000
+    #echo dump978 age $DUMP978AGE
+    if [[ $DUMP978AGE -le 60 ]];
+    then
+      FAILURES[2]="FAIL"
+    fi
   fi
 
   cat /tmp/webconfig/location | grep "Location not set." > /dev/null
@@ -92,13 +93,14 @@ function failurestats {
   fi
 
   # Failure 3 - readsb service failed/failing
-  let READSBAGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000
-  #echo readsb age is $READSBAGE
-  if [[ $READSBAGE -le 60 ]];
-  then
-    FAILURES[3]="FAIL"
-  else
-    FAILURES[3]="PASS"
+  FAILURES[3]="PASS"
+
+  if systemctl is-enabled readsb &>/dev/null; then
+    let READSBAGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000
+    if [[ $READSBAGE -le 60 ]];
+    then
+      FAILURES[3]="FAIL"
+    fi
   fi
 
   # Failure 4 - no connection to ADSBx
