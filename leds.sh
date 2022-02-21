@@ -84,7 +84,7 @@ function failurestats {
   # Failure 2 - dump978-fa service failed/failing _or_ location not set
   FAILURES[2]="PASS"
   if (( SINCE_START > 75)) && systemctl is-enabled dump978-fa &>/dev/null; then
-    let DUMP978AGE=$SINCE_START-$(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000
+    DUMP978AGE=$(( UPTIME - $(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000 ))
     #echo dump978 age $DUMP978AGE
     if [[ $DUMP978AGE -le 60 ]];
     then
@@ -102,7 +102,7 @@ function failurestats {
   FAILURES[3]="PASS"
 
   if (( SINCE_START > 75)) && systemctl is-enabled readsb &>/dev/null; then
-    let READSBAGE=$SINCE_START-$(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000
+    READSBAGE=$(( UPTIME - $(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000 ))
     if [[ $READSBAGE -le 60 ]];
     then
       FAILURES[3]="FAIL"
