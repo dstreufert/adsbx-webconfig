@@ -63,6 +63,8 @@ function redflash {
   done
 }
 
+START_MONO=$(($(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000))
+
 function failurestats {
   # Failure 1 - no aircraft being received
   AIRCRAFTCOUNT=$(jq '.aircraft_with_pos' /run/adsbexchange-feed/status.json)
@@ -77,10 +79,12 @@ function failurestats {
     FAILURES[1]="PASS"
   fi
 
+  UPTIME=$(($(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000))
+  SINCE_START=$(( UPTIME - START_MONO ))
   # Failure 2 - dump978-fa service failed/failing _or_ location not set
   FAILURES[2]="PASS"
-  if systemctl is-enabled dump978-fa &>/dev/null; then
-    let DUMP978AGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000
+  if (( SINCE_START > 75)) && systemctl is-enabled dump978-fa &>/dev/null; then
+    let DUMP978AGE=$SINCE_START-$(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000
     #echo dump978 age $DUMP978AGE
     if [[ $DUMP978AGE -le 60 ]];
     then
@@ -97,8 +101,8 @@ function failurestats {
   # Failure 3 - readsb service failed/failing
   FAILURES[3]="PASS"
 
-  if systemctl is-enabled readsb &>/dev/null; then
-    let READSBAGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000
+  if (( SINCE_START > 75)) && systemctl is-enabled readsb &>/dev/null; then
+    let READSBAGE=$SINCE_START-$(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000
     if [[ $READSBAGE -le 60 ]];
     then
       FAILURES[3]="FAIL"

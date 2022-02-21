@@ -38,6 +38,7 @@ function services-handle {
 if [[ $CUSTOMLEDS == "yes" ]];
 then
     services-handle enable leds
+    systemctl restart leds
 else
     services-handle disable leds
 fi
