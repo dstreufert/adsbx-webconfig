@@ -28,17 +28,10 @@ function off() {
   done
 }
 
-function alternate_leds {
-  while [ "$((${EPOCHREALTIME/.}/1000))" -le $NEXTCHECK ]
-  do
-    on red; off green
-    sleep 0.5
-    off red; on green
-    sleep 0.5
-  done
-}
-
 function greenflash {
+  NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + $1 ))
+  PERIOD="$2"
+
   while [ "$((${EPOCHREALTIME/.}/1000))" -le $NEXTCHECK ]
   do
     on green
@@ -71,6 +64,10 @@ function redflash {
 function failurestats {
   # Failure 1 - no aircraft being received
   AIRCRAFTCOUNT=$(jq '.aircraft_with_pos' /run/adsbexchange-feed/status.json)
+  if [[ ! $AIRCRAFTCOUNT -gt 0 ]]; then
+    AIRCRAFTCOUNT=0
+  fi
+
   if [[ $AIRCRAFTCOUNT -le 0 ]];
   then
     FAILURES[1]="FAIL"
@@ -129,17 +126,16 @@ failurestats
 for (( ; ; ))
 do
   while [[ -e /tmp/webconfig_priv/unlock ]]; do
-    alternate_leds
+    # alternate leds:
+    on red; off green
+    sleep 0.5
+    off red; on green
+    sleep 0.5
   done
+
   if [[ -e /tmp/webconfig_priv/unlock ]]; then
     continue
   fi
-
-  AIRCRAFT=$(jq '.aircraft_with_pos' /run/adsbexchange-feed/status.json)
-  if [[ ! $AIRCRAFT -gt 0 ]]; then
-    AIRCRAFT=0
-  fi
-  PERIOD=$(lua -e "print(11/(($AIRCRAFT+1)*2))")
 
   failurestats
 
@@ -152,18 +148,22 @@ do
 
   if [[ $OVERALL != PASS ]]; then
     #echo ${FAILURES[@]}
-    on green
-    redflash
-    off green
 
-    on red
-    NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + 3000 ))
-    greenflash
-    off red
+    # only have green led on while flashing red when aircraft are still being received
+    if [[ ! $AIRCRAFTCOUNT -gt 0 ]]; then
+        off green
+    else
+        on green
+    fi
+
+    redflash
+
   else
-    off red
-    NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + 11000 ))
-    greenflash
+    off red green
+    PERIOD=$(lua -e "print(11/(($AIRCRAFTCOUNT+1)*2))")
+    DURATION=11
+    # flash green for 11 seconds with calculated period
+    greenflash "$DURATION" "$PERIOD"
   fi
 
 done
