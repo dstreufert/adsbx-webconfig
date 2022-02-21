@@ -49,90 +49,77 @@ function greenflash {
 }
 
 function redflash {
-
   off red
 
-  for (( ; ; ))
+  for i in 1 2 3 4 5
   do
-    for i in 1 2 3 4 5
-    do
-      #echo Flash num $i
-      if [ ${FAILURES[$i]} == "FAIL" ]; then
-        for flash in $( seq 1 $i )
-        do
-          on red
-          sleep 0.2
-          off red
-          sleep 0.2
-        done
-        sleep 1
-      fi
-
-      TIMELEFT=$(( $NEXTCHECK - ${EPOCHREALTIME/.}/1000 ))
-      #Exit loop if < 2 seconds left
-      if [ $TIMELEFT -lt 2000 ]; then break; fi
-    done
-
-    if [ $TIMELEFT -lt 2000 ]; then break; fi
+    #echo Flash num $i
+    if [ ${FAILURES[$i]} == "FAIL" ]; then
+      for flash in $( seq 1 $i )
+      do
+        on red
+        sleep 0.25
+        off red
+        sleep 0.25
+      done
+      sleep 2
+    fi
   done
-
 }
 
 function failurestats {
+  # Failure 1 - no aircraft being received
+  AIRCRAFTCOUNT=$(jq '.aircraft_with_pos' /run/adsbexchange-feed/status.json)
+  if [[ $AIRCRAFTCOUNT -le 0 ]];
+  then
+    FAILURES[1]="FAIL"
+  else
+    FAILURES[1]="PASS"
+  fi
 
-# Failure 1 - no aircraft being received
-AIRCRAFTCOUNT=$(jq '.aircraft_with_pos' /run/adsbexchange-feed/status.json)
-if [[ $AIRCRAFTCOUNT -le 0 ]];
-then
-  FAILURES[1]="FAIL"
-else
-  FAILURES[1]="PASS"
-fi
+  # Failure 2 - dump978-fa service failed/failing _or_ location not set
+  let DUMP978AGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000
+  #echo dump978 age $DUMP978AGE
+  if [[ $DUMP978AGE -le 60 ]];
+  then
+    FAILURES[2]="FAIL"
+  else
+    FAILURES[2]="PASS"
+  fi
 
-# Failure 2 - dump978-fa service failed/failing _or_ location not set
-let DUMP978AGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000
-#echo dump978 age $DUMP978AGE
-if [[ $DUMP978AGE -le 60 ]];
-then
-  FAILURES[2]="FAIL"
-else
-  FAILURES[2]="PASS"
-fi
+  cat /tmp/webconfig/location | grep "Location not set." > /dev/null
+  if [[ $? -eq 0 ]];
+  then
+    FAILURES[2]="FAIL"
+  fi
 
-cat /tmp/webconfig/location | grep "Location not set." > /dev/null
-if [[ $? -eq 0 ]];
-then
-  FAILURES[2]="FAIL"
-fi
+  # Failure 3 - readsb service failed/failing
+  let READSBAGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000
+  #echo readsb age is $READSBAGE
+  if [[ $READSBAGE -le 60 ]];
+  then
+    FAILURES[3]="FAIL"
+  else
+    FAILURES[3]="PASS"
+  fi
 
+  # Failure 4 - no connection to ADSBx
+  netstat -apn | grep adsbxfeeder | grep -v 127.0.0.1 >> /dev/null
+  if [[ $? -eq 0 ]];
+  then
+    FAILURES[4]="PASS"
+  else
+    FAILURES[4]="FAIL"
+  fi
 
-# Failure 3 - readsb service failed/failing
-let READSBAGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000
-#echo readsb age is $READSBAGE
-if [[ $READSBAGE -le 60 ]];
-then
-  FAILURES[3]="FAIL"
-else
-  FAILURES[3]="PASS"
-fi
-
-# Failure 4 - no connection to ADSBx
-netstat -apn | grep adsbxfeeder | grep -v 127.0.0.1 >> /dev/null
-if [[ $? -eq 0 ]];
-then
-  FAILURES[4]="PASS"
-else
-  FAILURES[4]="FAIL"
-fi
-
-# Failure 5 - Temp/Voltage fail
-let TEMPSTAT=$(vcgencmd get_throttled | cut -d "x" -f 2)
-if [[ $TEMPSTAT -eq 0 ]];
-then
-  FAILURES[5]="PASS"
-else
-  FAILURES[5]="FAIL"
-fi
+  # Failure 5 - Temp/Voltage fail
+  let TEMPSTAT=$(vcgencmd get_throttled | cut -d "x" -f 2)
+  if [[ $TEMPSTAT -eq 0 ]];
+  then
+    FAILURES[5]="PASS"
+  else
+    FAILURES[5]="FAIL"
+  fi
 }
 
 
@@ -140,10 +127,6 @@ failurestats
 
 for (( ; ; ))
 do
-
-  NOW="$((${EPOCHREALTIME/.}/1000))"
-  let NEXTCHECK=$NOW+11000
-
   if [[ -e /tmp/webconfig_priv/unlock ]];
   then
     alternate_leds
@@ -153,11 +136,25 @@ do
       AIRCRAFT=0
     fi
     PERIOD=$(lua -e "print(11/(($AIRCRAFT+1)*2))")
-    greenflash &
-    redflash &
-    wait
+
     failurestats
-    #echo ${FAILURES[@]}
+
+    OVERALL="PASS"
+    for i in "${FAILURES[@]}"; do
+      if [[ $i != "PASS" ]]; then
+        OVERALL="FAIL"
+      fi
+    done
+
+    if [[ $OVERALL != PASS ]]; then
+      #echo ${FAILURES[@]}
+      redflash
+      NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + 2000 ))
+      greenflash
+    else
+      NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + 15000 ))
+      greenflash
+    fi
   fi
 
 done
