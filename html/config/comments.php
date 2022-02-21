@@ -21,13 +21,13 @@ $head="# !!!!! HEADS-UP WINDOWS USERS !!!!!
 # If east of prime meridian, then longitude is positive.
 ";
 
-$latitude= "Latitude
+$latitude= "# Precise Latitude
 # Northern Hemisphere, positive.
 # Southern Hemisphere, negative.
 # <a href=\"https://www.freemaptools.com/elevation-finder.htm\" target=\"_blank\">
-# This site can be used to determine lat/lon and ground altitude.</a>";
+# This site</a> can be used to determine lat/lon and ground altitude.";
 
-$longitude = "# Longitude
+$longitude = "# Precise Longitude
 # East of Greenwich, UK - positive.
 # West of Greenwich (including USA) - negative.";
 

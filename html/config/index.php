@@ -60,6 +60,15 @@ include('comments.php');
 
 <script type="text/javascript">
 
+function showcoords() {
+    var lat = document.forms['configform'].elements['LATITUDE'].value;
+    var lon = document.forms['configform'].elements['LONGITUDE'].value;
+
+    var url = 'https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '&zoom=20';
+
+    window.open(url, '_blank').focus();
+}
+
 function checkcoords() {
         var resp ;
         var xmlHttp ;
@@ -190,7 +199,7 @@ if (!empty($_POST["DUMP1090"])) {
 				?>
 				<input class="form-control" type="text" name="<?php echo $key[0]; ?>" value="<?php echo $key[1]; ?>" pattern="[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)"/>
                                 <br />
-                                <a class="btn btn-primary" href="javascript:alert(checkcoords())">Verify Coordinates</a>
+                                <a class="btn btn-primary" href="javascript:showcoords()">Verify Coordinates</a>
 				<?php
 				echo '</tr></td><tr><td>';
 			}
