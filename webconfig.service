@@ -3,6 +3,7 @@ Description=Scan Wifi and create setup AP
 After=network.target
 
 [Service]
+SyslogIdentifier=webconfig.service
 EnvironmentFile=/boot/adsb-config.txt
 EnvironmentFile=/boot/adsbx-env
 Type=idle

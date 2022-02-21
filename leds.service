@@ -3,6 +3,7 @@ Description=Use Pi LEDs for custom status indications
 After=network.target
 
 [Service]
+SyslogIdentifier=leds.service
 EnvironmentFile=/boot/adsb-config.txt
 EnvironmentFile=/boot/adsbx-env
 Type=idle
