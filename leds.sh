@@ -2,33 +2,59 @@
 
 # Use LEDs for custom status indications
 
+if [ "$(id -u)" != "0" ]; then
+    echo -e "\033[33m"
+    echo "This script must be ran using sudo or as root."
+    echo -e "\033[37m"
+    exit 1
+fi
+
+# load bash sleep builtin if available
+[[ -f /usr/lib/bash/sleep ]] && enable -f /usr/lib/bash/sleep sleep || true
+
+function on() {
+  for led in "$@"; do
+    [[ $led == "green" ]] && led="led0"
+    [[ $led == "red" ]] && led="led1"
+    echo 1 > "/sys/class/leds/$led/brightness"
+  done
+}
+
+function off() {
+  for led in "$@"; do
+    [[ $led == "green" ]] && led="led0"
+    [[ $led == "red" ]] && led="led1"
+    echo 0 > "/sys/class/leds/$led/brightness"
+  done
+}
+
 function alternate_leds {
 NOW=$(date +%s%N)
 while [ $NOW -le $NEXTCHECK ]
 do
-  echo 1 | sudo tee /sys/class/leds/led1/brightness > /dev/null && echo 0 | sudo tee /sys/class/leds/led0/brightness > /dev/null
+  on red; off green
   sleep 0.5
-  echo 0 | sudo tee /sys/class/leds/led1/brightness > /dev/null && echo 1 | sudo tee /sys/class/leds/led0/brightness > /dev/null
+  off red; on green
   sleep 0.5
   NOW=$(date +%s%N)
 done
-
 }
 
 function greenflash {
 NOW=$(date +%s%N)
 while [ $NOW -le $NEXTCHECK ]
 do
-  echo 1 | sudo tee /sys/class/leds/led0/brightness > /dev/null
+  on green
   sleep $PERIOD
-  echo 0 | sudo tee /sys/class/leds/led0/brightness > /dev/null
+  off green
   sleep $PERIOD
   NOW=$(date +%s%N)
 done
 }
 
 function redflash {
-echo 0 | sudo tee /sys/class/leds/led1/brightness > /dev/null
+
+off red
 
 for (( ; ; ))
 do
@@ -38,9 +64,9 @@ do
   if [ ${FAILURES[$i]} == "FAIL" ]; then
    for flash in $( seq 1 $i )
    do
-    echo 1 | sudo tee /sys/class/leds/led1/brightness > /dev/null
+    on red
     sleep 0.2
-    echo 0 | sudo tee /sys/class/leds/led1/brightness > /dev/null
+    off red
     sleep 0.2
    done
    sleep 1
@@ -69,7 +95,7 @@ else
 fi
 
 # Failure 2 - dump978-fa service failed/failing _or_ location not set
-let DUMP978AGE=$(sudo awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000
+let DUMP978AGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show dump978-fa.service --value --property=InactiveExitTimestampMonotonic)/1000000
 #echo dump978 age $DUMP978AGE
 if [[ $DUMP978AGE -le 60 ]];
 then
@@ -86,7 +112,7 @@ fi
 
 
 # Failure 3 - readsb service failed/failing
-let READSBAGE=$(sudo awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000
+let READSBAGE=$(awk '/^now/ {print $3; exit}' /proc/timer_list)/1000000000-$(systemctl show readsb.service --value --property=InactiveExitTimestampMonotonic)/1000000
 #echo readsb age is $READSBAGE
 if [[ $READSBAGE -le 60 ]];
 then
@@ -96,7 +122,7 @@ else
 fi
 
 # Failure 4 - no connection to ADSBx
-sudo netstat -apn | grep adsbxfeeder | grep -v 127.0.0.1 >> /dev/null
+netstat -apn | grep adsbxfeeder | grep -v 127.0.0.1 >> /dev/null
 if [[ $? -eq 0 ]];
 then
   FAILURES[4]="PASS"
