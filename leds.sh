@@ -51,6 +51,7 @@ function greenflash {
 function redflash {
   off red
 
+  sleep 1
   for i in 1 2 3 4 5
   do
     #echo Flash num $i
@@ -127,34 +128,42 @@ failurestats
 
 for (( ; ; ))
 do
-  if [[ -e /tmp/webconfig_priv/unlock ]];
-  then
+  while [[ -e /tmp/webconfig_priv/unlock ]]; do
     alternate_leds
+  done
+  if [[ -e /tmp/webconfig_priv/unlock ]]; then
+    continue
+  fi
+
+  AIRCRAFT=$(jq '.aircraft_with_pos' /run/adsbexchange-feed/status.json)
+  if [[ ! $AIRCRAFT -gt 0 ]]; then
+    AIRCRAFT=0
+  fi
+  PERIOD=$(lua -e "print(11/(($AIRCRAFT+1)*2))")
+
+  failurestats
+
+  OVERALL="PASS"
+  for i in "${FAILURES[@]}"; do
+    if [[ $i != "PASS" ]]; then
+      OVERALL="FAIL"
+    fi
+  done
+
+  if [[ $OVERALL != PASS ]]; then
+    #echo ${FAILURES[@]}
+    on green
+    redflash
+    off green
+
+    on red
+    NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + 3000 ))
+    greenflash
+    off red
   else
-    AIRCRAFT=$(jq '.aircraft_with_pos' /run/adsbexchange-feed/status.json)
-    if [[ ! $AIRCRAFT -gt 0 ]]; then
-      AIRCRAFT=0
-    fi
-    PERIOD=$(lua -e "print(11/(($AIRCRAFT+1)*2))")
-
-    failurestats
-
-    OVERALL="PASS"
-    for i in "${FAILURES[@]}"; do
-      if [[ $i != "PASS" ]]; then
-        OVERALL="FAIL"
-      fi
-    done
-
-    if [[ $OVERALL != PASS ]]; then
-      #echo ${FAILURES[@]}
-      redflash
-      NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + 2000 ))
-      greenflash
-    else
-      NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + 15000 ))
-      greenflash
-    fi
+    off red
+    NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + 11000 ))
+    greenflash
   fi
 
 done

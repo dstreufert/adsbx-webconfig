@@ -13,9 +13,33 @@ if ! echo "$LATITUDE $LONGITUDE" | grep -E -qs -e '[1-9]+'; then
     location_not_set="1"
 fi
 
-if [[ $CUSTOMLEDS == "no" ]];
+function services-handle {
+    for SERVICE in $2; do
+        echo "$1 $SERVICE"
+        if [[ $1 == disable ]]; then
+            if systemctl is-enabled $SERVICE &>/dev/null; then
+                systemctl disable --now $SERVICE
+            fi
+            if systemctl is-active $SERVICE &>/dev/null; then
+                systemctl stop $SERVICE
+            fi
+        fi
+        if [[ $1 == enable ]]; then
+            if ! systemctl is-enabled $SERVICE &>/dev/null; then
+                systemctl enable --now $SERVICE
+            fi
+            if ! systemctl is-active $SERVICE &>/dev/null; then
+                systemctl start $SERVICE
+            fi
+        fi
+    done
+}
+
+if [[ $CUSTOMLEDS == "yes" ]];
 then
-   systemctl stop leds.service
+    services-handle enable leds
+else
+    services-handle disable leds
 fi
 
 
