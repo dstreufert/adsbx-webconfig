@@ -29,7 +29,7 @@ function off() {
 }
 
 function greenflash {
-  NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + $1 ))
+  NEXTCHECK=$(( ${EPOCHREALTIME/.}/1000 + $1 * 1000 ))
   PERIOD="$2"
 
   while [ "$((${EPOCHREALTIME/.}/1000))" -le $NEXTCHECK ]
@@ -122,8 +122,6 @@ function failurestats {
   fi
 }
 
-
-failurestats
 
 for (( ; ; ))
 do
