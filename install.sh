@@ -19,6 +19,7 @@ if ! [[ -f /boot/adsbx-version ]]; then
 fi
 
 aptInstall whois php php-common php-fpm php-cgi dnsmasq
+command -v rsyslogd &>/dev/null && apt remove -y rsyslog || true
 
 lighttpd-enable-mod fastcgi-php 2>&1 | grep -F -v -e 'force-reload'
 
