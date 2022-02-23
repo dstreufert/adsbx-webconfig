@@ -26,7 +26,9 @@ systemctl restart lighttpd
 systemctl disable dnsmasq &>/dev/null
 systemctl stop dnsmasq || true
 
-echo -e "; Put session info here, to prevent SD card writes\nsession.save_path = \"/tmp\"" > /etc/php/7.3/cgi/conf.d/30-session_path.ini
+for dir in /etc/php/*; do
+    echo -e "; Put session info here, to prevent SD card writes\nsession.save_path = \"/tmp\"" > "$dir/cgi/conf.d/30-session_path.ini" || true
+done
 
 ipath=/adsbexchange/webconfig
 
