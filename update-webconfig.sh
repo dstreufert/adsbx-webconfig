@@ -3,6 +3,8 @@
 set -e
 trap 'echo "[ERROR] Error in line $LINENO when executing: $BASH_COMMAND"' ERR
 
+# in case /var/log is full ... delete some logs
+echo test > /var/log/.test 2>/dev/null || rm -f /var/log/*.log
 
 function aptInstall() {
     if ! apt install -y --no-install-recommends --no-install-suggests "$@"; then
