@@ -67,14 +67,14 @@ sleep 5 &
 internet=0
 
 # wait until we have internet connectivity OR a maximum of 15 seconds
-for i in {1..8}; do
+for i in {1..13}; do
     if ping -c 1 -w 1 8.8.8.8 &>/dev/null; then
         # we have internet!
         internet=1
         break;
     fi
 done
-for i in {1..8}; do
+for i in {1..13}; do
     if ping -c 1 -w 1 1.1.1.1 &>/dev/null; then
         # we have internet!
         internet=1
