@@ -10,7 +10,9 @@ echo $USER > /tmp/webconfig/name
 
 if ! echo "$LATITUDE $LONGITUDE" | grep -E -qs -e '[1-9]+'; then
     echo "Location not set." > /tmp/webconfig/location
-    location_not_set="1"
+    location_set=0
+else
+    location_set=1
 fi
 
 function services-handle {
@@ -59,23 +61,44 @@ fi
 
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
 
+# make sure we wait at least 5 seconds before doing the wifi scan
+sleep 5 &
+
+internet=0
+
 # wait until we have internet connectivity OR a maximum of 15 seconds
-for i in {1..15}; do
+for i in {1..8}; do
     if ping -c 1 -w 1 8.8.8.8 &>/dev/null; then
         # we have internet!
-        if [[ -z $location_not_set ]] ; then
-            timeout 3 wget https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=$LATITUDE\&longitude=$LONGITUDE\&localityLanguage=en -q -T 3 -O /tmp/webconfig/geocode
-            cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
-            cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
-            cat /tmp/webconfig/geocode | jq -r .'countryName' >> /tmp/webconfig/location
-            chmod -R a+rwX /tmp/webconfig
-        fi
+        internet=1
+        break;
+    fi
+done
+for i in {1..8}; do
+    if ping -c 1 -w 1 1.1.1.1 &>/dev/null; then
+        # we have internet!
+        internet=1
         break;
     fi
 done
 
-netnum=$(wpa_cli list_networks | grep ADSBx-config | cut -f 1)
-sleep 5
+if [[ $internet == 1 ]]; then
+    echo > /dev/tty1
+    echo ------------- > /dev/tty1
+    echo "Use the webinterface at http://adsbexchange.local OR http://$(ip route get 1.2.3.4 | grep -m1 -o -P 'src \K[0-9,.]*')" > /dev/tty1
+    echo ------------- > /dev/tty1
+    if [[ $location_set == 1 ]] ; then
+        timeout 3 wget https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=$LATITUDE\&longitude=$LONGITUDE\&localityLanguage=en -q -T 3 -O /tmp/webconfig/geocode
+        cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
+        cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
+        cat /tmp/webconfig/geocode | jq -r .'countryName' >> /tmp/webconfig/location
+        chmod -R a+rwX /tmp/webconfig
+    fi
+fi
+
+# make sure we wait at least 5 seconds before doing the wifi scan
+wait
+
 iw wlan0 scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
 if [ $? -ne 0 ]
 then
@@ -83,29 +106,23 @@ then
     iw wlan0 scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
 fi
 
-ping 1.1.1.1 -w 10 > /dev/null
-if [ $? -eq 0 ];
-then
-    echo "1.1.1.1 pingable, exiting"
-    wait
+if [[ $internet == 1 ]]; then
+    echo "1.1.1.1 or 8.8.8.8 pingable, exiting"
     exit 0
-else
-    echo "1.1.1.1 unreachable"
-fi
-
-ping 8.8.8.8 -w 10 > /dev/null
-if [ $? -eq 0 ];
-then
-    echo "8.8.8.8 pingable, exiting"
-    wait
-    exit 0
-else
-    echo "8.8.8.8 unreachable"
 fi
 
 
 echo "ip connectivity failed, enabling ADSBx-config network"
 
+echo > /dev/tty1
+echo ------------- > /dev/tty1
+echo "Internet can't be reached with current WiFi settings, enabling ADSBx-config WiFi Network!" > /dev/tty1
+echo "Use your smartphone / laptop to connect to the WiFi network called: ADSBx-config" > /dev/tty1
+echo "On that device visit the URL http://adsbexchange.local in your browser" > /dev/tty1
+echo "Select a WiFi network / country / password for the Raspberry Pi to join" > /dev/tty1
+echo ------------- > /dev/tty1
+
+netnum=$(wpa_cli list_networks | grep ADSBx-config | cut -f 1)
 wpa_cli enable_network $netnum
 dnsmasq
 totalwait=0
