@@ -74,7 +74,8 @@ if ($_SESSION['authenticated'] != 1) {
 Note: SDR sticks are often identified by their "serial numbers".<br />
 These serial numbers can be changed using the "rtl_eeprom" command.<br />
 This is mainly helpful when dealing with a setup containing more than one SDR.<br /><br />
-This script edits the<br>/boot/adsbx-env and /boot/adsbx-978env files.<br /><br />
+This page changes which SDR is used for 1090 / 978 MHz reception<br>by editing the /boot/adsbx-env and /boot/adsbx-978env files.<br /><br />
+If you are outside the USA, 978 isn't used in your location and<br>this page is not relevant as there in only one SDR used by one program.<br /><br />
 
 
  <?php 
