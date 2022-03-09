@@ -118,7 +118,7 @@ echo "<pre>$output</pre>";
  <br>
  Zerotier Status:
 
-<table><tr><td>
+<table class="table table-dark"><tr><td>
 <?php
 $output = shell_exec('sudo /adsbexchange/webconfig/helpers/zerotier_status.sh | head -n 1');
 echo "<pre>$output</pre>";
