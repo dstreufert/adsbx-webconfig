@@ -62,7 +62,7 @@ fi
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
 
 # make sure we wait at least 5 seconds before doing the wifi scan
-sleep 5 &
+sleep 30 &
 
 internet=0
 
