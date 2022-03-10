@@ -62,24 +62,28 @@ fi
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
 
 # make sure we wait at least 5 seconds before doing the wifi scan
-sleep 30 &
+sleep 5 &
 
 internet=0
 
 # wait until we have internet connectivity OR a maximum of 15 seconds
-for i in {1..13}; do
+for i in {1..10}; do
+    sleep 1 &
     if ping -c 1 -w 1 8.8.8.8 &>/dev/null; then
         # we have internet!
         internet=1
         break;
     fi
+    wait
 done
-for i in {1..13}; do
+for i in {1..10}; do
+    sleep 1 &
     if ping -c 1 -w 1 1.1.1.1 &>/dev/null; then
         # we have internet!
         internet=1
         break;
     fi
+    wait
 done
 
 if [[ $internet == 1 ]]; then
