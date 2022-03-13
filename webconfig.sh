@@ -67,7 +67,7 @@ sleep 5 &
 internet=0
 
 # wait until we have internet connectivity OR a maximum of 15 seconds
-for i in {1..10}; do
+for i in {1..8}; do
     sleep 1 &
     if ping -c 1 -w 1 8.8.8.8 &>/dev/null; then
         # we have internet!
@@ -76,7 +76,7 @@ for i in {1..10}; do
     fi
     wait
 done
-for i in {1..10}; do
+for i in {1..8}; do
     sleep 1 &
     if ping -c 1 -w 1 1.1.1.1 &>/dev/null; then
         # we have internet!
@@ -103,12 +103,12 @@ fi
 # make sure we wait at least 5 seconds before doing the wifi scan
 wait
 
-iw wlan0 scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
-if [ $? -ne 0 ]
-then
+if ! iw wlan0 scan > /tmp/webconfig/raw_scan; then
     sleep 3
-    iw wlan0 scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
+    iw wlan0 scan > /tmp/webconfig/raw_scan
 fi
+cat /tmp/webconfig/raw_scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
+cat /tmp/webconfig/raw_scan | grep -e SSID: -e 'BSS .*(on' -e freq: | sed -z -e 's/\n\t/\t/g' | sed -e 's/\((on.*\)\(freq:\)/\t\2/' | tr '\t' '^' | column -t -s '^' > /tmp/webconfig/wifi_bssids
 
 if [[ $internet == 1 ]]; then
     echo "1.1.1.1 or 8.8.8.8 pingable, exiting"
