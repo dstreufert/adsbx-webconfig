@@ -54,7 +54,8 @@ mkdir -p /adsbexchange
 git clone --depth 1 https://github.com/ADSBexchange/adsbx-update.git /adsbexchange/update
 
 pushd /adsbexchange/update/
-cp -v -T boot-configs/wpa_supplicant.conf /boot/wpa_supplicant.conf.bak always copy over this file
+# always copy over this file
+cp -v -T boot-configs/wpa_supplicant.conf /boot/wpa_supplicant.conf.bak
 if [[ "$1" != "dont_reset_config" ]]; then
     cp -v -T boot-configs/wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf
     chmod 600 /etc/wpa_supplicant/wpa_supplicant.conf
