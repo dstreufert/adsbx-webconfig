@@ -211,7 +211,7 @@ $content .= '
 
 <?php
 
-    //system('sudo /adsbexchange/webconfig/helpers/install-wpasupp.sh > /dev/null 2>&1 &');
+    system('sudo /adsbexchange/webconfig/helpers/install-wpasupp.sh > /dev/null 2>&1 &');
     exit;
 
 }
