@@ -224,8 +224,10 @@ $content .= '
             <br />
             <input class="form-check-input" type="checkbox" id="dropdownCheckbox" onclick="javascript:otherssidCheck('dropdown');" />
             <label class="form-check-label">Choose Wifi Network &emsp;</label>
+            <br />
             <input class="form-check-input" type="checkbox" id="ssidCheckbox" onclick="javascript:otherssidCheck('ssid');" />
             <label class="form-check-label">Specify Network SSID &emsp;</label>
+            <br />
             <input class="form-check-input" type="checkbox" id="bssidCheckbox" onclick="javascript:otherssidCheck('bssid');" />
             <label class="form-check-label">Specify Network BSSID</label>
 
