@@ -127,7 +127,9 @@ echo "Select a WiFi network / country / password for the Raspberry Pi to join" >
 echo ------------- > /dev/tty1
 
 netnum=$(wpa_cli list_networks | grep ADSBx-config | cut -f 1)
+wpa_cli select_network $netnum
 wpa_cli enable_network $netnum
+
 dnsmasq
 totalwait=0
 touch /tmp/webconfig_priv/unlock
