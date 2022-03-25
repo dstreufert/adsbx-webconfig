@@ -130,17 +130,6 @@ netnum=$(wpa_cli list_networks | grep ADSBx-config | cut -f 1)
 wpa_cli select_network $netnum
 wpa_cli enable_network $netnum
 
-# sleep for nice-ness
-# scan to populate SSIS list if SSID correct and password wrong edge case
-sleep 5 &
-    if ! iw wlan0 scan > /tmp/webconfig/raw_scan; then
-       sleep 3
-        iw wlan0 scan > /tmp/webconfig/raw_scan
-    fi
-    cat /tmp/webconfig/raw_scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
-    cat /tmp/webconfig/raw_scan | grep -e SSID: -e 'BSS .*(on' -e freq: | sed -z -e 's/\n\t/\t/g' | sed -e 's/\((on.*\)\(freq:\)/\t\2/' | tr '\t' '^' | column -t -s '^' > /tmp/webconfig/wifi_bssids
-wait
-
 dnsmasq
 totalwait=0
 touch /tmp/webconfig_priv/unlock
