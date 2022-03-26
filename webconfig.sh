@@ -61,13 +61,10 @@ fi
 
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
 
-# make sure we wait at least 5 seconds before doing the wifi scan
-sleep 5 &
-
 internet=0
 
 # wait until we have internet connectivity OR a maximum of 15 seconds
-for i in {1..8}; do
+for i in {1..10}; do
     sleep 1 &
     if ping -c 1 -w 1 8.8.8.8 &>/dev/null; then
         # we have internet!
@@ -76,7 +73,7 @@ for i in {1..8}; do
     fi
     wait
 done
-for i in {1..8}; do
+for i in {1..10}; do
     sleep 1 &
     if ping -c 1 -w 1 1.1.1.1 &>/dev/null; then
         # we have internet!
@@ -100,17 +97,22 @@ if [[ $internet == 1 ]]; then
     fi
 fi
 
-# make sure we wait at least 5 seconds before doing the wifi scan
-wait
+function wifi_scan() {
+    for i in {1..30}; do
+        # let's retry at changing intervals
+        sleep "0.$(( i * 3 ))" &
+        if iw wlan0 scan > /tmp/webconfig/raw_scan; then
+            break;
+        fi
+        wait
+    done
 
-if ! iw wlan0 scan > /tmp/webconfig/raw_scan; then
-    sleep 3
-    iw wlan0 scan > /tmp/webconfig/raw_scan
-fi
-cat /tmp/webconfig/raw_scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
-cat /tmp/webconfig/raw_scan | grep -e SSID: -e 'BSS .*(on' -e freq: | sed -z -e 's/\n\t/\t/g' | sed -e 's/\((on.*\)\(freq:\)/\t\2/' | tr '\t' '^' | column -t -s '^' > /tmp/webconfig/wifi_bssids
+    cat /tmp/webconfig/raw_scan | grep SSID: | sort | uniq | cut -c 8- | grep '\S' | grep -v '\x00' > /tmp/webconfig/wifi_scan
+    cat /tmp/webconfig/raw_scan | grep -e SSID: -e 'BSS .*(on' -e freq: | sed -z -e 's/\n\t/\t/g' | sed -e 's/\((on.*\)\(freq:\)/\t\2/' | tr '\t' '^' | column -t -s '^' > /tmp/webconfig/wifi_bssids
+}
 
 if [[ $internet == 1 ]]; then
+    wifi_scan
     echo "1.1.1.1 or 8.8.8.8 pingable, exiting"
     exit 0
 fi
@@ -130,11 +132,12 @@ netnum=$(wpa_cli list_networks | grep ADSBx-config | cut -f 1)
 wpa_cli select_network $netnum
 wpa_cli enable_network $netnum
 
+# do the wifi can after selecting / enabling the config network as it can be unreliable otherwise
+wifi_scan
+
 dnsmasq
 totalwait=0
 touch /tmp/webconfig_priv/unlock
-
-fatal="no"
 
 until [ $totalwait -gt 900 ]
 do
@@ -152,8 +155,8 @@ do
         fi
     fi
 
-    if (( $totalwait > 15 )) && [[ "$ssid" != "ADSBx-config" ]]; then
-        fatal="yes"
+    if (( $totalwait > 30 )) && [[ "$ssid" != "ADSBx-config" ]]; then
+        # if for some reason we can't enable the config networ, bail.
         break;
     fi
 
@@ -161,7 +164,7 @@ do
     sleep 1
 done
 
-if [[ "$ssid" == "ADSBx-config" ]] && [[ "$fatal" != "yes" ]]; then
+if [[ "$ssid" == "ADSBx-config" ]]; then
     ping $clientip -I wlan0 -f -w 1; hostup=$?
     if [ $hostup -eq 0 ]; then
         echo "timeout tripped but client connected, disabling ADSBx-config in 900 sec"
