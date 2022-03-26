@@ -156,7 +156,7 @@ do
     fi
 
     if (( $totalwait > 30 )) && [[ "$ssid" != "ADSBx-config" ]]; then
-        # if for some reason we can't enable the config networ, bail.
+        # if for some reason we can't enable the config network, bail.
         break;
     fi
 
