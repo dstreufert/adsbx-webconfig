@@ -114,6 +114,8 @@ function wifi_scan() {
 if [[ $internet == 1 ]]; then
     wifi_scan
     echo "1.1.1.1 or 8.8.8.8 pingable, exiting"
+    # in case any subtasks started by firstboot.sh, wait for them to complete
+    wait
     exit 0
 fi
 
