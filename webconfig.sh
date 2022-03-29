@@ -54,11 +54,6 @@ if [[ -e /boot/reset_password ]] || [[ -e /boot/reset_password.txt ]]; then
     rm -rf /boot/reset_password /boot/reset_password.txt
 fi
 
-# Runs a script that may be manually placed on /boot for batch setup.  By default, nothing there.
-if [[ -f /boot/firstboot.sh ]]; then
-    bash /boot/firstboot.sh &
-fi
-
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
 
 internet=0
@@ -114,7 +109,7 @@ function wifi_scan() {
 if [[ $internet == 1 ]]; then
     wifi_scan
     echo "1.1.1.1 or 8.8.8.8 pingable, exiting"
-    # in case any subtasks started by firstboot.sh, wait for them to complete
+
     wait
     exit 0
 fi
@@ -184,9 +179,6 @@ ip address del 172.23.45.1/32 dev wlan0
 rm -rf /tmp/webconfig_priv/unlock
 wpa_cli disable $netnum
 
-# in case any subtasks started by firstboot.sh, wait for them to complete
+
 wait
-
-exit 0;
-
-
+exit 0
