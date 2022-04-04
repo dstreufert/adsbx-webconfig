@@ -291,7 +291,7 @@ if (!empty($_POST["DUMP1090"])) {
                 echo '</tr></td><tr><td>';
             }
 
-           //if ($key[0] == "ZEROTIER") {
+           if ($key[0] == "ZEROTIER") {
                 echo  str_replace('#','<br />',$zerotier."<br /><br />");
                 ?>
                 <select class="form-control" name="<?php echo $key[0]; ?>">
@@ -311,9 +311,9 @@ if (!empty($_POST["DUMP1090"])) {
                 </select>
                 <?php
                 echo '</tr></td><tr><td>';
-            //}
+            }
 
-           //if ($key[0] == "ZEROTIER_STANDALONE") {
+           if ($key[0] == "ZEROTIER_STANDALONE") {
                 echo  str_replace('#','<br />',$zerotier_standalone."<br /><br />");
                 ?>
                 <select class="form-control" name="<?php echo $key[0]; ?>">
@@ -333,7 +333,7 @@ if (!empty($_POST["DUMP1090"])) {
                 </select>
                 <?php
                 echo '</tr></td><tr><td>';
-            //}
+            }
 
 			if ($key[0] == "PROMG") {
                                 echo  str_replace('#','<br />',$grafana."<br /><br />");
