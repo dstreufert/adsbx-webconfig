@@ -59,4 +59,8 @@ $customleds = "# Use Custom LED Indications?";
 
 $mlat_marker = "# MLAT marker: Marker with random 5 mile offset on
 <a href=\"https://map.adsbexchange.com/mlat-map/\" target=\"_blank\">https://map.adsbexchange.com/mlat-map</a>";
+
+$zerotier_standalone = "# Enable zerotier service without remote support";
+
 ?>
+
