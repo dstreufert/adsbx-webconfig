@@ -142,7 +142,6 @@ wifi_scan
 
 dnsmasq
 totalwait=0
-touch /tmp/webconfig_priv/unlock
 
 until [ $totalwait -gt 900 ]
 do
@@ -184,7 +183,6 @@ killall dnsmasq #Make sure dnsmasq is off
 sleep 2
 pkill -9 dnsmasq # Make extra sure dnsmasq is off
 ip address del 172.23.45.1/32 dev wlan0
-rm -rf /tmp/webconfig_priv/unlock
 wpa_cli disable $netnum
 
 

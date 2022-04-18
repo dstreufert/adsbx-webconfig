@@ -47,7 +47,6 @@
 	}
 	</style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 
             function checkPassword() {
@@ -104,7 +103,7 @@ function authenticate($user, $pass){
 
 //Process a password submission, or "unlock file" presence
 
-$unlocked = (file_exists('/boot/unlock') or file_exists('/tmp/webconfig_priv/unlock'));
+$unlocked = file_exists('/boot/unlock');
 
 if (!empty($_POST["password"]) or $unlocked) {
 
@@ -316,7 +315,7 @@ if ($_SESSION['authenticated'] == 1) {
 	<br />
 	<h3>System is unlocked</h3>
 	<?php
-	if(!file_exists('/boot/unlock') and !file_exists('/tmp/webconfig_priv/unlock')) {
+	if(!file_exists('/boot/unlock')) {
 
 	echo('<form method="POST" name="logout" action=".">');
 	echo('<input type="hidden" id="logout" name="logout" value="logout">');
