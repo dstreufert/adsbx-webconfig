@@ -66,24 +66,29 @@ for i in {1..15}; do
         echo we have internet!
         internet=1
         break;
-    elif wpa_cli status 2>&1 | grep -qs 'wpa_state=COMPLETED'; then
-        echo we have wifi!
-        connected=1
-        break;
     fi
     wait
 done
+
+if wpa_cli status 2>&1 | grep -qs 'wpa_state=COMPLETED'; then
+    echo we have wifi!
+    connected=1
+fi
 
 if [[ $internet == 1 ]] || [[ $connected == 1 ]]; then
     echo > /dev/tty1
     echo ------------- > /dev/tty1
     echo "Use the webinterface at http://adsbexchange.local OR http://$(ip route get 1.2.3.4 | grep -m1 -o -P 'src \K[0-9,.]*')" > /dev/tty1
     echo ------------- > /dev/tty1
-    if [[ $location_set == 1 ]] ; then
-        timeout 3 wget https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=$LATITUDE\&longitude=$LONGITUDE\&localityLanguage=en -q -T 3 -O /tmp/webconfig/geocode
-        cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
-        cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
-        cat /tmp/webconfig/geocode | jq -r .'countryName' >> /tmp/webconfig/location
+    if [[ $location_set == 1 ]]; then
+        if [[ $internet == 1 ]]; then
+            timeout 3 wget https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=$LATITUDE\&longitude=$LONGITUDE\&localityLanguage=en -q -T 3 -O /tmp/webconfig/geocode
+            cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
+            cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
+            cat /tmp/webconfig/geocode | jq -r .'countryName' >> /tmp/webconfig/location
+        else
+            printf "%.1f, %.1f\n" $LATITUDE $LONGITUDE >> /tmp/webconfig/location
+        fi
         chmod -R a+rwX /tmp/webconfig
     fi
 fi
