@@ -57,28 +57,24 @@ fi
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
 
 internet=0
+connected=0
 
-# wait until we have internet connectivity OR a maximum of 15 seconds
-for i in {1..10}; do
-    sleep 1 &
-    if ping -c 1 -w 1 8.8.8.8 &>/dev/null; then
-        # we have internet!
+# wait until we have internet connectivity OR a maximum of 30 seconds
+for i in {1..15}; do
+    sleep 2 &
+    if ping -c 1 -w 1 8.8.8.8 &>/dev/null || ping -c 1 -w 1 1.1.1.1 &>/dev/null; then
+        echo we have internet!
         internet=1
         break;
-    fi
-    wait
-done
-for i in {1..10}; do
-    sleep 1 &
-    if ping -c 1 -w 1 1.1.1.1 &>/dev/null; then
-        # we have internet!
-        internet=1
+    elif wpa_cli status 2>&1 | grep -qs 'wpa_state=COMPLETED'; then
+        echo we have wifi!
+        connected=1
         break;
     fi
     wait
 done
 
-if [[ $internet == 1 ]]; then
+if [[ $internet == 1 ]] || [[ $connected == 1 ]]; then
     echo > /dev/tty1
     echo ------------- > /dev/tty1
     echo "Use the webinterface at http://adsbexchange.local OR http://$(ip route get 1.2.3.4 | grep -m1 -o -P 'src \K[0-9,.]*')" > /dev/tty1
@@ -109,6 +105,13 @@ function wifi_scan() {
 if [[ $internet == 1 ]]; then
     wifi_scan
     echo "1.1.1.1 or 8.8.8.8 pingable, exiting"
+
+    wait
+    exit 0
+fi
+if [[ $connected == 1 ]]; then
+    wifi_scan
+    echo "connected to WiFi, exiting"
 
     wait
     exit 0
