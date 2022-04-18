@@ -61,36 +61,37 @@ include('comments.php');
 <script type="text/javascript">
 
 function showcoords() {
-    var lat = document.forms['configform'].elements['LATITUDE'].value;
-    var lon = document.forms['configform'].elements['LONGITUDE'].value;
+    let lat = document.forms['configform'].elements['LATITUDE'].value;
+    let lon = document.forms['configform'].elements['LONGITUDE'].value;
 
-    var url = 'https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '&zoom=20';
+    let url = 'https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '&zoom=20';
 
     window.open(url, '_blank').focus();
 }
 
 function checkcoords() {
-        var resp ;
-        var xmlHttp ;
+		let lat = document.forms['configform'].elements['LATITUDE'].value;
+		let lon = document.forms['configform'].elements['LONGITUDE'].value;
 
-		var lat = document.forms['configform'].elements['LATITUDE'].value;
-		var lon = document.forms['configform'].elements['LONGITUDE'].value;
+		let url =  'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' + lat + '&longitude=' + lon + '&localityLanguage=en';
 
-		url =  'https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=' + lat + '&longitude=' + lon + '&localityLanguage=en';
+        let thealert = '';
 
-        resp  = '' ;
-        xmlHttp = new XMLHttpRequest();
-
-        if(xmlHttp != null)
+        let xhr = new XMLHttpRequest();
+        if (xhr != null)
         {
-            xmlHttp.open( "GET", url, false );
-            xmlHttp.send( null );
-			resp = xmlHttp.responseText
+            xhr.open( "GET", url, false );
+            //xhr.timeout = 3000; ... doesn't work with timeout -.-
+            try {
+                xhr.send(null);
+                let resp = xhr.responseText;
+                let locdata = JSON.parse(resp);
+                thealert = "Location is:\n" + locdata.locality + ", " + locdata.principalSubdivisionCode + ",\n" + locdata.countryName;
+            } catch (error) {
+                console.error(error);
+            }
         }
 
-		var locdata = JSON.parse(resp);
-        thealert = "Location is:\n" + locdata.locality + ", " + locdata.principalSubdivisionCode + ",\n" + locdata.countryName;
-		//alert(thealert);
 		return thealert;
     }
 
@@ -114,7 +115,7 @@ if ($_SESSION['authenticated'] != 1) {
 			<a class="btn btn-primary" href="../">(..back to main menu)</a><br /><br />
 
 
-<form method='POST' name="configform" action="./index.php" onsubmit="return confirm(checkcoords() + '\nSave configuration and restart services?');">
+<form method='POST' name="configform" action="./index.php" onsubmit="return confirm('Save configuration and restart services?');">
 
 
 <?php

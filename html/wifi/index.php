@@ -69,6 +69,9 @@ if ($_SESSION['authenticated'] != 1) {
 <script type="text/javascript">
 
 function otherssidCheck(arg) {
+    if (document.getElementById('wifiSelect') == null) {
+        return;
+    }
     if (arg == 'ssid' && document.getElementById('ssidCheckbox').checked) {
         document.getElementById('wifiSelect').selectedIndex = -1;
         document.getElementById('wifiSelect').style.display = 'none';
