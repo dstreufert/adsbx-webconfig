@@ -12,8 +12,11 @@ if ! echo "$LATITUDE $LONGITUDE" | grep -E -qs -e '[1-9]+'; then
     echo "Location not set." > /tmp/webconfig/location
     location_set=0
 else
+    printf "%.1f, %.1f\n" $LATITUDE $LONGITUDE > /tmp/webconfig/location
     location_set=1
 fi
+
+chmod -R a+rwX /tmp/webconfig
 
 function services-handle {
     for SERVICE in $2; do
@@ -44,9 +47,6 @@ then
 else
     services-handle disable leds
 fi
-
-
-chmod -R a+rwX /tmp/webconfig
 
 # reset password when reset_password file is set
 if [[ -e /boot/reset_password ]] || [[ -e /boot/reset_password.txt ]]; then
@@ -80,18 +80,15 @@ if [[ $internet == 1 ]] || [[ $connected == 1 ]]; then
     echo ------------- > /dev/tty1
     echo "Use the webinterface at http://adsbexchange.local OR http://$(ip route get 1.2.3.4 | grep -m1 -o -P 'src \K[0-9,.]*')" > /dev/tty1
     echo ------------- > /dev/tty1
-    if [[ $location_set == 1 ]]; then
-        if [[ $internet == 1 ]]; then
-            timeout 3 wget https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=$LATITUDE\&longitude=$LONGITUDE\&localityLanguage=en -q -T 3 -O /tmp/webconfig/geocode
-            cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
-            cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
-            cat /tmp/webconfig/geocode | jq -r .'countryName' >> /tmp/webconfig/location
-        else
-            printf "%.1f, %.1f\n" $LATITUDE $LONGITUDE >> /tmp/webconfig/location
-        fi
-        chmod -R a+rwX /tmp/webconfig
-    fi
 fi
+
+if [[ $location_set == 1 ]] && [[ $internet == 1 ]]; then
+        timeout 3 wget https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=$LATITUDE\&longitude=$LONGITUDE\&localityLanguage=en -q -T 3 -O /tmp/webconfig/geocode
+        cat /tmp/webconfig/geocode | jq -r .'locality' > /tmp/webconfig/location
+        cat /tmp/webconfig/geocode | jq -r .'principalSubdivisionCode' >> /tmp/webconfig/location
+        cat /tmp/webconfig/geocode | jq -r .'countryName' >> /tmp/webconfig/location
+fi
+chmod -R a+rwX /tmp/webconfig
 
 function wifi_scan() {
     for i in {1..30}; do
