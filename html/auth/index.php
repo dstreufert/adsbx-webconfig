@@ -47,6 +47,7 @@
 	}
 	</style>
 
+<script src="../jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 
             function checkPassword() {
@@ -227,9 +228,9 @@ if (!empty($_POST["newpassword1"])) {
 		function poll(){
 			$("showfile.php", function(data){
 				$("#output_container").load('./showfile.php');
-			}); 
+			});
 		}
-		setInterval(function(){ poll(); }, 2000);
+		setInterval(poll, 2000);
 		</script>
 		<?php
 		ob_end_flush();
@@ -258,9 +259,9 @@ if (!empty($_POST["newpassword1"])) {
 		function poll(){
 			$("showfile.php", function(data){
 				$("#output_container").load('./showfile.php');
-			}); 
+			});
 		}
-		setInterval(function(){ poll(); }, 2000);
+		setInterval(poll, 2000);
 		</script>
 		<?php
 		ob_end_flush();
