@@ -293,6 +293,7 @@ if ($_SESSION['authenticated'] == 0) {
 <br /><br />
 <form method='POST' name="authform" action=".">
   <div class="form-group mb-4 col-6">
+    <input type="text" autocomplete="username" value="pi" style="display: none;">
     <input type="password" autocomplete="current-password" id="password" name="password" class="form-control form-control-lg">
     <small id="passwordHelp" class="form-text text-muted">Use the current pi password.</small>
   </div>
@@ -338,6 +339,7 @@ if ($_SESSION['authenticated'] == 1) {
         <div id="password-no-match" class="alert alert-danger alert-dismissible fade show" role="alert" hidden>
                 Passwords do not match. Try again.
         </div>
+        <input type="text" autocomplete="username" value="pi" style="display: none;">
         <label for="oldpassword">Old Password</label>
         <input class="form-control form-control-lg" type="password" autocomplete="current-password" id="oldpassword" name="oldpassword" required>
         <label for="password1">New Password</label>
