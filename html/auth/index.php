@@ -293,7 +293,7 @@ if ($_SESSION['authenticated'] == 0) {
 <br /><br />
 <form method='POST' name="authform" action=".">
   <div class="form-group mb-4 col-6">
-	<input type="password" id="password" name="password" class="form-control form-control-lg">
+	<input type="password" autocomplete="current-password" id="password" name="password" class="form-control form-control-lg">
 	<small id="passwordHelp" class="form-text text-muted">Use the current pi password.</small>
   </div>
 <input type="submit"  class="btn btn-primary" value="Authenticate">
@@ -339,11 +339,11 @@ if ($_SESSION['authenticated'] == 1) {
 				Passwords do not match. Try again.
 		</div>
 		<label for="oldpassword">Old Password</label>
-		<input class="form-control form-control-lg" type="password" id="oldpassword" name="oldpassword" required>
+		<input class="form-control form-control-lg" type="password" autocomplete="current-password" id="oldpassword" name="oldpassword" required>
 		<label for="password1">New Password</label>
-		<input class="form-control form-control-lg" type="password" id="password1" name="newpassword1" required>
+		<input class="form-control form-control-lg" type="password" autocomplete="new-password" id="password1" name="newpassword1" required>
 		 <label for="password2">Re-enter Password</label>
-		<input class="form-control form-control-lg" type="password" id="password2" name="newpassword2" required>
+		<input class="form-control form-control-lg" type="password" autocomplete="new-password" id="password2" name="newpassword2" required>
 	</div>
 
 	<input type="submit" class="btn btn-primary" value="Change PW">
