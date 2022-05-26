@@ -101,7 +101,7 @@ function checkcoords() {
 session_start();
 if ($_SESSION['authenticated'] != 1) {
 	$_SESSION['auth_URI'] = $_SERVER['REQUEST_URI'];
-	header("Location: ../auth");
+	header("Location: ../auth/");
 }
 ?>
 
