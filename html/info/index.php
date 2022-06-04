@@ -394,7 +394,7 @@ echo "<pre>$output</pre>";
 
 <table class="table table-dark"><tr><td>
 <?php
-$output = shell_exec('cat /adsbexchange/adsbx-update.log')
+$output = shell_exec('cat /adsbexchange/adsbx-update.log');
 echo "<pre>$output</pre>";
 ?>
 </td></tr>

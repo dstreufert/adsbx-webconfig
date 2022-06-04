@@ -1,10 +1,11 @@
 <?php
 session_start();
 if ($_SESSION['authenticated'] != 1) {
+    echo("Update complete!");
 	exit();
 }
 
-system('cat /adsbexchange/adsbx-update.log');
+system('tail -n30 /adsbexchange/adsbx-update.log');
 //echo($output);
 ?>
 

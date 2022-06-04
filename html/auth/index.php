@@ -230,15 +230,14 @@ if (!empty($_POST["newpassword1"])) {
                 $("#output_container").load('./show-update-log.php');
             });
         }
-        setInterval(poll, 2000);
+        setInterval(poll, 500);
         </script>
         <?php
         ob_end_flush();
         flush();
         exec('sudo /adsbexchange/webconfig/helpers/run-update.sh > /dev/null 2>&1 &');
         ?>
-
-        <br />System will reboot when complete... </center></body></html>
+        <br />System will reboot when complete... log will be viewable at the bottom of the info page after the reboot.</center></body></html>
         <?php
         exit;
      }
