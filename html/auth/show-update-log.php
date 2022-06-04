@@ -4,6 +4,7 @@ if ($_SESSION['authenticated'] != 1) {
 	exit();
 }
 
-system('cat /tmp/web_display_log');
+system('cat /adsbexchange/adsbx-update.log');
 //echo($output);
 ?>
+

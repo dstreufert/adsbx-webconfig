@@ -226,8 +226,8 @@ if (!empty($_POST["newpassword1"])) {
         </td></tr></table>
         <script type="text/javascript">
         function poll(){
-            $("showfile.php", function(data){
-                $("#output_container").load('./showfile.php');
+            $("show-update-log.php", function(data){
+                $("#output_container").load('./show-update-log.php');
             });
         }
         setInterval(poll, 2000);

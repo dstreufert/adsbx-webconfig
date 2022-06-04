@@ -389,6 +389,17 @@ echo "<pre>$output</pre>";
 </td></tr>
 </table>
 
+ <br>
+ Log for last update
+
+<table class="table table-dark"><tr><td>
+<?php
+$output = shell_exec('cat /adsbexchange/adsbx-update.log')
+echo "<pre>$output</pre>";
+?>
+</td></tr>
+</table>
+
 
 </center>
 </div>
