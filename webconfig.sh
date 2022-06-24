@@ -49,9 +49,10 @@ else
 fi
 
 # reset password when reset_password file is set
-if [[ -e /boot/reset_password ]] || [[ -e /boot/reset_password.txt ]]; then
+if ls /boot | grep -qs '^reset_password'; then
+    echo "Resetting user pi to default password!"
     echo "pi:adsb123" | chpasswd
-    rm -rf /boot/reset_password /boot/reset_password.txt
+    rm -rf /boot/reset_password*
 fi
 
 lsusb -d 0bda: -v 2> /dev/null | grep iSerial |  tr -s ' ' | cut -d " " -f 4 > /tmp/webconfig/sdr_serials
