@@ -62,5 +62,7 @@ $mlat_marker = "# MLAT marker: Marker with random 5 mile offset on
 
 $zerotier_standalone = "# Enable zerotier service without remote support";
 
+$graphs1090 = "# Enable graphs1090?";
+
 ?>
 
