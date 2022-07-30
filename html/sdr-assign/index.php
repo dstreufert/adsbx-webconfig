@@ -81,7 +81,7 @@ If you are outside the USA, 978 isn't used in your location and<br>this page is 
  <?php 
  
 function sanitize($string) {
-    return preg_replace('/[^A-Za-z0-9_.\-]/', '', $string);
+    return preg_replace('/[^A-Za-z0-9_.\-:]/', '', $string);
 }
 
  if (!empty($_POST["readsb_sdr"])) {
