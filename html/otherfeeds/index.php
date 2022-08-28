@@ -62,28 +62,33 @@ if ($_SESSION['authenticated'] != 1) {
     header("Location: ../auth/");
 }
 
-$newTimezone ='';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-if(isset($_POST['faSelect'])) {
-    if ($_POST['faSelect'] == "Enable") {
-        $output = shell_exec('sudo /adsbexchange/webconfig/helpers/piaware-enable.sh');
+    if(isset($_POST['faSelect'])) {
+        if ($_POST['faSelect'] == "Enable") {
+            $output = shell_exec('sudo /adsbexchange/webconfig/helpers/piaware-enable.sh');
+        }
+        if ($_POST['faSelect'] == "Disable") {
+            $output = shell_exec('sudo /adsbexchange/webconfig/helpers/piaware-disable.sh');
+        }
     }
-    if ($_POST['faSelect'] == "Disable") {
-        $output = shell_exec('sudo /adsbexchange/webconfig/helpers/piaware-disable.sh');
+
+    if(isset($_POST['fr24Select'])) {
+        if ($_POST['fr24Select'] == "Enable") {
+            $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-enable.sh ' . escapeshellarg($_POST['fr24mail']) . ' ' . escapeshellarg($_POST['fr24key']));
+        }
+        if ($_POST['fr24Select'] == "Disable") {
+            $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-disable.sh');
+        }
+        if ($_POST['fr24Select'] == "Reset") {
+            $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-reset.sh');
+        }
     }
+
+    header('Location: '.$_SERVER['PHP_SELF']);
+    exit;
 }
 
-if(isset($_POST['fr24Select'])) {
-    if ($_POST['fr24Select'] == "Enable") {
-        $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-enable.sh ' . escapeshellarg($_POST['fr24mail']));
-    }
-    if ($_POST['fr24Select'] == "Disable") {
-        $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-disable.sh');
-    }
-    if ($_POST['fr24Select'] == "Reset") {
-        $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-reset.sh');
-    }
-}
 
 ?>
 
@@ -149,6 +154,12 @@ echo "<pre>$output</pre>";
     Enter email address to be submitted to Flightradar24:
     <br><br>
     <input class="form-control" type="text" name="fr24mail"  id="fr24mail" pattern="^[\u0020-\u007e]{8,63}$" />
+    <br><br>
+    If you want to reuse a fr24 sharing key you have received via mail or can see on the fr24 webpage, enter it below.
+    <br><br>
+    Otherwise leave it empty.
+    <br><br>
+    <input class="form-control" type="text" name="fr24key"  id="fr24key" pattern="^[\u0020-\u007e]{8,63}$" />
     <br><br>
 
     <select name="fr24Select" class="custom-select custom-select-lg btn btn-secondary" id="fr24Select">

@@ -68,10 +68,8 @@ REGEX_PATTERN_FR24_RADAR_ID='^\+ Your radar id is ([A-Za-z0-9\-]+), please inclu
 
 
 # Temp files - created in one dir
-TMPDIR_FR24SIGNUP=/tmp/fr24feed-signup
-mkdir -p "$TMPDIR_FR24SIGNUP"
-TMPFILE_FR24SIGNUP_EXPECT="$TMPDIR_FR24SIGNUP/TMPFILE_FR24SIGNUP_EXPECT"
-TMPFILE_FR24SIGNUP_LOG="/tmp/fr24_signup_log"
+TMPFILE_FR24SIGNUP_EXPECT="/root/fr24_signup_expect"
+TMPFILE_FR24SIGNUP_LOG="/root/fr24_signup_log"
 
 rm -f $TMPFILE_FR24SIGNUP_LOG
 
@@ -87,8 +85,12 @@ else
     ALT_FT=$(( ALTITUDE * 82 / 25 ))
 fi
 
-# use existing sharing key if one exists to avoid stupid issues
-SHARING_KEY=$(grep -s -e '^fr24key' /etc/fr24feed.ini  | cut -d'"' -f2)
+if [[ -n "$2" ]]; then
+    SHARING_KEY="$2"
+else
+    # use existing sharing key if one exists to avoid stupid issues
+    SHARING_KEY=$(grep -s -e '^fr24key' /etc/fr24feed.ini  | cut -d'"' -f2)
+fi
 
 function write_fr24_expectscript() {
     {
@@ -103,10 +105,6 @@ function write_fr24_expectscript() {
         echo "send \"$SHARING_KEY\r\""
         echo 'expect "Step 1.3 - Would you like to participate in MLAT calculations? (yes/no)$:"'
         echo "send \"no\r\""
-        echo 'set timeout 15'
-        echo 'expect "Would you like to use autoconfig (*yes*/no)$:"'
-        echo "send \"no\r\""
-        echo 'set timeout 120'
         if [[ -z "$SHARING_KEY" ]]; then
             echo 'expect "Enter airport code or leave empty$:"'
             echo "send \"\r\""
@@ -122,6 +120,9 @@ function write_fr24_expectscript() {
             echo 'expect "Enter your choice (yes/no)$:"'
             echo "send \"yes\r\""
         fi
+        echo 'set timeout 5'
+        echo "expect \"Would you like to use autoconfig (*yes*/no)$:\" { send \"no\r\" }"
+        echo 'set timeout 120'
         echo 'expect "Enter your receiver type (1-7)$:"'
         echo "send \"4\r\""
         echo 'expect "Enter your connection type (1-2)$:"'
@@ -160,11 +161,10 @@ if ! expect "$TMPFILE_FR24SIGNUP_EXPECT" > "$TMPFILE_FR24SIGNUP_LOG" 2>&1; then
   echo "ERROR: Problem running flightradar24 sign-up process :-("
   echo ""
   cat "$TMPFILE_FR24SIGNUP_LOG"
+  echo ""
+  echo ""
   systemctl restart fr24feed
   exit 1
 fi
 
 systemctl restart fr24feed
-
-# clean up
-rm -r "$TMPDIR_FR24SIGNUP"
