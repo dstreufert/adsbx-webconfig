@@ -220,7 +220,8 @@ $content .= '
 }
 ?>
     <h3>Choose WiFi Network:</h3>
-    (Note that 2.4ghz networks have longer range than 5.8ghz)<br /><br />
+    (Note 1: 2.4GHz networks have longer range than 5.2GHz networks)<br /><br />
+    (Note 2: If the network name is not in the dropdown, please specify it)<br /><br />
         <div class="container col-8">
         <table  class="table table-striped table-hover table-dark">
         <tr><td>
@@ -229,7 +230,7 @@ $content .= '
             <label class="form-check-label">Choose Wifi Network &emsp;</label>
             <br />
             <input class="form-check-input" type="checkbox" id="ssidCheckbox" onclick="javascript:otherssidCheck('ssid');" />
-            <label class="form-check-label">Specify Network SSID &emsp;</label>
+            <label class="form-check-label">Specify Network name (SSID)&emsp;</label>
             <br />
             <input class="form-check-input" type="checkbox" id="bssidCheckbox" onclick="javascript:otherssidCheck('bssid');" />
             <label class="form-check-label">Specify Network BSSID</label>
