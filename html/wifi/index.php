@@ -273,9 +273,9 @@ $country_json = file_get_contents('country_codes.json');
 $country_codes = json_decode($country_json, true);
 foreach($country_codes as [$code, $country]) {
     if($code == 'UK'){
-        echo '<option value="'.$code.'" selected>'.$code.' - '.$country.'</option>';
+        echo '<option value="'.$code.'" selected>'.$country.' - '.$code.'</option>';
     } else {
-        echo '<option value="'.$code.'">'.$code.' - '.$country.'</option>';
+        echo '<option value="'.$code.'">'.$country.' - '.$code.'</option>';
     }
 }
 ?>
