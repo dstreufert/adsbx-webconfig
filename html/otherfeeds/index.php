@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if(isset($_POST['faSelect'])) {
         if ($_POST['faSelect'] == "Enable") {
-            $output = shell_exec('sudo /adsbexchange/webconfig/helpers/piaware-enable.sh');
+            $output = shell_exec('sudo /adsbexchange/webconfig/helpers/piaware-enable.sh ' . escapeshellarg($_POST['fa-id']));
         }
         if ($_POST['faSelect'] == "Disable") {
             $output = shell_exec('sudo /adsbexchange/webconfig/helpers/piaware-disable.sh');
@@ -75,13 +75,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if(isset($_POST['fr24Select'])) {
         if ($_POST['fr24Select'] == "Enable") {
+            $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-install.sh');
             $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-enable.sh ' . escapeshellarg($_POST['fr24mail']) . ' ' . escapeshellarg($_POST['fr24key']));
         }
         if ($_POST['fr24Select'] == "Disable") {
             $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-disable.sh');
         }
-        if ($_POST['fr24Select'] == "Reset") {
+    }
+
+    if(isset($_POST['fr24Select2'])) {
+        if ($_POST['fr24Select2'] == "Reset") {
             $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-reset.sh');
+        }
+        if ($_POST['fr24Select2'] == "Reinstall") {
+            $output = shell_exec('sudo /adsbexchange/webconfig/helpers/fr24-install.sh');
         }
     }
 
@@ -116,6 +123,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $output = shell_exec('sudo /adsbexchange/webconfig/helpers/piaware-status.sh 2>&1');
 echo "<pre>$output</pre>";
 ?>
+    <br><br>
+    Optional, leave empty if uncertain:<br>
+    Input your old feeder-id (Unique Identifier) from your FA stats page if you want to keep using that id.
+    Don't use the same feeder-id with more than one receiver.
+    <br><br>
+    <input class="form-control" type="text" name="fa-id"  id="fa-id" pattern="^[\u0020-\u007e]{8,63}$" />
+    <br><br>
     <select name="faSelect" class="custom-select custom-select-lg btn btn-secondary" id="faSelect">
         <div class="form-group">
         <option value="" selected>Enable or Disable Flightaware</option>
@@ -125,11 +139,18 @@ echo "<pre>$output</pre>";
     </select>
 
     <br><br>
-    Once enabled for 15 minutes, you should be able to link to your flightaware account if desired.
+    Once enabled for 15 minutes, you should be able to link to your flightaware account.
     <br><br>
-    If so, use this URL: https://flightaware.com/adsb/piaware/claim
-    <br><br>
-    In case you have any issues you can add a / and the id from the status at the end of the URL.
+    If you want to do so, use this URL:<br>
+<?php
+$fa_id = shell_exec('cat /var/cache/piaware/feeder_id');
+if (strlen($fa_id) >= 36) {
+    $claim_url = "https://flightaware.com/adsb/piaware/claim/".$fa_id;
+} else {
+    $claim_url = "https://flightaware.com/adsb/piaware/claim";
+}
+echo '<a href="'.$claim_url.'">'.$claim_url.'</a>';
+?>
     <br><br>
 
     </td></tr>
@@ -148,16 +169,17 @@ echo "<pre>$output</pre>";
     Make sure you use the same email address for the fr24 account and in the below form.
     <br><br>
     Once installed, you can check "my data sharing" on the fr24 website if it's working.
+    It can take an hour or more to show and the status above to show as "connected":
     <br><br>
-    It can take an hour or more to show.
+    <a href="https://www.flightradar24.com/account/data-sharing">https://www.flightradar24.com/account/data-sharing</a>
     <br><br>
     Enter email address to be submitted to Flightradar24:
     <br><br>
     <input class="form-control" type="text" name="fr24mail"  id="fr24mail" pattern="^[\u0020-\u007e]{8,63}$" />
     <br><br>
-    If you want to reuse a fr24 sharing key you have received via mail or can see on the fr24 webpage, enter it below.
-    <br><br>
-    Otherwise leave it empty.
+    Optional, leave empty if uncertain:<br>
+    If you want to reuse a fr24 sharing key you have received via mail or can see on the fr24 webpage, enter it below.<br>
+    This is mandatory if you already have 3 sharing keys associated with an email address as fr24 only allows 3 share keys per email address.
     <br><br>
     <input class="form-control" type="text" name="fr24key"  id="fr24key" pattern="^[\u0020-\u007e]{8,63}$" />
     <br><br>
@@ -167,10 +189,21 @@ echo "<pre>$output</pre>";
         <option value="" selected>Enable or Disable FR24</option>
         <option value="Enable">Enable FR24</option>;
         <option value="Disable">Disable FR24</option>;
-        <option value="Reset">Reset FR24 Sharing Key</option>;
         </div>
     </select>
+
     <br><br>
+    In case you want to get a new FR24 sharing key for whatever reason, populate the email address field above and choose reset below.
+    <br><br>
+    The below drop down also allows reinstalling the fr24 binary.<br>It will also update the fr24feed version if the authors of this webinterface have set that new version to be used, this happens maybe twice a year so don't expect the most recent fr24feed version, it's not necessary.
+    <br><br>
+    <select name="fr24Select2" class="custom-select custom-select-lg btn btn-secondary" id="fr24Select2">
+        <div class="form-group">
+        <option value="" selected>Specialty options for FR24</option>
+        <option value="Reset">Reset FR24 config / sharing key</option>;
+        <option value="Reinstall">Reinstall / Update FR24</option>;
+        </div>
+    </select>
 
     </td></tr>
 </tbody></table>
