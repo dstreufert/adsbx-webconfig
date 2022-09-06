@@ -113,6 +113,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container-sm adsbx-width">
 <table class="table table-striped table-dark"><tbody>
 
+<tr><td>
+
+Although this software is published by ADSBexchange, we recognize that sometimes users may want to feed data to other sites as well. Our goal is to put the feeders first by making it easy to get the most from their hardware investment.
+<p><p>To facilitate this, we include the following web GUI setups.
+<p>
+When considering which flight tracking services to support with your data, keep the following in mind:
+<ul>
+<li>ADSBexchange was built by aviation enthusiasts, for aviation enthusiasts.  We're not a fortune 500 company.
+We don't have a company jet, a fancy office (or any office at all) but thanks to people like you
+we ARE building a network that gives the big guys a run for their money.
+<p>
+<li>Other flight tracking sites block all sorts of aircraft. This includes aircraft owned by authoritarian regiemes,
+dicators, war criminals, oligarchs, and anyone else who doeesn't want to be seen.
+ADSBexchange doesn't beleive in playing these games, and shares all data collected.
+</ul>
+
+</td></tr>
+
+	
     <tr><td>
     <br><br>
     <h4>Flightaware:</h4>
