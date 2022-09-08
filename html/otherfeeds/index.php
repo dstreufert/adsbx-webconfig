@@ -231,6 +231,31 @@ echo "<pre>$output</pre>";
 <input class="btn btn-primary" type="submit" value="Execute changes">
 </form>
 
+
+<div class="container-sm">
+<table class="table table-dark"><tr><td>
+    <tr><td>
+    <h5>fr24feed log:</h5>
+    <br><br>
+<?php
+$output = shell_exec('sudo /adsbexchange/webconfig/helpers/journal.sh -u fr24feed.service');
+$output = wordwrap( $output, 160);
+echo "<pre>$output</pre>";
+?>
+    </td></tr>
+
+    <tr><td>
+    <h5>piaware log:</h5>
+    <br><br>
+<?php
+$output = shell_exec('sudo /adsbexchange/webconfig/helpers/journal.sh -u piaware.service');
+$output = wordwrap( $output, 160);
+echo "<pre>$output</pre>";
+?>
+    </td></tr>
+</tbody></table>
+</div>
+
 </center>
 </body>
 </html>
