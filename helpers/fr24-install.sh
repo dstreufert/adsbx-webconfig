@@ -23,6 +23,16 @@ wget -O fr24.deb https://repo-feed.flightradar24.com/rpi_binaries/fr24feed_1.0.3
 dpkg -x fr24.deb fr24
 cp -f fr24/usr/bin/fr24feed* /usr/bin
 
+if ! [[ -f /etc/fr24feed.ini ]]; then
+    cat >/etc/fr24feed.ini << "EOF"
+bs=no
+raw=no
+mlat="no"
+mlat-without-gps="no"
+EOF
+fi
+chmod 666 /etc/fr24feed.ini
+
 cat >/etc/systemd/system/fr24feed.service <<"EOF"
 [Unit]
 Description=Flightradar24 Decoder & Feeder
