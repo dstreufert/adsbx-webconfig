@@ -315,6 +315,7 @@ if ($_SESSION['authenticated'] == 1) {
     ?>
     <br />
     <h3>System is unlocked</h3>
+    <hr width="50%">
     <?php
     if(!file_exists('/boot/unlock')) {
 
@@ -336,10 +337,10 @@ if ($_SESSION['authenticated'] == 1) {
     <input type="hidden" id="update" name="update" value="update">
     <input type="submit" class="btn btn-primary" value="Update Feeder">
     </form>
-    <a href="https://raw.githubusercontent.com/ADSBexchange/adsbx-update/main/update-adsbx.sh">(executes this script)</a>
     <p>
 
-    <br>If you wish to change the password, enter new password below:
+    <hr width="50%">
+    <h5>Password change:</h5>
     <p>
     <form method='POST' name="changepwform" action="." onSubmit = "return checkPassword()">
 
@@ -358,7 +359,7 @@ if ($_SESSION['authenticated'] == 1) {
         <input class="form-control form-control-lg" type="password" autocomplete="current-password" id="oldpassword" name="oldpassword" required>
         <label for="password1">New Password</label>
         <input class="form-control form-control-lg" type="password" autocomplete="new-password" id="password1" name="newpassword1" required>
-         <label for="password2">Re-enter Password</label>
+         <label for="password2">Re-enter New Password</label>
         <input class="form-control form-control-lg" type="password" autocomplete="new-password" id="password2" name="newpassword2" required>
     </div>
 
