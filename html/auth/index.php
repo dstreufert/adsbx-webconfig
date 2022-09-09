@@ -324,6 +324,21 @@ if ($_SESSION['authenticated'] == 1) {
     }
     ?>
 
+    <hr width="50%">
+    <form method='POST' name="reboot" action="." onSubmit = "return confirm('Reboot the feeder?')">
+    <input type="hidden" id="reboot" name="reboot" value="reboot">
+    <input type="submit" class="btn btn-primary" value="Reboot Feeder">
+    </form>
+    <p>
+
+    <hr width="50%">
+    <form method='POST' name="update" action="." onSubmit = "return confirm('Update the feeder?')">
+    <input type="hidden" id="update" name="update" value="update">
+    <input type="submit" class="btn btn-primary" value="Update Feeder">
+    </form>
+    <a href="https://raw.githubusercontent.com/ADSBexchange/adsbx-update/main/update-adsbx.sh">(executes this script)</a>
+    <p>
+
     <br>If you wish to change the password, enter new password below:
     <p>
     <form method='POST' name="changepwform" action="." onSubmit = "return checkPassword()">
@@ -350,21 +365,6 @@ if ($_SESSION['authenticated'] == 1) {
     <input type="submit" class="btn btn-primary" value="Change PW">
 
     </form>
-
-    <hr width="50%">
-    <form method='POST' name="reboot" action="." onSubmit = "return confirm('Reboot the feeder?')">
-    <input type="hidden" id="reboot" name="reboot" value="reboot">
-    <input type="submit" class="btn btn-primary" value="Reboot Feeder">
-    </form>
-    <p>
-
-    <hr width="50%">
-    <form method='POST' name="update" action="." onSubmit = "return confirm('Update the feeder?')">
-    <input type="hidden" id="update" name="update" value="update">
-    <input type="submit" class="btn btn-primary" value="Update Feeder">
-    </form>
-    <a href="https://raw.githubusercontent.com/ADSBexchange/adsbx-update/main/update-adsbx.sh">(executes this script)</a>
-    <p>
 
     <hr width="50%">
     <form method='POST' name="setdefaults" action="." onSubmit = "return confirm('Reset EVERYTHING (except the password) to defaults? (wifi, location, etc.)')">

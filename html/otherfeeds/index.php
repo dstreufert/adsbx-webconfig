@@ -125,7 +125,7 @@ We don't have a company jet, a fancy office (or any office at all) but thanks to
 we ARE building a network that gives the big guys a run for their money.
 <p>
 <li>Other flight tracking sites block all sorts of aircraft. This includes aircraft owned by authoritarian regiemes,
-dicators, war criminals, oligarchs, and anyone else who doesn't want to be seen.
+dicators, war criminals, oligarchs, and anyone else who don't want to be seen.
 ADSBexchange doesn't beleive in playing these games, and shares all data collected.
 </ul>
 
