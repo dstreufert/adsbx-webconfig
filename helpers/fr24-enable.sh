@@ -19,9 +19,9 @@ REGEX_PATTERN_FR24_SHARING_KEY='^\+ Your sharing key \((\w+)\) has been configur
 REGEX_PATTERN_FR24_RADAR_ID='^\+ Your radar id is ([A-Za-z0-9\-]+), please include it in all email communication with us\.'
 
 
-# Temp files - created in one dir
-TMPFILE_FR24SIGNUP_EXPECT="/root/fr24_signup_expect"
-TMPFILE_FR24SIGNUP_LOG="/root/fr24_signup_log"
+# Temp files
+TMPFILE_FR24SIGNUP_EXPECT="/root/.fr24_signup_expect"
+TMPFILE_FR24SIGNUP_LOG="/root/.fr24_signup_log"
 
 rm -f $TMPFILE_FR24SIGNUP_LOG
 
