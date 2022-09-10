@@ -119,10 +119,14 @@ if ! expect "$TMPFILE_FR24SIGNUP_EXPECT" > "$TMPFILE_FR24SIGNUP_LOG" 2>&1; then
   cat "$TMPFILE_FR24SIGNUP_LOG"
   echo ""
   echo ""
-  systemctl restart fr24feed || true
+  if grep -qs fr24key /etc/fr24feed.ini; then
+      systemctl restart fr24feed || true
+  fi
   exit 1
 fi
 
-systemctl restart fr24feed || true
+if grep -qs fr24key /etc/fr24feed.ini; then
+    systemctl restart fr24feed || true
+fi
 
 sleep 10

@@ -61,4 +61,6 @@ EOF
 
 
 systemctl enable fr24feed
-systemctl restart fr24feed
+if grep -qs fr24key /etc/fr24feed.ini; then
+    systemctl restart fr24feed || true
+fi
