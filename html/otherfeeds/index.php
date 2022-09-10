@@ -121,8 +121,6 @@ Although this software is published by ADSBexchange, we recognize that sometimes
 When considering which flight tracking services to support with your data, keep the following in mind:
 <ul>
 <li>ADSBexchange was built by aviation enthusiasts, for aviation enthusiasts.  We're not a fortune 500 company.
-We don't have a company jet, a fancy office (or any office at all) but thanks to people like you
-we ARE building a network that gives the big guys a run for their money.
 <p>
 <li>Other flight tracking sites block all sorts of aircraft. This includes aircraft owned by authoritarian regiemes,
 dicators, war criminals, oligarchs, and anyone else who don't want to be seen.
