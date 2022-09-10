@@ -115,8 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <?php
 if (file_exists('/boot/adsbx-hardware')) {
-    $message = "<tr><td>This hardware is sponsored by ADSBexchange.  Feeding to other sites is not availiable.  For more information, <a href=\"https://adsbexchange.com/contact\">contact ADSBexchange.</a></tr></td><!--";
-    echo $message;
+	echo "<tr><td>This hardware is sponsored by ADSBexchange.  Feeding to other sites is not availiable.  For more information, <a href=\"https://adsbexchange.com/contact\">contact ADSBexchange.</a></tr></td><!--";
    }
 ?>
 	
@@ -234,8 +233,7 @@ echo "<pre>$output</pre>";
 	
 <?php
 if (file_exists('/boot/adsbx-hardware')) {
-    $message = "-->";
-    echo $message;
+    echo "-->";
    }
 ?>
 	
