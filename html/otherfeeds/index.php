@@ -113,6 +113,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container-sm adsbx-width">
 <table class="table table-striped table-dark"><tbody>
 
+<?php
+if (file_exists('/boot/adsbx-hardware')) {
+    $message = "<tr><td>This hardware is sponsored by ADSBexchange.  Feeding to other sites is not availiable.  For more information, <a href=\"https://adsbexchange.com/contact\">contact ADSBexchange.</a></tr></td><!--";
+    echo $message;
+   }
+?>
+	
+	
 <tr><td>
 
 Although this software is published by ADSBexchange, we recognize that sometimes users may want to feed data to other sites as well. Our goal is to put the feeders first by making it easy to get the most from their hardware investment.
@@ -223,6 +231,14 @@ echo "<pre>$output</pre>";
     </select>
 
     </td></tr>
+	
+<?php
+if (file_exists('/boot/adsbx-hardware')) {
+    $message = "-->";
+    echo $message;
+   }
+?>
+	
 </tbody></table>
 </div>
 
