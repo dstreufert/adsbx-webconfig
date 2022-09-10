@@ -290,6 +290,10 @@ if (!empty($_POST["DUMP1090"])) {
                 <?php
 
                 echo '</tr></td><tr><td>';
+		if (file_exists('/boot/adsbx-hardware')) {
+                   echo "This hardware is sponsored by ADSBexchange.  Remote support active.  For more information, <a href=\"https://adsbexchange.com/contact\">contact ADSBexchange.</a><!--";
+                }
+
             }
 
            if ($key[0] == "ZEROTIER") {
@@ -333,6 +337,9 @@ if (!empty($_POST["DUMP1090"])) {
                 ?>
                 </select>
                 <?php
+		if (file_exists('/boot/adsbx-hardware')) {
+                    echo "-->";
+                }
                 echo '</tr></td><tr><td>';
             }
 
